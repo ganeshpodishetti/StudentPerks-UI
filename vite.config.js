@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5254",
+        target: "https://studentperks-dev.azurewebsites.net",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
