@@ -1,0 +1,19 @@
+[build]
+  # Build command - install dependencies and build the project
+  command = "npm install && npm run build"
+  
+  # Directory to publish (where the built files are)
+  publish = "dist"
+  
+  # Base directory (project root)
+  base = "."
+
+[build.environment]
+  # Use Node.js 18 or higher
+  NODE_VERSION = "18"
+
+# Redirect all requests to index.html for single-page application
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
