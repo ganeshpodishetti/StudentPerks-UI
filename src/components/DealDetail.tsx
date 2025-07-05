@@ -88,7 +88,7 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg p-4">
+      <DialogContent className="sm:max-w-lg p-4 [&>button]:hidden">
         <DialogHeader className="pb-2">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
@@ -107,8 +107,8 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
           </div>
         </DialogHeader>
         
-        <div className="space-y-3">
-          <div className="flex items-center gap-4">
+        <div className="space-y-2">
+          <div className="flex items-center gap-3">
             <div className="w-16 h-16 flex items-center justify-center overflow-hidden rounded-lg bg-neutral-50 dark:bg-neutral-900 flex-shrink-0">
               {!imageError && imageUrl ? (
                 <img 
