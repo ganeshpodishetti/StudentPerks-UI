@@ -21,21 +21,34 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
 
   // Calculate days remaining if end date exists
   const getDaysRemaining = () => {
-    if (!deal.endDate) return null;
+    // Check for null, undefined, empty string, or placeholder text
+    if (!deal.endDate || 
+        deal.endDate === null || 
+        deal.endDate === 'No date specified' || 
+        deal.endDate === '' ||
+        deal.endDate === 'null') {
+      return null;
+    }
+    
     try {
       const endDate = new Date(deal.endDate);
+      // Check if the date is valid
+      if (isNaN(endDate.getTime())) return null;
+      
       const now = new Date();
       const diffTime = endDate.getTime() - now.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays >= 0 ? diffDays : 0;
+      return diffDays;
     } catch (error) {
       return null;
     }
   };
 
   const daysRemaining = getDaysRemaining();
-  const isExpiring = deal.endDate && daysRemaining !== null && daysRemaining <= 7 && daysRemaining > 0;
-  const isExpired = deal.endDate && daysRemaining !== null && daysRemaining <= 0;
+  // Only show expired if we have a valid end date AND it's in the past
+  const isExpired = daysRemaining !== null && daysRemaining < 0;
+  // Only show expiring if we have a valid end date AND it's within 7 days
+  const isExpiring = daysRemaining !== null && daysRemaining <= 7 && daysRemaining > 0;
 
   return (
     <Card className={`relative overflow-hidden flex flex-col group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl ${compact ? 'p-5' : 'p-6'} ${isExpired ? 'opacity-70' : ''} h-full cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700`}>
@@ -76,7 +89,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
       </div>
 
       {/* Header with Icon */}
-      <div className="flex items-start gap-4 mb-3">
+      <div className="flex items-center gap-4 mb-3">
         <DealDetail 
           deal={deal} 
           trigger={
@@ -102,7 +115,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
         />
         
         {/* Deal Info */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
           <h3 className={`${compact ? 'text-sm' : 'text-base'} font-medium text-neutral-800 dark:text-neutral-200 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors duration-300`}>
             {deal.title}
           </h3>
