@@ -1,13 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { Calendar, Clock, Copy, ExternalLink, Image, Info, MapPin, School, Tag } from 'lucide-react';
@@ -41,15 +40,16 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
 
   // Calculate days remaining
   const getDaysRemaining = () => {
-    if (!deal.endDate) return 0;
+    if (!deal.endDate || deal.endDate === 'No date specified' || deal.endDate.trim() === '') return null;
     try {
       const endDate = new Date(deal.endDate);
+      if (isNaN(endDate.getTime())) return null;
       const now = new Date();
       const diffTime = endDate.getTime() - now.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays >= 0 ? diffDays : 0;
+      return diffDays;
     } catch (error) {
-      return 0;
+      return null;
     }
   };
 
@@ -105,15 +105,10 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
               {deal.discount}
             </Badge>
           </div>
-          <DialogTitle className="text-lg font-semibold leading-tight text-neutral-700 dark:text-neutral-300">{deal.title}</DialogTitle>
-          <DialogDescription className="flex items-center text-amber-600 dark:text-amber-400 text-sm">
-            <Clock className="h-3.5 w-3.5 mr-1" />
-            {daysRemaining > 0 ? `${daysRemaining} days remaining` : 'Offer expired'}
-          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">
-          <div className="flex items-center gap-4">
+          <div className="flex items-start gap-4">
             <div className="w-20 h-20 flex items-center justify-center overflow-hidden rounded-lg bg-neutral-50 dark:bg-neutral-900">
               {!imageError && imageUrl ? (
                 <img 
@@ -129,7 +124,8 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
               )}
             </div>
             <div className="flex-1">
-              <div className="flex flex-wrap gap-3 text-sm text-neutral-500 dark:text-neutral-400">
+              <DialogTitle className="text-lg font-semibold leading-tight text-neutral-700 dark:text-neutral-300 mb-2">{deal.title}</DialogTitle>
+              <div className="flex flex-wrap gap-3 text-sm text-neutral-500 dark:text-neutral-400 mb-2">
                 <div className="flex items-center">
                   <Calendar className="h-3.5 w-3.5 mr-1" />
                   <span>{formatDate(deal.startDate)} - {formatDate(deal.endDate)}</span>
@@ -139,6 +135,15 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
                   <span>{formatRedeemType(deal.redeemType)}</span>
                 </div>
               </div>
+              {daysRemaining !== null && (
+                <div className="flex items-center text-amber-600 dark:text-amber-400 text-sm">
+                  <Clock className="h-3.5 w-3.5 mr-1" />
+                  {daysRemaining > 0 
+                    ? `${daysRemaining} days remaining` 
+                    : 'Offer expired'
+                  }
+                </div>
+              )}
             </div>
           </div>
           
