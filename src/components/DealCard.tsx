@@ -34,8 +34,8 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
   };
 
   const daysRemaining = getDaysRemaining();
-  const isExpiring = daysRemaining !== null && daysRemaining <= 7 && daysRemaining > 0;
-  const isExpired = daysRemaining !== null && daysRemaining <= 0;
+  const isExpiring = deal.endDate && daysRemaining !== null && daysRemaining <= 7 && daysRemaining > 0;
+  const isExpired = deal.endDate && daysRemaining !== null && daysRemaining <= 0;
 
   return (
     <Card className={`relative overflow-hidden flex flex-col group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl ${compact ? 'p-5' : 'p-6'} ${isExpired ? 'opacity-70' : ''} h-full cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700`}>
