@@ -81,7 +81,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
         {deal.discount && (
           <Badge 
             variant="default" 
-            className="text-sm font-medium px-3 py-1 bg-black/90 hover:bg-black text-white dark:bg-black dark:hover:bg-black dark:text-white"
+            className="text-sm font-medium px-3 py-1 bg-neutral-800 hover:bg-neutral-700 text-white dark:bg-neutral-200 dark:hover:bg-neutral-300 dark:text-neutral-800"
           >
             {deal.discount}
           </Badge>
