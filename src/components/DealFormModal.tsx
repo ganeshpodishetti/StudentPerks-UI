@@ -139,7 +139,6 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
       const categoriesData = await categoryService.getCategories();
       setCategories(categoriesData);
     } catch (error) {
-      console.error('Error loading categories:', error);
     }
   };
 
@@ -148,7 +147,6 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
       const storesData = await storeService.getStores();
       setStores(storesData);
     } catch (error) {
-      console.error('Error loading stores:', error);
     }
   };
 
@@ -157,7 +155,6 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
       const universitiesData = await universityService.getUniversities();
       setUniversities(universitiesData);
     } catch (error) {
-      console.error('Error loading universities:', error);
     }
   };
 
@@ -196,8 +193,6 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
     setIsLoading(true);
     
     try {
-      console.log('Form submitted with data:', formData);
-      
       // Create clean deal data
       const dealData: CreateDealRequest = {
         title: formData.title,
@@ -214,7 +209,6 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
       // Add optional fields only if they have values
       if (formData.image) {
         dealData.image = formData.image;
-        console.log('Adding image file:', formData.image.name, formData.image.type, formData.image.size);
       }
 
       if (formData.promo?.trim()) {
@@ -251,14 +245,11 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
         }
       }
       
-      console.log('Sending deal data:', dealData);
-      console.log('University specific flag:', dealData.isUniversitySpecific);
-      console.log('University name:', dealData.universityName);
-      
       await onSave(dealData);
       onClose();
     } catch (error) {
-      console.error('Error saving deal:', error);
+      // Error handling without exposing sensitive details
+      throw error;
     } finally {
       setIsLoading(false);
     }

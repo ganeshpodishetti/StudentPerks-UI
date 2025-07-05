@@ -48,7 +48,6 @@ export function Combobox({
 
   // Handle selection
   const handleSelect = (selectedValue: string) => {
-    console.log('Selecting value:', selectedValue)
     onValueChange(selectedValue)
     setOpen(false)
     setSearchValue("")
@@ -59,7 +58,6 @@ export function Combobox({
     if (searchValue.trim() && !options.some(option => 
       option.label.toLowerCase() === searchValue.toLowerCase()
     )) {
-      console.log('Creating custom value:', searchValue.trim())
       onValueChange(searchValue.trim())
       setOpen(false)
       setSearchValue("")

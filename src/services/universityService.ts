@@ -24,7 +24,6 @@ export const universityService = {
       // Ensure we always return an array
       return Array.isArray(response.data) ? response.data : [];
     } catch (error: any) {
-      console.error('Error fetching universities:', error);
       // Return empty array instead of throwing to prevent UI crashes
       return [];
     }
@@ -35,7 +34,6 @@ export const universityService = {
       const response = await publicApiClient.get(`/api/universities/${id}`);
       return response.data;
     } catch (error) {
-      console.error('Error fetching university:', error);
       throw error;
     }
   },
@@ -43,8 +41,6 @@ export const universityService = {
   // Admin endpoints - authentication required
   async createUniversity(universityData: CreateUniversityRequest): Promise<CreateUniversityResponse> {
     try {
-      console.log('Creating university with data:', universityData);
-      
       const formData = new FormData();
       formData.append('name', universityData.name);
       formData.append('code', universityData.code);
@@ -65,24 +61,20 @@ export const universityService = {
         formData.append('image', universityData.image);
       }
       
-      console.log('FormData prepared for university creation');
       
       const response = await apiClient.post('/api/universities', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('University created successfully:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error creating university:', error);
       throw error;
     }
   },
 
   async updateUniversity(id: string, universityData: UpdateUniversityRequest): Promise<University> {
     try {
-      console.log('Updating university:', id, 'with data:', universityData);
       
       const formData = new FormData();
       formData.append('name', universityData.name);
@@ -105,28 +97,22 @@ export const universityService = {
         formData.append('image', universityData.image);
       }
       
-      console.log('FormData prepared for university update');
       
       const response = await apiClient.put(`/api/universities/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('University updated successfully:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error updating university:', error);
       throw error;
     }
   },
 
   async deleteUniversity(id: string): Promise<void> {
     try {
-      console.log('Deleting university:', id);
       await apiClient.delete(`/api/universities/${id}`);
-      console.log('University deleted successfully');
     } catch (error) {
-      console.error('Error deleting university:', error);
       throw error;
     }
   }
