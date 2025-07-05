@@ -89,7 +89,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
       </div>
 
       {/* Header with Icon */}
-      <div className="flex items-center gap-4 mb-3">
+      <div className="flex items-start gap-4 mb-3">
         <DealDetail 
           deal={deal} 
           trigger={
@@ -115,7 +115,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
         />
         
         {/* Deal Info */}
-        <div className="flex-1 min-w-0 flex flex-col justify-center">
+        <div className="flex-1 min-w-0">
           <h3 className={`${compact ? 'text-sm' : 'text-base'} font-medium text-neutral-800 dark:text-neutral-200 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors duration-300`}>
             {deal.title}
           </h3>
