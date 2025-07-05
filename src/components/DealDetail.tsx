@@ -88,7 +88,7 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="sm:max-w-lg p-4">
         <DialogHeader className="pb-2">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
@@ -107,9 +107,9 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
           </div>
         </DialogHeader>
         
-        <div className="space-y-4">
+        <div className="space-y-3">
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 flex items-center justify-center overflow-hidden rounded-lg bg-neutral-50 dark:bg-neutral-900 flex-shrink-0">
+            <div className="w-16 h-16 flex items-center justify-center overflow-hidden rounded-lg bg-neutral-50 dark:bg-neutral-900 flex-shrink-0">
               {!imageError && imageUrl ? (
                 <img 
                   src={imageUrl} 
@@ -119,41 +119,41 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Image className="w-10 h-10 text-neutral-400 dark:text-neutral-500" />
+                  <Image className="w-8 h-8 text-neutral-400 dark:text-neutral-500" />
                 </div>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <DialogTitle className="text-lg font-semibold leading-tight text-neutral-700 dark:text-neutral-300 mb-2">{deal.title}</DialogTitle>
-              <div className="flex flex-wrap gap-3 text-sm text-neutral-500 dark:text-neutral-400 mb-2">
+              <DialogTitle className="text-base font-semibold leading-tight text-neutral-800 dark:text-neutral-200 mb-1.5">{deal.title}</DialogTitle>
+              <div className="flex flex-col gap-0.5 text-sm text-neutral-500 dark:text-neutral-400">
                 <div className="flex items-center">
-                  <Calendar className="h-3.5 w-3.5 mr-1" />
+                  <Calendar className="h-3.5 w-3.5 mr-1.5" />
                   <span>{formatDate(deal.startDate)} - {formatDate(deal.endDate)}</span>
                   {daysRemaining !== null && (
-                    <span className={`ml-2 text-xs ${daysRemaining > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400'}`}>
+                    <span className={`ml-2 text-xs font-medium ${daysRemaining > 0 ? 'text-amber-600 dark:text-amber-500' : 'text-red-600 dark:text-red-500'}`}>
                       {daysRemaining > 0 ? `(${daysRemaining} days left)` : '(Expired)'}
                     </span>
                   )}
                 </div>
                 <div className="flex items-center">
-                  <MapPin className="h-3.5 w-3.5 mr-1" />
+                  <MapPin className="h-3.5 w-3.5 mr-1.5" />
                   <span>{formatRedeemType(deal.redeemType)}</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <p className="text-neutral-700 dark:text-neutral-300 text-sm leading-relaxed">{deal.description}</p>
+          <p className="text-neutral-600 dark:text-neutral-300 text-sm leading-relaxed pt-1">{deal.description}</p>
           
-          <div className="bg-neutral-50 dark:bg-neutral-900 p-4 rounded-lg border border-neutral-200 dark:border-neutral-800">
-            <div className="flex items-center justify-between mb-3">
+          <div className="bg-neutral-100/70 dark:bg-neutral-900/70 p-3 rounded-lg border border-neutral-200 dark:border-neutral-800">
+            <div className="flex items-center justify-between">
               <div>
-                <span className="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400 font-medium">PROMO CODE</span>
-                <div className="font-mono font-semibold text-lg text-neutral-900 dark:text-neutral-100 mt-1">{deal.promo || 'No code required'}</div>
+                <span className="text-xs uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-medium">Promo Code</span>
+                <div className="font-mono font-semibold text-base text-neutral-800 dark:text-neutral-200">{deal.promo || 'No code required'}</div>
               </div>
               {deal.promo && (
                 <Button 
-                  variant="outline" 
+                  variant="outline"
                   size="sm"
                   onClick={handleCopyPromo}
                   className="text-xs flex items-center gap-1"
@@ -163,18 +163,15 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
                 </Button>
               )}
             </div>
-            <div className="text-xs text-neutral-400 dark:text-neutral-500">
-              Valid until {formatDate(deal.endDate)}
-            </div>
           </div>
           
           {/* How to Redeem Instructions */}
           {'howToRedeem' in deal && (deal as any).howToRedeem && (
-            <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-              <div className="flex items-start gap-2">
+            <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
+              <div className="flex items-start gap-2.5">
                 <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-1">How to Redeem</h4>
+                  <h4 className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-0.5">How to Redeem</h4>
                   <p className="text-sm text-blue-700 dark:text-blue-300">{(deal as any).howToRedeem}</p>
                 </div>
               </div>
@@ -183,11 +180,11 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
 
           {/* University Specific Info */}
           {'isUniversitySpecific' in deal && (deal as any).isUniversitySpecific && (
-            <div className="bg-purple-50 dark:bg-purple-950/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
-              <div className="flex items-start gap-2">
+            <div className="bg-purple-50 dark:bg-purple-950/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
+              <div className="flex items-start gap-2.5">
                 <School className="h-4 w-4 text-purple-600 dark:text-purple-400 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="text-sm font-medium text-purple-900 dark:text-purple-100 mb-1">University Exclusive</h4>
+                  <h4 className="text-sm font-medium text-purple-900 dark:text-purple-200 mb-0.5">University Exclusive</h4>
                   <p className="text-sm text-purple-700 dark:text-purple-300">
                     This deal is exclusive to {'universityName' in deal && (deal as any).universityName ? (deal as any).universityName : 'specific universities'}.
                   </p>
@@ -197,7 +194,7 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
           )}
         </div>
         
-        <DialogFooter className="pt-4">
+        <DialogFooter className="pt-3">
           <Button 
             className="w-full bg-black hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 group"
             asChild
