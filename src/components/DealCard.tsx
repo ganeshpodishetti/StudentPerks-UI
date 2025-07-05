@@ -38,7 +38,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
   const isExpired = daysRemaining !== null && daysRemaining <= 0;
 
   return (
-    <Card className={`relative overflow-hidden flex flex-col group hover:shadow-sm transition-all duration-300 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl ${compact ? 'p-5' : 'p-6'} ${isExpired ? 'opacity-70' : ''} h-full`}>
+    <Card className={`relative overflow-hidden flex flex-col group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl ${compact ? 'p-5' : 'p-6'} ${isExpired ? 'opacity-70' : ''} h-full cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700`}>
       {/* Status indicators - positioned as subtle overlays */}
       <div className="absolute top-4 right-4 flex gap-2">
         <a
@@ -81,19 +81,19 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
           deal={deal} 
           trigger={
             <div className="cursor-pointer shrink-0">
-              <div className={`${compact ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-105 rounded-md`}>
+              <div className={`${compact ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 rounded-md`}>
                 {!imageError && imageUrl ? (
                   <img 
                     src={imageUrl} 
                     alt={deal.title} 
-                    className="w-full h-full object-contain" 
+                    className="w-full h-full object-contain transition-all duration-300 group-hover:brightness-110" 
                     onError={handleImageError}
                   />
                 ) : (
                   <img 
                     src="/no-image.svg" 
                     alt="No image available" 
-                    className="w-full h-full object-contain opacity-60"
+                    className="w-full h-full object-contain opacity-60 transition-all duration-300 group-hover:opacity-80"
                   />
                 )}
               </div>
@@ -103,11 +103,11 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
         
         {/* Deal Info */}
         <div className="flex-1 min-w-0">
-          <h3 className={`${compact ? 'text-sm' : 'text-base'} font-medium text-neutral-800 dark:text-neutral-200 leading-tight group-hover:text-black dark:group-hover:text-white transition-colors`}>
+          <h3 className={`${compact ? 'text-sm' : 'text-base'} font-medium text-neutral-800 dark:text-neutral-200 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors duration-300`}>
             {deal.title}
           </h3>
           <div className="mt-1">
-            <Badge variant="outline" className="text-xs px-2 py-0.5 text-neutral-500 border-neutral-200 dark:border-neutral-700 bg-transparent">
+            <Badge variant="outline" className="text-xs px-2 py-0.5 text-neutral-500 border-neutral-200 dark:border-neutral-700 bg-transparent group-hover:border-neutral-300 group-hover:text-neutral-600 dark:group-hover:border-neutral-600 dark:group-hover:text-neutral-400 transition-colors duration-300">
               Verify Student Status
             </Badge>
           </div>
