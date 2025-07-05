@@ -95,12 +95,12 @@ const StoresPage: React.FC = () => {
               <p className="text-neutral-500 dark:text-neutral-400">No stores found</p>
             </div>
           ) : (
-            <div className="flex flex-wrap gap-4 justify-center mb-8">
+            <div className="flex flex-wrap gap-3 justify-center mb-8">
               {stores.map((store) => (
                 <button
                   key={store.id}
                   onClick={() => handleStoreSelect(store.name)}
-                  className="py-3 px-6 rounded-full bg-neutral-800 dark:bg-neutral-800/90 hover:bg-neutral-700 dark:hover:bg-neutral-700 hover:scale-105 hover:shadow-lg transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary/40 text-white font-medium text-base shadow-sm border border-neutral-700/40 group"
+                  className="py-2 px-4 rounded-full bg-neutral-800 dark:bg-neutral-800/90 hover:bg-neutral-700 dark:hover:bg-neutral-700 hover:scale-105 hover:shadow-lg transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary/40 text-white font-medium text-sm shadow-sm border border-neutral-700/40 group"
                 >
                   <span className="group-hover:text-white transition-colors duration-200">{store.name}</span>
                 </button>
