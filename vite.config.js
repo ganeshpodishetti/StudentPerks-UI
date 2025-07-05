@@ -15,6 +15,32 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), tailwindcss()],
+    
+    // Security and build optimizations
+    build: {
+      // Remove console statements in production
+      minify: mode === 'production' ? 'terser' : false,
+      terserOptions: mode === 'production' ? {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      } : undefined,
+      
+      // Security - hide source maps in production
+      sourcemap: mode !== 'production',
+      
+      // Optimize chunk splitting
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+            ui: ['@radix-ui/react-dialog', '@radix-ui/react-popover', 'lucide-react'],
+          },
+        },
+      },
+    },
+    
     server: {
       proxy: {
         "/api": {
@@ -24,10 +50,17 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
+    
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
       },
+    },
+    
+    // Prevent exposing sensitive environment variables
+    define: {
+      // Only expose VITE_ prefixed variables
+      __DEV__: mode === 'development',
     },
   };
 });

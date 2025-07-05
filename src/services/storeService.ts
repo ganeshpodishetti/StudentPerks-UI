@@ -31,7 +31,6 @@ export const storeService = {
       // Ensure we always return an array
       return Array.isArray(response.data) ? response.data : [];
     } catch (error: any) {
-      console.error('Error fetching stores:', error);
       // Return empty array instead of throwing to prevent UI crashes
       return [];
     }
