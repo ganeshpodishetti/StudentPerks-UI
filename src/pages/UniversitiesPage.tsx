@@ -86,15 +86,14 @@ const UniversitiesPage: React.FC = () => {
           </p>
         </div>
       ) : (
-        <div className="flex flex-wrap gap-4 justify-center mb-8">
+        <div className="flex flex-wrap gap-3 justify-center mb-8">
           {universities.map((university) => (
             <button
               key={university.id}
               onClick={() => handleUniversitySelect(university.id)}
-              className="flex items-center gap-3 px-4 py-1 rounded-full bg-neutral-900/90 dark:bg-neutral-800/90 hover:bg-neutral-900 dark:hover:bg-neutral-900 transition-colors focus:outline-none focus:ring-1 focus:ring-primary/40 text-white font-semibold text-lg mb-2 shadow-sm border border-neutral-800/40 min-w-[180px] max-w-full"
-              style={{ minHeight: 42 }}
+              className="flex items-center gap-2 px-3 py-2 rounded-full bg-neutral-900/90 dark:bg-neutral-800/90 hover:bg-neutral-900 dark:hover:bg-neutral-900 hover:scale-105 hover:shadow-lg transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary/40 text-white font-medium text-sm shadow-sm border border-neutral-800/40 group"
             >
-              <div className="w-9 h-9 rounded-full bg-neutral-800 flex items-center justify-center overflow-hidden">
+              <div className="w-6 h-6 rounded-full bg-neutral-800 flex items-center justify-center overflow-hidden group-hover:ring-2 group-hover:ring-white/20 transition-all duration-200">
                 {university.imageUrl ? (
                   <img
                     src={university.imageUrl}
@@ -102,12 +101,12 @@ const UniversitiesPage: React.FC = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-white font-bold text-base opacity-60">
+                  <span className="text-white font-bold text-xs opacity-60 group-hover:opacity-90 transition-opacity duration-200">
                     {university.name.substring(0, 2).toUpperCase()}
                   </span>
                 )}
               </div>
-              <span className="truncate max-w-[160px] text-left">{university.name}</span>
+              <span className="group-hover:text-white transition-colors duration-200">{university.name}</span>
             </button>
           ))}
         </div>
