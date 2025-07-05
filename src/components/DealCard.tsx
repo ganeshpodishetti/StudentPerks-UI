@@ -76,7 +76,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
       </div>
 
       {/* Header with Icon */}
-      <div className="flex items-start gap-4 mb-4">
+      <div className="flex items-start gap-4 mb-3">
         <DealDetail 
           deal={deal} 
           trigger={
@@ -112,7 +112,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
             </Badge>
           </div>
           {deal.promo && !deal.promo.toLowerCase().includes('verify student') && (
-            <div className="flex items-center gap-2 mt-2">
+            <div className="flex items-center gap-2 mt-1">
               <Badge variant="outline" className="text-xs font-mono px-1.5 py-0 text-neutral-500 border-neutral-200 dark:border-neutral-700">
                 {deal.promo}
               </Badge>
@@ -123,14 +123,14 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
       
       {/* Content */}
       <div className="flex-grow">
-        <p className={`text-sm text-neutral-500 dark:text-neutral-400 ${compact ? 'line-clamp-2' : 'line-clamp-2'} leading-relaxed mb-6`}>
+        <p className={`text-sm text-neutral-500 dark:text-neutral-400 ${compact ? 'line-clamp-2' : 'line-clamp-2'} leading-relaxed mb-4`}>
           {deal.description?.replace(/verify student status/gi, '').replace(/verify student/gi, '').trim()}
         </p>
       </div>
 
       {/* Deal Details - Minimalized */}
       {!compact && (
-        <div className="flex flex-wrap items-center gap-x-6 mb-1 text-xs">
+        <div className="flex flex-wrap items-center gap-x-6 mb-2 text-xs">
           {(deal.startDate || deal.endDate) && (
             <div className="flex items-center text-neutral-400 dark:text-neutral-500">
               <Calendar className="h-3.5 w-3.5 mr-1.5" />
@@ -155,7 +155,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
       )}
       
       {/* Footer with Tags */}
-      <div className="flex items-center flex-wrap gap-4 mt-auto pt-3 border-t border-neutral-100 dark:border-neutral-800">
+      <div className="flex items-center flex-wrap gap-4 mt-auto pt-2 border-t border-neutral-100 dark:border-neutral-800">
         <div className="text-xs text-neutral-500 dark:text-neutral-400">
           {deal.categoryName}
         </div>
