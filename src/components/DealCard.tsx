@@ -81,7 +81,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
           deal={deal} 
           trigger={
             <div className="cursor-pointer shrink-0">
-              <div className={`${compact ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-105 rounded-md bg-neutral-50 dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700`}>
+              <div className={`${compact ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-105 rounded-md`}>
                 {!imageError && imageUrl ? (
                   <img 
                     src={imageUrl} 
