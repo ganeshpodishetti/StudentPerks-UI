@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Calendar, Clock, Copy, ExternalLink, Image, Info, MapPin, School, Tag } from 'lucide-react';
+import { Calendar, Copy, ExternalLink, Image, Info, MapPin, School, Tag } from 'lucide-react';
 import React, { useState } from 'react';
 import { Deal } from '../types/Deal';
 
@@ -108,8 +108,8 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
         </DialogHeader>
         
         <div className="space-y-4">
-          <div className="flex items-start gap-4">
-            <div className="w-20 h-20 flex items-center justify-center overflow-hidden rounded-lg bg-neutral-50 dark:bg-neutral-900">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 flex items-center justify-center overflow-hidden rounded-lg bg-neutral-50 dark:bg-neutral-900 flex-shrink-0">
               {!imageError && imageUrl ? (
                 <img 
                   src={imageUrl} 
@@ -123,27 +123,23 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
                 </div>
               )}
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <DialogTitle className="text-lg font-semibold leading-tight text-neutral-700 dark:text-neutral-300 mb-2">{deal.title}</DialogTitle>
               <div className="flex flex-wrap gap-3 text-sm text-neutral-500 dark:text-neutral-400 mb-2">
                 <div className="flex items-center">
                   <Calendar className="h-3.5 w-3.5 mr-1" />
                   <span>{formatDate(deal.startDate)} - {formatDate(deal.endDate)}</span>
+                  {daysRemaining !== null && (
+                    <span className={`ml-2 text-xs ${daysRemaining > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400'}`}>
+                      {daysRemaining > 0 ? `(${daysRemaining} days left)` : '(Expired)'}
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center">
                   <MapPin className="h-3.5 w-3.5 mr-1" />
                   <span>{formatRedeemType(deal.redeemType)}</span>
                 </div>
               </div>
-              {daysRemaining !== null && (
-                <div className="flex items-center text-amber-600 dark:text-amber-400 text-sm">
-                  <Clock className="h-3.5 w-3.5 mr-1" />
-                  {daysRemaining > 0 
-                    ? `${daysRemaining} days remaining` 
-                    : 'Offer expired'
-                  }
-                </div>
-              )}
             </div>
           </div>
           
