@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { useDealsData } from '@/hooks/deals/useDealsData';
 import { sortOptions, useDealsFilter } from '@/hooks/deals/useDealsFilter';
-import { useDealsPagination } from '@/hooks/deals/useDealsPagination';
+import { useDealsLoadMore } from '@/hooks/deals/useDealsLoadMore';
+import React from "react";
 import DealSkeleton from '../DealSkeleton';
 import HeroSearchSection from '../HeroSearchSection';
 import { DealsFilters } from './DealsFilters';
 import { DealsGrid } from './DealsGrid';
-import { DealsPagination } from './DealsPagination';
+import { DealsLoadMore } from './DealsLoadMore';
 
 interface DealsContainerProps {
   initialCategory?: string;
@@ -37,11 +38,11 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   });
 
   const {
-    currentPage,
-    totalPages,
     displayedDeals,
-    handlePageChange,
-  } = useDealsPagination({
+    hasMore,
+    isLoadingMore,
+    loadMore,
+  } = useDealsLoadMore({
     deals: filteredDeals,
     pageSize: 12,
   });
@@ -125,11 +126,13 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
           emptyMessage={generateEmptyMessage()}
         />
         
-        {/* Pagination */}
-        <DealsPagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
+        {/* Load More */}
+        <DealsLoadMore
+          hasMore={hasMore}
+          isLoadingMore={isLoadingMore}
+          onLoadMore={loadMore}
+          totalDeals={filteredDeals.length}
+          displayedCount={displayedDeals.length}
         />
       </div>
   );
