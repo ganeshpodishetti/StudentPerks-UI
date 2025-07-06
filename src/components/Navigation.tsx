@@ -68,7 +68,7 @@ const Navigation: React.FC<NavigationProps> = () => {
               className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-white hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors"
               onClick={closeMobileMenu}
             >
-              StudentPerks
+              <span className="bg-gradient-to-r from-neutral-300 to-neutral-500 bg-clip-text text-transparent"> StudentPerks</span>
             </Link>
           </div>
 
