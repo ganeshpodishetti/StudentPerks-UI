@@ -111,14 +111,19 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
                 )}
               </div>
             </div>
-          } 
+          }
         />
         
         {/* Deal Info */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <h3 className={`${compact ? 'text-sm' : 'text-base'} font-medium text-neutral-800 dark:text-neutral-200 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 group-active:text-neutral-700 dark:group-active:text-neutral-300 transition-colors duration-300`}>
-            {deal.title}
-          </h3>
+          <DealDetail 
+            deal={deal} 
+            trigger={
+              <h3 className={`${compact ? 'text-sm' : 'text-base'} font-medium text-neutral-800 dark:text-neutral-200 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 group-active:text-neutral-700 dark:group-active:text-neutral-300 transition-colors duration-300 cursor-pointer `}>
+                {deal.title}
+              </h3>
+            }
+          />
           <div className="mt-1">
             <Badge variant="outline" className="text-xs px-2 py-0.5 text-neutral-500 border-neutral-200 dark:border-neutral-700 bg-transparent group-hover:border-neutral-300 group-hover:text-neutral-600 dark:group-hover:border-neutral-600 dark:group-hover:text-neutral-400 group-active:border-neutral-400 group-active:text-neutral-700 dark:group-active:border-neutral-500 dark:group-active:text-neutral-300 transition-colors duration-300">
               {deal.promo ? deal.promo : 'No code required'}
