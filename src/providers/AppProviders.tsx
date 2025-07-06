@@ -1,7 +1,7 @@
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ErrorProvider } from '@/contexts/ErrorContext';
-import { UnreadDealsProvider } from '@/contexts/UnreadDealsContext';
+import { UnreadDealsProvider } from '@/contexts/UnreadDealsContext.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';

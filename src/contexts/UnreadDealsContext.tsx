@@ -1,16 +1,6 @@
 import { submittedDealService } from '@/services/submittedDealService';
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-
-// Context types
-interface UnreadDealsContextType {
-  unreadCount: number;
-  isLoading: boolean;
-  refreshCount: () => Promise<void>;
-  updateCount: (count: number) => void;
-}
-
-// Create context
-const UnreadDealsContext = createContext<UnreadDealsContextType | undefined>(undefined);
+import React, { ReactNode, useEffect, useState } from 'react';
+import { UnreadDealsContext, UnreadDealsContextType } from './UnreadDealsContext.ts';
 
 // Provider component
 interface UnreadDealsProviderProps {
@@ -63,15 +53,4 @@ export const UnreadDealsProvider: React.FC<UnreadDealsProviderProps> = ({ childr
       {children}
     </UnreadDealsContext.Provider>
   );
-};
-
-// Custom hook to use the context
-export const useUnreadDealsCount = () => {
-  const context = useContext(UnreadDealsContext);
-  
-  if (context === undefined) {
-    throw new Error('useUnreadDealsCount must be used within an UnreadDealsProvider');
-  }
-  
-  return context;
 };
