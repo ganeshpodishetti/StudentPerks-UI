@@ -90,11 +90,16 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
 
   return (
     <div className="bg-[#FAFAFA] dark:bg-neutral-950">
-        {/* Header - only show if showHeroSection is true */}
+        {/* Hero Section - only show if showHeroSection is true */}
         {showHeroSection && (
-          <div className="mb-8 text-center">
-            <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Student Deals</h1>
-            <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">Exclusive offers for students</p>
+          <div className="mb-6 text-center max-w-4xl mx-auto px-4">
+            <h1 className="md:text-3xl font-extrabold text-neutral-900 dark:text-neutral-300 mb-6 leading-tight">
+              Unlock Exclusive Student 
+              <span className="bg-gradient-to-r from-neutral-400 to-neutral-500 bg-clip-text text-transparent"> Discounts & Deals</span>
+            </h1>
+            <p className="md:text-lg text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed max-w-3xl mx-auto font-medium">
+            Discover thousands of verified student perks, discounts, and special offers from top brands.
+            </p>
           </div>
         )}
         
