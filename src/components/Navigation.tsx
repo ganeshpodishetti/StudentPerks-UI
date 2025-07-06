@@ -65,10 +65,15 @@ const Navigation: React.FC<NavigationProps> = () => {
           <div className="flex items-center">
             <Link 
               to="/" 
-              className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-white hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors"
+              className="flex items-center text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-white hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors"
               onClick={closeMobileMenu}
             >
-              <span className="bg-gradient-to-r from-neutral-300 to-neutral-500 bg-clip-text text-transparent"> StudentPerks</span>
+              <img 
+                src="/favicon.png" 
+                alt="StudentPerks Logo" 
+                className="h-6 w-6 mr-2 sm:h-8 sm:w-8"
+              />
+              <span className="bg-gradient-to-r from-neutral-300 to-neutral-500 bg-clip-text text-transparent">StudentPerks</span>
             </Link>
           </div>
 
