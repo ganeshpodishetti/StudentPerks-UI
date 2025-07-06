@@ -3,6 +3,7 @@ import { useErrorHandler } from '@/contexts/ErrorContext';
 import { submittedDealService } from '@/services/submittedDealService';
 import { SubmittedDeal } from '@/types/SubmittedDeal';
 import { useEffect, useState } from 'react';
+import { updateUnreadCount } from './useUnreadDealsCount';
 
 export const useAdminSubmittedDeals = () => {
   const [deals, setDeals] = useState<SubmittedDeal[]>([]);
@@ -19,6 +20,10 @@ export const useAdminSubmittedDeals = () => {
       setIsLoading(true);
       const data = await submittedDealService.getSubmittedDeals();
       setDeals(data);
+      
+      // Update global unread count
+      const unreadCount = data.filter(deal => !deal.markedAsRead).length;
+      updateUnreadCount(unreadCount);
     } catch (error) {
       console.error('Error loading submitted deals:', error);
       showError('Failed to load submitted deals');
@@ -32,9 +37,17 @@ export const useAdminSubmittedDeals = () => {
       await submittedDealService.markAsRead(id, isRead);
       
       // Update the local state
-      setDeals(prev => prev.map(deal => 
-        deal.id === id ? { ...deal, markedAsRead: isRead } : deal
-      ));
+      setDeals(prev => {
+        const updatedDeals = prev.map(deal => 
+          deal.id === id ? { ...deal, markedAsRead: isRead } : deal
+        );
+        
+        // Update global unread count
+        const unreadCount = updatedDeals.filter(deal => !deal.markedAsRead).length;
+        updateUnreadCount(unreadCount);
+        
+        return updatedDeals;
+      });
     } catch (error) {
       console.error('Error marking deal as read:', error);
       showError('Failed to update deal status');
@@ -49,8 +62,16 @@ export const useAdminSubmittedDeals = () => {
     try {
       await submittedDealService.deleteSubmittedDeal(id);
       
-      // Remove from local state
-      setDeals(prev => prev.filter(deal => deal.id !== id));
+      // Remove from local state and update unread count
+      setDeals(prev => {
+        const updatedDeals = prev.filter(deal => deal.id !== id);
+        
+        // Update global unread count
+        const unreadCount = updatedDeals.filter(deal => !deal.markedAsRead).length;
+        updateUnreadCount(unreadCount);
+        
+        return updatedDeals;
+      });
     } catch (error) {
       console.error('Error deleting submitted deal:', error);
       showError('Failed to delete submitted deal');
