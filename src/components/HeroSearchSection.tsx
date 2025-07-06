@@ -40,7 +40,7 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
       {/* Search Section */}
       <div className="mb-6">
         <div className="relative max-w-md mx-auto">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <div className="absolute inset-y-0 left-18 pl-3 flex items-center pointer-events-none">
             <Search className="h-4 w-4 text-neutral-400" />
           </div>
           <Input
@@ -48,16 +48,13 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
             placeholder="Search for deals, stores, or categories..."
             value={searchTerm}
             onChange={(e) => onSearch(e.target.value)}
-            className="pl-10 h-12 text-base border-neutral-300 dark:border-neutral-600 focus:border-neutral-500 dark:focus:border-neutral-400"
+            className="pl-10 h-12 text-base text-center placeholder:text-center border-neutral-300 dark:border-neutral-600 focus:border-neutral-500 dark:focus:border-neutral-400"
           />
         </div>
       </div>
 
       {/* Categories Section */}
       <div className="text-center">
-        {/* <h3 className="text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-4">
-          Browse by Category
-        </h3> */}
         
         {loading ? (
           <div className="flex flex-wrap gap-2 justify-center">
