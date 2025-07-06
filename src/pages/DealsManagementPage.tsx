@@ -1,68 +1,96 @@
 import { Button } from "@/components/ui/button";
+import { categoryService } from "@/services/categoryService";
+import { dealService } from "@/services/dealService";
+import { storeService } from "@/services/storeService";
+import { universityService } from "@/services/universityService";
 import { Filter, Grid, List, Plus } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DealFilterBar, { DealFilters } from '../components/DealFilterBar';
 import DealFormModal from '../components/DealFormModal';
 import DealGrid from '../components/DealGrid';
 import DealStats from '../components/DealStats';
 import { Deal } from '../types/Deal';
 
-// Mock data - replace with actual API calls
-const mockDeals: Deal[] = [
-  {
-    id: '1',
-    title: 'Student Spotify Premium - 50% Off',
-    description: 'Get 6 months of Spotify Premium at half price with student verification.',
-    discount: '50% OFF',
-    imageUrl: '/spotify-logo.png',
-    promo: 'STUDENT50',
-    isActive: true,
-    url: 'https://spotify.com/student',
-    redeemType: 'Online',
-    startDate: '2024-01-01',
-    endDate: '2024-12-31',
-    categoryName: 'Music & Entertainment',
-    storeName: 'Spotify'
-  },
-  {
-    id: '2',
-    title: 'Adobe Creative Cloud Student Discount',
-    description: 'Save 60% on Adobe Creative Cloud with valid student ID.',
-    discount: '60% OFF',
-    imageUrl: '/adobe-logo.png',
-    promo: 'ADOBESTUDENT',
-    isActive: true,
-    url: 'https://adobe.com/students',
-    redeemType: 'Online',
-    startDate: '2024-01-01',
-    endDate: '2024-12-31',
-    categoryName: 'Software & Tools',
-    storeName: 'Adobe'
-  }
-];
-
-const mockCategories = [
-  { name: 'Software & Tools', count: 15 },
-  { name: 'Music & Entertainment', count: 8 },
-  { name: 'Food & Dining', count: 12 },
-  { name: 'Clothing & Fashion', count: 6 }
-];
-
-const mockStores = [
-  { name: 'Spotify', count: 3 },
-  { name: 'Adobe', count: 5 },
-  { name: 'Nike', count: 4 },
-  { name: 'McDonald\'s', count: 7 }
-];
-
-const mockUniversities = [
-  { name: 'Harvard University', count: 2 },
-  { name: 'Stanford University', count: 3 },
-  { name: 'MIT', count: 1 }
-];
-
 const DealsManagementPage: React.FC = () => {
-  const [deals] = useState<Deal[]>(mockDeals);
+  const [deals, setDeals] = useState<Deal[]>([]);
+  const [categories, setCategories] = useState<{ name: string; count: number }[]>([]);
+  const [stores, setStores] = useState<{ name: string; count: number }[]>([]);
+  const [universities, setUniversities] = useState<{ name: string; count: number }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch data on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // TODO: Replace with actual API calls when backend is ready
+        try {
+          const dealsResponse = await dealService.getDeals();
+          setDeals(dealsResponse || []);
+        } catch {
+          setDeals([]);
+        }
+        
+        try {
+          const categoriesResponse = await categoryService.getCategories();
+          // Transform categories to include count
+          const categoriesWithCount = (categoriesResponse || [])
+            .filter(cat => cat.name) // Filter out items without names
+            .map(cat => ({
+              name: cat.name!,
+              count: 0 // TODO: Get actual count from API or calculate from deals
+            }));
+          setCategories(categoriesWithCount);
+        } catch {
+          setCategories([]);
+        }
+        
+        try {
+          const storesResponse = await storeService.getStores();
+          // Transform stores to include count
+          const storesWithCount = (storesResponse || [])
+            .filter(store => store.name) // Filter out items without names
+            .map(store => ({
+              name: store.name!,
+              count: 0 // TODO: Get actual count from API or calculate from deals
+            }));
+          setStores(storesWithCount);
+        } catch {
+          setStores([]);
+        }
+        
+        try {
+          const universitiesResponse = await universityService.getUniversities();
+          // Transform universities to include count
+          const universitiesWithCount = (universitiesResponse || [])
+            .filter(uni => uni.name) // Filter out items without names
+            .map(uni => ({
+              name: uni.name!,
+              count: 0 // TODO: Get actual count from API or calculate from deals
+            }));
+          setUniversities(universitiesWithCount);
+        } catch {
+          setUniversities([]);
+        }
+        
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
+        // Set empty arrays as fallback
+        setDeals([]);
+        setCategories([]);
+        setStores([]);
+        setUniversities([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const [filters, setFilters] = useState<DealFilters>({
     search: '',
     category: '',
@@ -197,7 +225,25 @@ const DealsManagementPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
       <div className="container mx-auto px-4 py-8 space-y-8">
-        {/* Header */}
+        {/* Loading State */}
+        {loading && (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-neutral-600 dark:text-neutral-400">Loading deals...</div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <div className="text-red-800 dark:text-red-200 font-medium">Error loading deals</div>
+            <div className="text-red-600 dark:text-red-400 text-sm mt-1">{error}</div>
+          </div>
+        )}
+
+        {/* Main Content - Only show when not loading */}
+        {!loading && (
+          <>
+            {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
@@ -251,9 +297,9 @@ const DealsManagementPage: React.FC = () => {
         <DealFilterBar
           filters={filters}
           onFiltersChange={setFilters}
-          categories={mockCategories}
-          stores={mockStores}
-          universities={mockUniversities}
+          categories={categories}
+          stores={stores}
+          universities={universities}
           showAdvanced={showAdvancedFilters}
           dealCount={filteredDeals.length}
         />
@@ -333,6 +379,8 @@ const DealsManagementPage: React.FC = () => {
           onClose={() => setShowCreateModal(false)}
           onSave={handleCreateDeal}
         />
+          </>
+        )}
       </div>
     </div>
   );
