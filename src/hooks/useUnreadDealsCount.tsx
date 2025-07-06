@@ -1,5 +1,5 @@
 // Re-export from context for backward compatibility
-export { useUnreadDealsCount, UnreadDealsProvider } from '@/contexts/UnreadDealsContext';
+export { UnreadDealsProvider, useUnreadDealsCount } from '@/contexts/UnreadDealsContext';
 
 // Legacy support - can be removed once all components are updated
 export const updateUnreadCount = (_newCount: number) => {
