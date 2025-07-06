@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Calendar, Clock, ExternalLink, MapPin, School } from 'lucide-react';
+import { Clock, ExternalLink } from 'lucide-react';
 import React, { memo, useState } from 'react';
 import { Deal } from '../types/Deal';
 import DealDetail from './DealDetail';
@@ -51,14 +51,14 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
   const isExpiring = daysRemaining !== null && daysRemaining <= 7 && daysRemaining > 0;
 
   return (
-    <Card className={`relative overflow-hidden flex flex-col group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl ${compact ? 'p-5' : 'p-6'} ${isExpired ? 'opacity-70' : ''} h-full cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700`}>
+    <Card className={`relative overflow-hidden flex flex-col group hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] active:shadow-md transition-all duration-300 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl ${compact ? 'p-5' : 'p-6'} ${isExpired ? 'opacity-70' : ''} h-full cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700 touch-manipulation`}>
       {/* Status indicators - positioned as subtle overlays */}
-      <div className="absolute top-4 right-4 flex gap-2">
+      <div className="absolute top-7 right-7 flex gap-2">
         <a
           href={deal.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-transparent text-neutral-400 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
+          className="bg-transparent text-neutral-400 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-200 active:text-neutral-700 dark:active:text-neutral-100 transition-colors touch-manipulation"
         >
           <ExternalLink className="h-5 w-5" />
         </a>
@@ -89,48 +89,46 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
       </div>
 
       {/* Header with Icon */}
-      <div className="flex items-start gap-4 mb-3">
+      <div className="flex items-center gap-4 mb-3">
         <DealDetail 
           deal={deal} 
           trigger={
-            <div className="cursor-pointer shrink-0">
-              <div className={`${compact ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 rounded-md`}>
+            <div className="cursor-pointer shrink-0 active:scale-95 transition-transform duration-200 touch-manipulation">
+              <div className={`${compact ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-105 rounded-md`}>
                 {!imageError && imageUrl ? (
                   <img 
                     src={imageUrl} 
                     alt={deal.title} 
-                    className="w-full h-full object-contain transition-all duration-300 group-hover:brightness-110" 
+                    className="w-full h-full object-contain transition-all duration-300 group-hover:brightness-110 group-active:brightness-105" 
                     onError={handleImageError}
                   />
                 ) : (
                   <img 
                     src="/no-image.svg" 
                     alt="No image available" 
-                    className="w-full h-full object-contain opacity-60 transition-all duration-300 group-hover:opacity-80"
+                    className="w-full h-full object-contain opacity-60 transition-all duration-300 group-hover:opacity-80 group-active:opacity-75"
                   />
                 )}
               </div>
             </div>
-          } 
+          }
         />
         
         {/* Deal Info */}
-        <div className="flex-1 min-w-0">
-          <h3 className={`${compact ? 'text-sm' : 'text-base'} font-medium text-neutral-800 dark:text-neutral-200 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors duration-300`}>
-            {deal.title}
-          </h3>
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <DealDetail 
+            deal={deal} 
+            trigger={
+              <h3 className={`${compact ? 'text-sm' : 'text-base'} font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 group-active:text-neutral-700 dark:group-active:text-neutral-300 transition-colors duration-300 cursor-pointer `}>
+                {deal.title}
+              </h3>
+            }
+          />
           <div className="mt-1">
-            <Badge variant="outline" className="text-xs px-2 py-0.5 text-neutral-500 border-neutral-200 dark:border-neutral-700 bg-transparent group-hover:border-neutral-300 group-hover:text-neutral-600 dark:group-hover:border-neutral-600 dark:group-hover:text-neutral-400 transition-colors duration-300">
-              Verify Student Status
+            <Badge variant="outline" className="text-xs px-2 py-0.5 text-neutral-500 border-neutral-200 dark:border-neutral-700 bg-transparent group-hover:border-neutral-300 group-hover:text-neutral-600 dark:group-hover:border-neutral-600 dark:group-hover:text-neutral-400 group-active:border-neutral-400 group-active:text-neutral-700 dark:group-active:border-neutral-500 dark:group-active:text-neutral-300 transition-colors duration-300">
+              {deal.promo ? deal.promo : 'No code required'}
             </Badge>
           </div>
-          {deal.promo && !deal.promo.toLowerCase().includes('verify student') && (
-            <div className="flex items-center gap-2 mt-1">
-              <Badge variant="outline" className="text-xs font-mono px-1.5 py-0 text-neutral-500 border-neutral-200 dark:border-neutral-700">
-                {deal.promo}
-              </Badge>
-            </div>
-          )}
         </div>
       </div>
       
@@ -141,7 +139,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
         </p>
       </div>
 
-      {/* Deal Details - Minimalized */}
+      {/* Deal Details - Minimalized
       {!compact && (
         <div className="flex flex-wrap items-center gap-x-6 mb-2 text-xs">
           {(deal.startDate || deal.endDate) && (
@@ -165,7 +163,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
             </div>
           )}
         </div>
-      )}
+      )} */}
       
       {/* Footer with Tags */}
       <div className="flex items-center flex-wrap gap-4 mt-auto pt-2 border-t border-neutral-100 dark:border-neutral-800">
