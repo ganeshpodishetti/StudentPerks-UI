@@ -1,4 +1,4 @@
-import { useUniversityOptions } from '@/components/pages/AdminUniversitiesPage';
+import { useUniversityOptions } from '../AdminUniversitiesPage';
 
 interface UniversityDropdownProps {
   value?: string;
