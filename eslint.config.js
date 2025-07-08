@@ -1,7 +1,21 @@
-/** @type {import('eslint').Linter.Config} */
-module.exports = {
-  extends: ["next/core-web-vitals"],
-  rules: {
-    // Add any custom rules here
+const { FlatCompat } = require('@eslint/eslintrc');
+const js = require('@eslint/js');
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+});
+
+module.exports = [
+  ...compat.extends('next/core-web-vitals'),
+  {
+    rules: {
+      "react/display-name": "warn",
+      "react/no-unescaped-entities": "warn",
+      "@next/next/no-img-element": "warn",
+      "jsx-a11y/alt-text": "warn",
+      "jsx-a11y/role-has-required-aria-props": "warn",
+      "react-hooks/exhaustive-deps": "warn"
+    },
   },
-};
+];

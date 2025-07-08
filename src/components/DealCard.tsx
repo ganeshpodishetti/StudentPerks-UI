@@ -179,4 +179,6 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
   );
 });
 
+DealCard.displayName = 'DealCard';
+
 export default DealCard;

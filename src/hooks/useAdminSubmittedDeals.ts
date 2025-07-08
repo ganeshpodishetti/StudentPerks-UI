@@ -2,7 +2,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useErrorHandler } from '@/contexts/ErrorContext';
 import { submittedDealService } from '@/services/submittedDealService';
 import { SubmittedDeal } from '@/types/SubmittedDeal';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { updateUnreadCount } from './useUnreadDealsCount';
 
 export const useAdminSubmittedDeals = () => {
@@ -11,11 +11,7 @@ export const useAdminSubmittedDeals = () => {
   const { user, logout } = useAuth();
   const { showError } = useErrorHandler();
 
-  useEffect(() => {
-    loadDeals();
-  }, []);
-
-  const loadDeals = async () => {
+  const loadDeals = useCallback(async () => {
     try {
       setIsLoading(true);
       const data = await submittedDealService.getSubmittedDeals();
@@ -30,7 +26,11 @@ export const useAdminSubmittedDeals = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showError]);
+
+  useEffect(() => {
+    loadDeals();
+  }, [loadDeals]);
 
   const handleMarkAsRead = async (id: string, isRead: boolean) => {
     try {
