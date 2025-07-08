@@ -1,5 +1,6 @@
 import { AppProviders } from '@/providers/AppProviders'
 import { Outfit } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const outfit = Outfit({ 
@@ -76,6 +77,7 @@ export default function RootLayout({
         </div>
       </footer>
       </body>
+       <Script src="https://scripts.simpleanalyticscdn.com/latest.js"  />
     </html>
   )
 }
