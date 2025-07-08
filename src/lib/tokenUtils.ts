@@ -14,8 +14,8 @@ export const decodeJWT = (token: string): any => {
         .join('')
     );
     return JSON.parse(jsonPayload);
-  } catch (error) {
-    console.error('Error decoding JWT:', error);
+  } catch (_error) {
+    // Silent fail for production, optionally log to remote error service
     return null;
   }
 };
@@ -27,13 +27,10 @@ export const isTokenExpired = (token: string): boolean => {
     if (!decoded || !decoded.exp) {
       return true;
     }
-    
     const currentTime = Math.floor(Date.now() / 1000);
     const bufferTime = 30; // 30 second buffer
-    
     return decoded.exp <= (currentTime + bufferTime);
-  } catch (error) {
-    console.error('Error checking token expiration:', error);
+  } catch (_error) {
     return true;
   }
 };
@@ -45,10 +42,8 @@ export const getTokenExpiration = (token: string): Date | null => {
     if (!decoded || !decoded.exp) {
       return null;
     }
-    
     return new Date(decoded.exp * 1000);
-  } catch (error) {
-    console.error('Error getting token expiration:', error);
+  } catch (_error) {
     return null;
   }
 };
@@ -60,11 +55,9 @@ export const getTimeUntilExpiration = (token: string): number => {
     if (!expiration) {
       return 0;
     }
-    
     const now = new Date();
     return Math.max(0, expiration.getTime() - now.getTime());
-  } catch (error) {
-    console.error('Error calculating time until expiration:', error);
+  } catch (_error) {
     return 0;
   }
 };

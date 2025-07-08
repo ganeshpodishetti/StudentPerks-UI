@@ -75,39 +75,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const setupTokenRefresh = () => {
       const timeUntilExpiration = authService.getTimeUntilTokenExpires();
-      
       if (timeUntilExpiration <= 0) {
         // Token already expired, try to refresh immediately
-        console.log('AuthContext: Token appears expired, but keeping user logged in for now');
-        // authService.refreshToken().catch(() => {
-        //   console.log('AuthContext: Token refresh failed');
-        //   setUser(null);
-        //   localStorage.removeItem('user');
-        //   authService.clearAccessToken();
-        // });
         return;
       }
-
       // Disabled proactive token refresh for now due to backend issues
-      // const refreshTime = Math.max(timeUntilExpiration - 30000, 10000); // At least 10 seconds
-      
-      // console.log(`AuthContext: Token will be refreshed in ${Math.round(refreshTime / 1000)} seconds`);
-
-      // const refreshTimeout = setTimeout(async () => {
-      //   try {
-      //     await authService.refreshToken();
-      //     console.log('AuthContext: Token refreshed proactively');
-      //     // Setup next refresh
-      //     setupTokenRefresh();
-      //   } catch (error) {
-      //     console.log('AuthContext: Proactive token refresh failed');
-      //     setUser(null);
-      //     localStorage.removeItem('user');
-      //     authService.clearAccessToken();
-      //   }
-      // }, refreshTime);
-
-      // return refreshTimeout;
     };
 
     setupTokenRefresh();
@@ -175,14 +147,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
   };
 
-  // Debug auth state (reduced logging)
-  useEffect(() => {
-    console.log('AuthContext: Auth state updated', {
-      isAuthenticated: !!user && !!authService.getAccessToken(),
-      hasUser: !!user,
-      hasToken: !!authService.getAccessToken()
-    });
-  }, [user]);
+  // Debug auth state (remove logging for production)
+  // useEffect(() => {
+  //   // Uncomment for debugging only
+  //   // console.log('AuthContext: Auth state updated', {
+  //   //   isAuthenticated: !!user && !!authService.getAccessToken(),
+  //   //   hasUser: !!user,
+  //   //   hasToken: !!authService.getAccessToken()
+  //   // });
+  // }, [user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

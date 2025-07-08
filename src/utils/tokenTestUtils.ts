@@ -73,6 +73,7 @@ export const tokenTestUtils = {
 };
 
 // Make it available globally in development
+// Only expose in development
 if (process.env.NODE_ENV === 'development') {
   (window as any).tokenTestUtils = tokenTestUtils;
 }

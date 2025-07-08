@@ -5,10 +5,7 @@ import { authService } from './authService';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!process.env.NEXT_PUBLIC_API_URL && process.env.NODE_ENV === 'production') {
-  console.warn(
-    'apiClient: NEXT_PUBLIC_API_URL is not defined in production. ' +
-    'Using fallback URL which may not work correctly.'
-  );
+  // Warning: NEXT_PUBLIC_API_URL is not defined in production. Using fallback URL which may not work correctly.
 }
 
 let isRefreshing = false;

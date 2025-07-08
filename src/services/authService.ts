@@ -1,6 +1,6 @@
 // authService.ts
-import { apiClient } from './apiClient'; // Use shared apiClient
 import { getTimeUntilExpiration, isTokenExpired } from '@/lib/tokenUtils';
+import { apiClient } from './apiClient'; // Use shared apiClient
 import { clearGlobalTokenManager, getGlobalTokenManager } from './tokenManager';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -66,16 +66,16 @@ export const authService = {
         () => this.getAccessToken()
       );
       tokenManager.scheduleProactiveRefresh();
-    } catch (error) {
-      console.error('Error scheduling proactive refresh:', error); // Log errors for debugging
+    } catch (_error) {
+      // Silent fail for production, optionally log to remote error service
     }
   },
 
   clearProactiveRefresh() {
     try {
       clearGlobalTokenManager();
-    } catch (error) {
-      console.error('Error clearing proactive refresh:', error);
+    } catch (_error) {
+      // Silent fail for production, optionally log to remote error service
     }
   },
 
@@ -185,8 +185,8 @@ export const authService = {
   async logout() {
     try {
       await apiClient.post('/api/auth/logout');
-    } catch (error) {
-      console.error('Error during logout:', error);
+    } catch (_error) {
+      // Silent fail for production, optionally log to remote error service
     } finally {
       this.clearAccessToken();
       localStorage.removeItem('user');
