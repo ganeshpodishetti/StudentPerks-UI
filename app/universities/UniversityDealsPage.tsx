@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useDealsByUniversityQuery } from '@/hooks/queries/useDealsQuery';
 import { useUniversityQuery } from '@/hooks/queries/useUniversitiesQuery';
 import { ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -95,10 +96,13 @@ const UniversityDealsPage: React.FC = () => {
         <div className="flex items-center space-x-6 mb-4">
           <div className="flex-shrink-0">
             {university.imageUrl ? (
-              <img
+              <Image
                 src={university.imageUrl}
                 alt={university.name}
+                width={80}
+                height={80}
                 className="w-20 h-20 rounded-lg object-cover"
+                unoptimized={university.imageUrl.startsWith('/')}
               />
             ) : (
               <div className="w-20 h-20 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">

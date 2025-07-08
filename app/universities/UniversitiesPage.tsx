@@ -3,6 +3,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 import { University, fetchUniversities } from '@/services/universityService';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -97,10 +98,13 @@ const UniversitiesPage: React.FC = () => {
             >
               <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden transition-all duration-200">
                 {university.imageUrl ? (
-                  <img
+                  <Image
                     src={university.imageUrl}
                     alt={university.name}
+                    width={32}
+                    height={32}
                     className="w-full h-full object-cover"
+                    unoptimized={university.imageUrl.startsWith('/')}
                   />
                 ) : (
                   <span className="text-white font-bold text-xs opacity-60 group-hover:opacity-90 group-active:opacity-100 transition-opacity duration-200">
