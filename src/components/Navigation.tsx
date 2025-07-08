@@ -1,5 +1,6 @@
 'use client'
 import { GraduationCap, Menu, Plus, Store, Tag, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -70,10 +71,13 @@ const Navigation: React.FC<NavigationProps> = () => {
               className="flex items-center text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-white hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors"
               onClick={closeMobileMenu}
             >
-              <img 
-                src="/favicon.png" 
-                alt="StudentPerks Logo" 
+              <Image
+                src="/favicon.png"
+                alt="StudentPerks Logo"
+                width={32}
+                height={32}
                 className="h-6 w-6 mr-2 sm:h-8 sm:w-8"
+                priority
               />
               <span className="bg-gradient-to-r from-neutral-400 to-neutral-500 bg-clip-text text-transparent">StudentPerks</span>
             </Link>
