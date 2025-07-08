@@ -7,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -17,14 +17,7 @@ const LoginPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-  const { login, isAuthenticated, isLoading } = useAuth();
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      router.push('/');
-    }
-  }, [isAuthenticated, isLoading, router]);
+  const { login, isAuthenticated, isLoading, user } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,13 +43,11 @@ const LoginPage: React.FC = () => {
     
     try {
       await login(formData.email, formData.password);
-      
       toast({
         title: "Success",
         description: "Logged in successfully!",
       });
-      
-      router.push('/');
+      router.push('/admin');
     } catch (error: any) {
       toast({
         title: "Error",
@@ -74,10 +65,6 @@ const LoginPage: React.FC = () => {
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
       </div>
     );
-  }
-
-  if (isAuthenticated) {
-    return null; // Will redirect via useEffect
   }
 
   return (
@@ -153,4 +140,3 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
-// ...original code will be placed here...
