@@ -7,8 +7,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   navigation,
 }) => {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-6 space-y-6">
+    <div className="min-h-screen">
+      <div className="container mx-auto px-4 py-4 space-y-6">
         {/* Header */}
         {(title || actions) && (
           <div className="flex items-center justify-between">

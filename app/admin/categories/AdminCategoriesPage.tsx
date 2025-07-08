@@ -51,19 +51,11 @@ export default function AdminCategoriesPage() {
 
       <div className="space-y-6">
         <Card>
-          <CardHeader>
-            <CardTitle>Categories</CardTitle>
-            <CardDescription>
-              Manage deal categories and classifications
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
             <AdminCategoriesList 
               categories={categories}
               onEditCategory={handleEditCategory}
               onDeleteCategory={handleDeleteCategory}
             />
-          </CardContent>
         </Card>
       </div>
 
