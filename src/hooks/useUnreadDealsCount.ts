@@ -18,5 +18,5 @@ export { UnreadDealsProvider } from '@/contexts/UnreadDealsContext';
 
 // Legacy support - can be removed once all components are updated
 export const updateUnreadCount = (_newCount: number) => {
-  console.warn('updateUnreadCount is deprecated. Use the context updateCount method instead.');
+  // Deprecated: Use the context updateCount method instead.
 };

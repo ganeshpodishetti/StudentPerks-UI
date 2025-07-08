@@ -45,8 +45,8 @@ export default function AdminNavigation() {
   ];
 
   return (
-    <Card className="mb-6">
-      <CardContent className="p-0">
+    <Card>
+      <CardContent>
         <nav className="flex space-x-0 overflow-x-auto">
           {navItems.map((item) => {
             const Icon = item.icon;

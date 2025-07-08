@@ -1,5 +1,6 @@
 import DealList from '@/components/DealList'
 import Navigation from '@/components/Navigation'
+import Script from 'next/script'
 
 export default function HomePage() {
   return (
@@ -27,7 +28,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      
+      <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
     </div>
   )
 }

@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from "@/components/ui/use-toast";
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -17,14 +17,7 @@ const LoginPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-  const { login, isAuthenticated, isLoading } = useAuth();
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      router.push('/');
-    }
-  }, [isAuthenticated, isLoading, router]);
+  const { login, isAuthenticated, isLoading, user } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,7 +29,6 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
     if (!formData.email || !formData.password) {
       toast({
         title: "Error",
@@ -45,18 +37,14 @@ const LoginPage: React.FC = () => {
       });
       return;
     }
-
     setIsSubmitting(true);
-    
     try {
       await login(formData.email, formData.password);
-      
       toast({
         title: "Success",
         description: "Logged in successfully!",
       });
-      
-      router.push('/');
+      // router.push('/admin'); // Remove direct push, let useEffect handle it
     } catch (error: any) {
       toast({
         title: "Error",
@@ -68,16 +56,19 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  // Redirect to /admin if authenticated
+  React.useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      router.push('/admin');
+    }
+  }, [isAuthenticated, isLoading, router]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
       </div>
     );
-  }
-
-  if (isAuthenticated) {
-    return null; // Will redirect via useEffect
   }
 
   return (
@@ -153,4 +144,3 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
-// ...original code will be placed here...

@@ -14,6 +14,7 @@ export const ProtectedRoute = ({ children, redirectTo = '/login' }: ProtectedRou
   const router = useRouter();
 
 
+  // Only redirect after loading is complete
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.push(redirectTo);
@@ -21,7 +22,7 @@ export const ProtectedRoute = ({ children, redirectTo = '/login' }: ProtectedRou
   }, [isLoading, isAuthenticated, redirectTo, router]);
 
   if (isLoading) {
-    console.log('ProtectedRoute: Still loading auth state...');
+    // Show a loading spinner while auth state is being resolved
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
@@ -30,11 +31,8 @@ export const ProtectedRoute = ({ children, redirectTo = '/login' }: ProtectedRou
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-      </div>
-    );
+    // Don't render anything while redirecting
+    return null;
   }
   return <>{children}</>;
 };

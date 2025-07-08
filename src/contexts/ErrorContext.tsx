@@ -49,9 +49,8 @@ export const ErrorProvider: React.FC<ErrorProviderProps> = ({ children }) => {
   };
 
   const handleApiError = (error: any) => {
-    console.error('API Error:', error);
-    
-    // Handle different types of errors
+    // Centralized error handler for API errors
+    // Optionally log to a remote error service here in production
     if (error.response?.status === 401) {
       showError("Please log in again to continue", "Authentication Error");
       // Could trigger a redirect to login page here

@@ -61,23 +61,14 @@ export default function AdminUniversitiesPage() {
         createButtonText="Create University"
       />
 
-      <div className="space-y-6">
         <Card>
-          <CardHeader>
-            <CardTitle>Universities</CardTitle>
-            <CardDescription>
-              Manage universities and educational institutions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
             <AdminUniversitiesList 
               universities={universities}
               onEditUniversity={handleEditUniversity}
               onDeleteUniversity={handleDeleteUniversity}
             />
-          </CardContent>
         </Card>
-      </div>
+      
 
       <UniversityFormModal
         isOpen={isModalOpen}
