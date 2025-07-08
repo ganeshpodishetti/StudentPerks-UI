@@ -1,5 +1,5 @@
 import Navigation from '@/components/Navigation'
-import UniversitiesPage from '@/components/pages/UniversitiesPage'
+import UniversitiesPage from './UniversitiesPage'
 
 export const metadata = {
   title: 'Universities - StudentPerks',

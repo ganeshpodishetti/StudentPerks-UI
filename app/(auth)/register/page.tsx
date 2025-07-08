@@ -1,4 +1,4 @@
-import RegisterPage from '@/components/pages/RegisterPage'
+import RegisterPage from './RegisterPage'
 
 export const metadata = {
   title: 'Register - StudentPerks',

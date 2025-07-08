@@ -1,4 +1,4 @@
-import AdminCategoriesPage from '@/components/pages/AdminCategoriesPage'
+import AdminCategoriesPage from './AdminCategoriesPage'
 
 export const metadata = {
   title: 'Categories - StudentPerks Admin',

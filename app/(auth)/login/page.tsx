@@ -1,4 +1,4 @@
-import LoginPage from '@/components/pages/LoginPage'
+import LoginPage from './LoginPage'
 
 export const metadata = {
   title: 'Login - StudentPerks',

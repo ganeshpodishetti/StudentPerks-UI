@@ -1,4 +1,4 @@
-import AdminDashboard from '@/components/pages/AdminDashboard'
+import AdminDashboard from './AdminDashboard'
 
 export const metadata = {
   title: 'Admin Dashboard - StudentPerks',

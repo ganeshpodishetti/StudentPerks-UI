@@ -1,5 +1,5 @@
 import Navigation from '@/components/Navigation'
-import StoresPage from '@/components/pages/StoresPage'
+import StoresPage from './StoresPage'
 
 export const metadata = {
   title: 'Stores - StudentPerks',

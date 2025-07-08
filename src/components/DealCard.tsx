@@ -2,6 +2,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Clock, ExternalLink } from 'lucide-react';
+import Image from 'next/image';
 import React, { memo, useState } from 'react';
 import { Deal } from '../types/Deal';
 import DealDetail from './DealDetail';
@@ -97,17 +98,23 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
             <div className="cursor-pointer shrink-0 active:scale-95 transition-transform duration-200 touch-manipulation">
               <div className={`${compact ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-105 rounded-md`}>
                 {!imageError && imageUrl ? (
-                  <img 
-                    src={imageUrl} 
-                    alt={deal.title} 
-                    className="w-full h-full object-contain transition-all duration-300 group-hover:brightness-110 group-active:brightness-105" 
+                  <Image
+                    src={imageUrl}
+                    alt={deal.title}
+                    width={compact ? 48 : 64}
+                    height={compact ? 48 : 64}
+                    className="object-contain transition-all duration-300 group-hover:brightness-110 group-active:brightness-105 rounded-md"
                     onError={handleImageError}
+                    unoptimized={imageUrl.startsWith('/')} // Don't optimize local images
                   />
                 ) : (
-                  <img 
-                    src="/no-image.svg" 
-                    alt="No image available" 
-                    className="w-full h-full object-contain opacity-60 transition-all duration-300 group-hover:opacity-80 group-active:opacity-75"
+                  <Image
+                    src="/no-image.svg"
+                    alt="No image available"
+                    width={compact ? 48 : 64}
+                    height={compact ? 48 : 64}
+                    className="object-contain opacity-60 transition-all duration-300 group-hover:opacity-80 group-active:opacity-75 rounded-md"
+                    unoptimized
                   />
                 )}
               </div>

@@ -1,4 +1,4 @@
-import AdminUniversitiesPage from '@/components/pages/AdminUniversitiesPage'
+import AdminUniversitiesPage from './AdminUniversitiesPage'
 
 export const metadata = {
   title: 'Universities - StudentPerks Admin',

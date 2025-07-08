@@ -13,16 +13,9 @@ export const ProtectedRoute = ({ children, redirectTo = '/login' }: ProtectedRou
   const pathname = usePathname();
   const router = useRouter();
 
-  console.log('ProtectedRoute: Auth state check', { 
-    isAuthenticated, 
-    isLoading, 
-    hasUser: !!user,
-    currentPath: pathname 
-  });
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      console.log('ProtectedRoute: User not authenticated, redirecting to login');
       router.push(redirectTo);
     }
   }, [isLoading, isAuthenticated, redirectTo, router]);
@@ -43,8 +36,6 @@ export const ProtectedRoute = ({ children, redirectTo = '/login' }: ProtectedRou
       </div>
     );
   }
-
-  console.log('ProtectedRoute: User authenticated, rendering protected content');
   return <>{children}</>;
 };
 

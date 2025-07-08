@@ -1,5 +1,5 @@
 import Navigation from '@/components/Navigation'
-import CategoriesPage from '@/components/pages/CategoriesPage'
+import CategoriesPage from './CategoriesPage'
 
 export const metadata = {
   title: 'Categories - StudentPerks',
