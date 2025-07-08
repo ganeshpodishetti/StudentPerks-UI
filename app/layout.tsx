@@ -1,8 +1,12 @@
 import { AppProviders } from '@/providers/AppProviders'
-import { Inter } from 'next/font/google'
+import { Outfit } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const outfit = Outfit({ 
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+})
 
 export const metadata = {
   title: 'StudentPerks - Exclusive Student Deals & Discounts',
@@ -17,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+      <body className={outfit.className} suppressHydrationWarning>
         <AppProviders>
           {children}
         </AppProviders>
