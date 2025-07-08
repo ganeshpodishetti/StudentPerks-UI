@@ -42,19 +42,14 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
       <div className="mb-6">
         <div className="relative max-w-lg mx-auto">
           <div className="relative flex items-center justify-center">
-            {/* Show custom centered placeholder only when input is empty */}
-            {searchTerm === '' && (
-              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-none rounded-full  text-neutral-400 dark:text-neutral-500 pointer-events-none flex items-center select-none">
-                <Search className="h-5 w-5" />
-                <span className="text-base">Search for deals, stores, or categories...</span>
-              </span>
-            )}
             <Input
               type="text"
               value={searchTerm}
               onChange={(e) => onSearch(e.target.value)}
               autoComplete="off"
-              // placeholder="Search for deals, stores, or categories..."
+              placeholder="Search for deals, stores, or categories..."
+              className="h-10 text-sm border-none rounded-full shadow bg-white/90 dark:bg-neutral-900/90 backdrop-blur focus:ring-1 focus:ring-neutral-700 dark:focus:ring-neutral-400 focus:outline-none text-center placeholder:text-center placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-neutral-800 dark:text-neutral-100 transition-all duration-200 pl-10 pr-3 max-w-xs"
+              style={{ boxShadow: '0 2px 8px 0 rgba(0,0,0,0.06)' }}
             />
           </div>
         </div>
