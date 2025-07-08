@@ -1,4 +1,4 @@
-import { useUniversityOptions } from '../AdminUniversitiesPage';
+import { useUniversityOptions } from '@/hooks/useUniversityOptions';
 
 interface UniversityDropdownProps {
   value?: string;
@@ -36,7 +36,6 @@ export default function UniversityDropdown({
       </div>
     );
   }
-
   return (
     <div className="relative">
       <select
@@ -52,6 +51,7 @@ export default function UniversityDropdown({
           ${disabled ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : ''}
           ${!value ? 'text-gray-400' : 'text-white'}
         `}
+        style={{ width: '100%', height: 'auto' }}
       >
         <option value="" className="text-gray-400 bg-gray-800">{placeholder}</option>
         {universityOptions.map((option) => (
@@ -60,15 +60,15 @@ export default function UniversityDropdown({
           </option>
         ))}
       </select>
-      
+
       {/* Custom dropdown arrow */}
       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-        <svg 
+        <svg
           className={`w-5 h-5 transition-colors duration-200 ${
             error ? 'text-red-500' : 'text-gray-400'
-          }`} 
-          fill="none" 
-          stroke="currentColor" 
+          }`}
+          fill="none"
+          stroke="currentColor"
           viewBox="0 0 24 24"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
