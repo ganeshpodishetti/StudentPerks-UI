@@ -28,9 +28,11 @@ export const useAdminSubmittedDeals = () => {
     }
   }, [showError]);
 
+  // Only call loadDeals once on mount to avoid repeated API calls
   useEffect(() => {
     loadDeals();
-  }, [loadDeals]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleMarkAsRead = async (id: string, isRead: boolean) => {
     try {

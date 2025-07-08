@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from "@/components/ui/use-toast";
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -29,7 +29,6 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
     if (!formData.email || !formData.password) {
       toast({
         title: "Error",
@@ -38,16 +37,14 @@ const LoginPage: React.FC = () => {
       });
       return;
     }
-
     setIsSubmitting(true);
-    
     try {
       await login(formData.email, formData.password);
       toast({
         title: "Success",
         description: "Logged in successfully!",
       });
-      router.push('/admin');
+      // router.push('/admin'); // Remove direct push, let useEffect handle it
     } catch (error: any) {
       toast({
         title: "Error",
@@ -58,6 +55,13 @@ const LoginPage: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Redirect to /admin if authenticated
+  React.useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      router.push('/admin');
+    }
+  }, [isAuthenticated, isLoading, router]);
 
   if (isLoading) {
     return (
