@@ -14,7 +14,7 @@ export const useAdminDashboard = () => {
     try {
       console.log('Testing backend connectivity...');
       
-      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5254';
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5254';
       
       // Test 1: Basic API connection
       const response = await fetch(API_BASE_URL + '/api/deals', {

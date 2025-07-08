@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { useDealsData } from '@/hooks/deals/useDealsData';
 import { sortOptions, useDealsFilter } from '@/hooks/deals/useDealsFilter';
@@ -97,9 +98,9 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
               Unlock Exclusive Student 
               <span className="bg-gradient-to-r from-neutral-400 to-neutral-500 bg-clip-text text-transparent"> Discounts & Deals</span>
             </h1>
-            <p className="md:text-lg text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed max-w-3xl mx-auto font-medium">
+            {/* <p className="md:text-lg text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed max-w-3xl mx-auto font-medium">
             Discover thousands of verified student perks, discounts, and special offers from top brands.
-            </p>
+            </p> */}
           </div>
         )}
         

@@ -1,4 +1,3 @@
-/// <reference types="vite/client" />
 import { CreateDealRequest, Deal, UpdateDealRequest } from '../types/Deal';
 import apiClient, { publicApiClient } from './apiClient';
 

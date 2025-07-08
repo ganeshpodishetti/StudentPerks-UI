@@ -84,6 +84,7 @@ Thumbs.db
 
 # Next.js build output
 .next
+out/
 
 # Nuxt.js build / generate output
 .nuxt
@@ -96,3 +97,26 @@ dist
 # Temporary folders
 tmp/
 temp/
+
+# Netlify
+.netlify/
+
+# Local Netlify folder
+netlify/
+
+# Vercel
+.vercel
+
+# Jest
+coverage/
+
+# Testing
+__tests__/coverage/
+
+# Sentry Config File
+.sentryclirc
+
+# Package manager lockfiles (if you want to ignore them)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml

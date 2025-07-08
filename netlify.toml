@@ -1,9 +1,9 @@
 [build]
-  # Build command - install dependencies and build the project
+  # Build command - install dependencies and build the project for static export
   command = "npm install && npm run build"
   
-  # Directory to publish (where the built files are)
-  publish = "dist"
+  # Directory to publish (where the static export files are)
+  publish = "out"
   
   # Base directory (project root)
   base = "."
@@ -12,7 +12,7 @@
   # Use Node.js 18 or higher
   NODE_VERSION = "18"
 
-# Redirect all requests to index.html for single-page application
+# Handle client-side routing for Next.js static export
 [[redirects]]
   from = "/*"
   to = "/index.html"

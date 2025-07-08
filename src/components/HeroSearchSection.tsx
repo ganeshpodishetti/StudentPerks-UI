@@ -1,3 +1,4 @@
+'use client'
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import React, { useEffect, useState } from 'react';
@@ -39,17 +40,18 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
     <div className="mb-8">
       {/* Search Section */}
       <div className="mb-6">
-        <div className="relative max-w-md mx-auto">
-          <div className="absolute inset-y-0 left-18 pl-3 flex items-center pointer-events-none">
-            <Search className="h-4 w-4 text-neutral-400" />
+        <div className="relative max-w-lg mx-auto">
+          <div className="relative flex items-center justify-center">
+            <Input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => onSearch(e.target.value)}
+              autoComplete="off"
+              placeholder="Search for deals, stores, or categories..."
+              className="h-10 text-sm border-none rounded-full shadow bg-white/90 dark:bg-neutral-900/90 backdrop-blur focus:ring-1 focus:ring-neutral-700 dark:focus:ring-neutral-400 focus:outline-none text-center placeholder:text-center placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-neutral-800 dark:text-neutral-100 transition-all duration-200 pl-10 pr-3 max-w-xs"
+              style={{ boxShadow: '0 2px 8px 0 rgba(0,0,0,0.06)' }}
+            />
           </div>
-          <Input
-            type="text"
-            placeholder="Search for deals, stores, or categories..."
-            value={searchTerm}
-            onChange={(e) => onSearch(e.target.value)}
-            className="pl-10 h-12 text-base text-center placeholder:text-center border-neutral-300 dark:border-neutral-600 focus:border-neutral-500 dark:focus:border-neutral-400"
-          />
         </div>
       </div>
 
@@ -69,7 +71,7 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
           <div className="flex flex-wrap gap-2 justify-center max-w-4xl mx-auto">
             <button
               onClick={() => onCategorySelect('All')}
-              className="px-4 py-2 bg-neutral-800 text-white rounded-full text-sm font-medium hover:bg-neutral-900 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-neutral-700 focus:ring-offset-1 whitespace-nowrap"
+              className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-full text-sm font-medium hover:bg-neutral-900 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-neutral-700 focus:ring-offset-1 whitespace-nowrap"
             >
               All Categories
             </button>
@@ -77,7 +79,7 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
               <button
                 key={category.id}
                 onClick={() => onCategorySelect(category.name || '')}
-                className="px-4 py-2 bg-neutral-800 text-white rounded-full text-sm font-medium hover:bg-neutral-900 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-neutral-700 focus:ring-offset-1 whitespace-nowrap"
+                className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-full text-sm font-medium hover:bg-neutral-900 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-neutral-700 focus:ring-offset-1 whitespace-nowrap"
               >
                 {category.name}
               </button>
