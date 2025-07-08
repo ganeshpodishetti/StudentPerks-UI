@@ -96,7 +96,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
           deal={deal} 
           trigger={
             <div className="cursor-pointer shrink-0 active:scale-95 transition-transform duration-200 touch-manipulation">
-              <div className={`${compact ? 'w-12 h-12' : 'w-16 h-16'} flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-105 rounded-md`}>
+              <div className={`${compact ? 'w-12' : 'w-16'} h-auto flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-105 rounded-md`}>
                 {!imageError && imageUrl ? (
                   <Image
                     src={imageUrl}
@@ -104,6 +104,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
                     width={compact ? 48 : 64}
                     height={compact ? 48 : 64}
                     className="object-contain transition-all duration-300 group-hover:brightness-110 group-active:brightness-105 rounded-md"
+                    style={{ width: '100%', height: 'auto' }}
                     onError={handleImageError}
                     unoptimized={imageUrl.startsWith('/')} // Don't optimize local images
                   />
@@ -114,6 +115,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
                     width={compact ? 48 : 64}
                     height={compact ? 48 : 64}
                     className="object-contain opacity-60 transition-all duration-300 group-hover:opacity-80 group-active:opacity-75 rounded-md"
+                    style={{ width: '100%', height: 'auto' }}
                     unoptimized
                   />
                 )}

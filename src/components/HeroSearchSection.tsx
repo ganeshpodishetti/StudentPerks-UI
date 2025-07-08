@@ -71,7 +71,7 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
           <div className="flex flex-wrap gap-2 justify-center max-w-4xl mx-auto">
             <button
               onClick={() => onCategorySelect('All')}
-              className="px-4 py-2 bg-neutral-800 text-white rounded-full text-sm font-medium hover:bg-neutral-900 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-neutral-700 focus:ring-offset-1 whitespace-nowrap"
+              className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-full text-sm font-medium hover:bg-neutral-900 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-neutral-700 focus:ring-offset-1 whitespace-nowrap"
             >
               All Categories
             </button>
@@ -79,7 +79,7 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
               <button
                 key={category.id}
                 onClick={() => onCategorySelect(category.name || '')}
-                className="px-4 py-2 bg-neutral-800 text-white rounded-full text-sm font-medium hover:bg-neutral-900 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-neutral-700 focus:ring-offset-1 whitespace-nowrap"
+                className="px-4 py-2 bg-neutral-800 text-neutral-300 rounded-full text-sm font-medium hover:bg-neutral-900 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-neutral-700 focus:ring-offset-1 whitespace-nowrap"
               >
                 {category.name}
               </button>
