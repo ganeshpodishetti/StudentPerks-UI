@@ -21,7 +21,7 @@ export const DealsLoadMore: React.FC<DealsLoadMoreProps> = ({
     return (
       <div className="text-center py-8">
         <p className="text-sm text-neutral-500 dark:text-neutral-400">
-          You've seen all {totalDeals} deal{totalDeals !== 1 ? 's' : ''}
+          You&apos;ve seen all {totalDeals} deal{totalDeals !== 1 ? 's' : ''}
         </p>
       </div>
     );

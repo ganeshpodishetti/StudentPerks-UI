@@ -9,7 +9,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Calendar, Copy, ExternalLink, Image, Info, MapPin, School, Tag } from 'lucide-react';
+import { Calendar, Copy, ExternalLink, Info, Image as LucideImage, MapPin, School, Tag } from 'lucide-react';
+import NextImage from 'next/image';
 import React, { useState } from 'react';
 import { Deal } from '../types/Deal';
 
@@ -111,15 +112,19 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
           <div className="flex items-start gap-2.5">
             <div className="w-12 h-12 flex items-center justify-center overflow-hidden rounded-xl bg-neutral-50 dark:bg-neutral-900 flex-shrink-0">
               {!imageError && imageUrl ? (
-                <img 
-                  src={imageUrl} 
-                  alt={deal.title} 
-                  className="w-full h-full object-contain" 
+                <NextImage
+                  src={imageUrl}
+                  alt={deal.title}
+                  fill={false}
+                  width={48}
+                  height={48}
+                  className="w-full h-full object-contain"
                   onError={handleImageError}
+                  unoptimized
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <Image className="w-5 h-5 text-neutral-400 dark:text-neutral-500" />
+                  <LucideImage className="w-5 h-5 text-neutral-400 dark:text-neutral-500" />
                 </div>
               )}
             </div>

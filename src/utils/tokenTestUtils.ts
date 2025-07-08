@@ -73,6 +73,6 @@ export const tokenTestUtils = {
 };
 
 // Make it available globally in development
-if (import.meta.env.DEV) {
+if (process.env.NODE_ENV === 'development') {
   (window as any).tokenTestUtils = tokenTestUtils;
 }

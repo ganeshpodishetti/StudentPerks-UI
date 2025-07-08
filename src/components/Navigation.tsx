@@ -1,6 +1,9 @@
+'use client'
 import { GraduationCap, Menu, Plus, Store, Tag, X } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import SubmittedDealFormModal from './SubmittedDealFormModal';
 import ThemeToggle from './ThemeToggle';
 import { useToast } from './ui/use-toast';
@@ -24,13 +27,13 @@ const AuthButtonsMobile: React.FC = () => {
 const Navigation: React.FC<NavigationProps> = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSubmitDealModalOpen, setIsSubmitDealModalOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
   const { toast } = useToast();
   
   // Close mobile menu when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
-  }, [location.pathname]);
+  }, [pathname]);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -58,31 +61,34 @@ const Navigation: React.FC<NavigationProps> = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-neutral-950 py-4 sticky top-0 z-50 w-full border-b dark:border-neutral-800">
+    <header className="bg-white dark:bg-neutral-950 py-4 sticky top-0 z-50 w-full">
       <div className="w-full max-w-7xl mx-auto px-6 md:px-8">
         <div className="flex justify-between items-center h-12">
           {/* Logo */}
           <div className="flex items-center">
             <Link 
-              to="/" 
+              href="/" 
               className="flex items-center text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-white hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors"
               onClick={closeMobileMenu}
             >
-              <img 
-                src="/favicon.png" 
-                alt="StudentPerks Logo" 
+              <Image
+                src="/favicon.png"
+                alt="StudentPerks Logo"
+                width={32}
+                height={32}
                 className="h-6 w-6 mr-2 sm:h-8 sm:w-8"
+                priority
               />
-              <span className="bg-gradient-to-r from-neutral-300 to-neutral-500 bg-clip-text text-transparent">StudentPerks</span>
+              <span className="bg-gradient-to-r from-neutral-400 to-neutral-500 bg-clip-text text-transparent">StudentPerks</span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-6 lg:space-x-8">
             <Link 
-              to="/categories" 
+              href="/categories" 
               className={`flex items-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white font-medium text-sm transition-colors focus:outline-none ${
-                location.pathname === '/categories' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
+                pathname === '/categories' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
               }`}
             >
               <Tag className="mr-1.5 h-3.5 w-3.5" />
@@ -90,9 +96,9 @@ const Navigation: React.FC<NavigationProps> = () => {
             </Link>
             
             <Link 
-              to="/stores" 
+              href="/stores" 
               className={`flex items-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white font-medium text-sm transition-colors focus:outline-none ${
-                location.pathname === '/stores' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
+                pathname === '/stores' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
               }`}
             >
               <Store className="mr-1.5 h-3.5 w-3.5" />
@@ -100,9 +106,9 @@ const Navigation: React.FC<NavigationProps> = () => {
             </Link>
             
             <Link 
-              to="/universities" 
+              href="/universities" 
               className={`flex items-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white font-medium text-sm transition-colors focus:outline-none ${
-                location.pathname === '/universities' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
+                pathname === '/universities' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
               }`}
             >
               <GraduationCap className="mr-1.5 h-3.5 w-3.5" />
@@ -148,9 +154,9 @@ const Navigation: React.FC<NavigationProps> = () => {
           <div className="md:hidden mt-4 pb-4">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-neutral-50 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
               <Link 
-                to="/categories" 
+                href="/categories" 
                 className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                  location.pathname === '/categories' 
+                  pathname === '/categories' 
                     ? 'bg-neutral-200 dark:bg-neutral-800 text-black dark:text-white' 
                     : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white'
                 }`}
@@ -161,9 +167,9 @@ const Navigation: React.FC<NavigationProps> = () => {
               </Link>
               
               <Link 
-                to="/stores" 
+                href="/stores" 
                 className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                  location.pathname === '/stores' 
+                  pathname === '/stores' 
                     ? 'bg-neutral-200 dark:bg-neutral-800 text-black dark:text-white' 
                     : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white'
                 }`}
@@ -174,9 +180,9 @@ const Navigation: React.FC<NavigationProps> = () => {
               </Link>
               
               <Link 
-                to="/universities" 
+                href="/universities" 
                 className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                  location.pathname === '/universities' 
+                  pathname === '/universities' 
                     ? 'bg-neutral-200 dark:bg-neutral-800 text-black dark:text-white' 
                     : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white'
                 }`}

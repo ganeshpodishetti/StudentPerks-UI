@@ -1,3 +1,4 @@
+'use client'
 import { Deal } from '@/types/Deal';
 import React, { memo } from 'react';
 import DealCard from '../DealCard';
@@ -43,3 +44,5 @@ export const DealsGrid: React.FC<DealsGridProps> = memo(({
     </div>
   );
 });
+
+DealsGrid.displayName = 'DealsGrid';

@@ -2,7 +2,13 @@ import { getTimeUntilExpiration, isTokenExpired } from '@/lib/tokenUtils';
 import axios from 'axios';
 import { clearGlobalTokenManager, getGlobalTokenManager } from './tokenManager';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+if (!API_BASE_URL) {
+  throw new Error(
+    "authService: process.env.NEXT_PUBLIC_API_URL is not defined. " +
+    "Set it in your environment or `.env.local`."
+  );
+}
 
 export interface LoginRequest {
   email: string;

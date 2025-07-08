@@ -1,6 +1,7 @@
+'use client'
 import { useAuth } from '@/contexts/AuthContext';
-import { ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { usePathname, useRouter } from 'next/navigation';
+import { ReactNode, useEffect } from 'react';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -9,14 +10,15 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute = ({ children, redirectTo = '/login' }: ProtectedRouteProps) => {
   const { isAuthenticated, isLoading, user } = useAuth();
-  const location = useLocation();
+  const pathname = usePathname();
+  const router = useRouter();
 
-  console.log('ProtectedRoute: Auth state check', { 
-    isAuthenticated, 
-    isLoading, 
-    hasUser: !!user,
-    currentPath: location.pathname 
-  });
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push(redirectTo);
+    }
+  }, [isLoading, isAuthenticated, redirectTo, router]);
 
   if (isLoading) {
     console.log('ProtectedRoute: Still loading auth state...');
@@ -28,12 +30,12 @@ export const ProtectedRoute = ({ children, redirectTo = '/login' }: ProtectedRou
   }
 
   if (!isAuthenticated) {
-    console.log('ProtectedRoute: User not authenticated, redirecting to login');
-    // Redirect them to the login page, but save the attempted location
-    return <Navigate to={redirectTo} state={{ from: location }} replace />;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      </div>
+    );
   }
-
-  console.log('ProtectedRoute: User authenticated, rendering protected content');
   return <>{children}</>;
 };
 
@@ -44,6 +46,13 @@ interface PublicRouteProps {
 
 export const PublicRoute = ({ children, redirectTo = '/' }: PublicRouteProps) => {
   const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.push(redirectTo);
+    }
+  }, [isLoading, isAuthenticated, redirectTo, router]);
 
   if (isLoading) {
     return (
@@ -54,8 +63,11 @@ export const PublicRoute = ({ children, redirectTo = '/' }: PublicRouteProps) =>
   }
 
   if (isAuthenticated) {
-    // If user is already authenticated, redirect to home or specified route
-    return <Navigate to={redirectTo} replace />;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      </div>
+    );
   }
 
   return <>{children}</>;

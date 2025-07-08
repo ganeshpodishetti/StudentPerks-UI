@@ -12,14 +12,6 @@ interface AdminDealsListProps {
 export default function AdminDealsList({ deals, onEditDeal, onDeleteDeal }: AdminDealsListProps) {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>All Deals</CardTitle>
-        <CardDescription>
-          Manage your deals, edit details, or remove outdated offers.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="p-0 sm:p-3 md:p-6">
-        {/* Desktop Table View */}
         <AdminDealsTable 
           deals={deals}
           onEditDeal={onEditDeal}
@@ -38,7 +30,6 @@ export default function AdminDealsList({ deals, onEditDeal, onDeleteDeal }: Admi
             No deals found. Create your first deal to get started!
           </div>
         )}
-      </CardContent>
     </Card>
   );
 }
