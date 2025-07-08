@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Deal } from '@/types/Deal';
 import { Edit, Trash2 } from 'lucide-react';
+import Image from 'next/image';
 
 interface AdminDealsCardsProps {
   deals: Deal[];
@@ -19,16 +20,20 @@ export default function AdminDealsCards({ deals, onEditDeal, onDeleteDeal }: Adm
               <div className="flex items-start gap-3 flex-1">
                 <div className="flex-shrink-0">
                   {deal.imageUrl ? (
-                    <img 
-                      src={deal.imageUrl} 
-                      alt={deal.title} 
+                    <Image
+                      src={deal.imageUrl}
+                      alt={deal.title}
+                      width={40}
+                      height={40}
                       className="w-10 h-10 rounded-md object-cover"
                     />
                   ) : (
                     <div className="w-10 h-10 rounded-md bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
-                      <img 
-                        src="/no-image.svg" 
-                        alt="No image available" 
+                      <Image
+                        src="/no-image.svg"
+                        alt="No image available"
+                        width={40}
+                        height={40}
                         className="w-full h-full object-cover"
                       />
                     </div>
