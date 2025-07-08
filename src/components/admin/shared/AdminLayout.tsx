@@ -7,13 +7,13 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   navigation,
 }) => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-neutral-950">
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-8">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-6 space-y-6">
         {/* Header */}
         {(title || actions) && (
-          <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center justify-between">
             {title && (
-              <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+              <h1 className="text-3xl font-bold tracking-tight">
                 {title}
               </h1>
             )}
@@ -26,16 +26,12 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         )}
 
         {/* Navigation */}
-        {navigation && (
-          <div className="mb-6">
-            {navigation}
-          </div>
-        )}
+        {navigation}
 
         {/* Content */}
-        <div className="space-y-6">
+        <main className="space-y-6">
           {children}
-        </div>
+        </main>
       </div>
     </div>
   );

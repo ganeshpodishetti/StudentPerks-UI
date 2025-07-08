@@ -2,7 +2,7 @@ import { getTimeUntilExpiration, isTokenExpired } from '@/lib/tokenUtils';
 import axios from 'axios';
 import { clearGlobalTokenManager, getGlobalTokenManager } from './tokenManager';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface LoginRequest {
   email: string;

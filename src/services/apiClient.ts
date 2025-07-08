@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authService } from './authService';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5254';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5254';
 
 // Token refresh state management
 let isRefreshing = false;

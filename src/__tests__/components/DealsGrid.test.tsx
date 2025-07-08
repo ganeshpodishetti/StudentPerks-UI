@@ -1,10 +1,9 @@
 import { DealsGrid } from '@/components/DealList/DealsGrid';
 import { Deal } from '@/types/Deal';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
 
 // Mock the DealCard component
-vi.mock('@/components/DealCard', () => ({
+jest.mock('@/components/DealCard', () => ({
   default: ({ deal }: { deal: Deal }) => (
     <div data-testid={`deal-card-${deal.id}`}>
       {deal.title}

@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { useDealsData } from '@/hooks/deals/useDealsData';
 import { sortOptions, useDealsFilter } from '@/hooks/deals/useDealsFilter';

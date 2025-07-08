@@ -1,7 +1,7 @@
 // Component-specific prop interfaces
 
 import { ReactNode } from 'react';
-import { BaseEntity, BaseFormProps, BaseListProps, ComponentSize, ComponentVariant } from './BaseTypes';
+import { BaseFormProps, ComponentSize, ComponentVariant } from './BaseTypes';
 
 // Admin component props
 export interface AdminLayoutProps {
@@ -22,31 +22,6 @@ export interface AdminHeaderProps {
   onLogout?: () => void;
   createButtonText?: string;
   additionalActions?: ReactNode;
-}
-
-export interface AdminTableProps<T extends BaseEntity> extends BaseListProps<T> {
-  columns: Array<{
-    key: keyof T | string;
-    label: string;
-    sortable?: boolean;
-    render?: (item: T) => ReactNode;
-    width?: string;
-  }>;
-  actions?: Array<{
-    label: string;
-    icon?: ReactNode;
-    onClick: (item: T) => void;
-    variant?: ComponentVariant;
-    show?: (item: T) => boolean;
-  }>;
-  selectable?: boolean;
-  onSelectionChange?: (selectedIds: string[]) => void;
-}
-
-export interface AdminCardProps<T extends BaseEntity> extends BaseListProps<T> {
-  renderCard: (item: T) => ReactNode;
-  emptyMessage?: string;
-  gridCols?: number;
 }
 
 // Deal-specific props

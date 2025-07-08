@@ -1,3 +1,4 @@
+'use client'
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import React from 'react';

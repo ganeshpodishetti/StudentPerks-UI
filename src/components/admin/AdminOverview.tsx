@@ -1,8 +1,9 @@
+'use client'
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Deal } from '@/types/Deal';
 import { ArrowRight, Clock, TrendingUp } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 interface AdminOverviewProps {
   deals: Deal[];
@@ -36,28 +37,28 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
             <Button asChild variant="outline" size="sm">
-              <Link to="/admin/deals" className="flex items-center gap-2">
+              <Link href="/admin/deals" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 <span className="hidden sm:inline">Manage Deals</span>
                 <span className="sm:hidden">Deals</span>
               </Link>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <Link to="/admin/stores" className="flex items-center gap-2">
+              <Link href="/admin/stores" className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4" />
                 <span className="hidden sm:inline">Manage Stores</span>
                 <span className="sm:hidden">Stores</span>
               </Link>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <Link to="/admin/categories" className="flex items-center gap-2">
+              <Link href="/admin/categories" className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4" />
                 <span className="hidden sm:inline">Categories</span>
                 <span className="sm:hidden">Categories</span>
               </Link>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <Link to="/admin/universities" className="flex items-center gap-2">
+              <Link href="/admin/universities" className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4" />
                 <span className="hidden sm:inline">Universities</span>
                 <span className="sm:hidden">Universities</span>
@@ -93,7 +94,7 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
                   </div>
                 ))}
                 <Button asChild variant="outline" size="sm" className="w-full mt-3">
-                  <Link to="/admin/deals">View All Deals</Link>
+                  <Link href="/admin/deals">View All Deals</Link>
                 </Button>
               </div>
             ) : (
@@ -127,7 +128,7 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
                   </div>
                 ))}
                 <Button asChild variant="outline" size="sm" className="w-full mt-3">
-                  <Link to="/admin/deals">Manage Expiring Deals</Link>
+                  <Link href="/admin/deals">Manage Expiring Deals</Link>
                 </Button>
               </div>
             ) : (
