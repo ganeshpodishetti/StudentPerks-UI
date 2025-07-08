@@ -60,7 +60,7 @@ const Navigation: React.FC<NavigationProps> = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-neutral-950 py-4 sticky top-0 z-50 w-full border-b dark:border-neutral-800">
+    <header className="bg-white dark:bg-neutral-950 py-4 sticky top-0 z-50 w-full">
       <div className="w-full max-w-7xl mx-auto px-6 md:px-8">
         <div className="flex justify-between items-center h-12">
           {/* Logo */}
@@ -75,7 +75,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                 alt="StudentPerks Logo" 
                 className="h-6 w-6 mr-2 sm:h-8 sm:w-8"
               />
-              <span className="bg-gradient-to-r from-neutral-300 to-neutral-500 bg-clip-text text-transparent">StudentPerks</span>
+              <span className="bg-gradient-to-r from-neutral-400 to-neutral-500 bg-clip-text text-transparent">StudentPerks</span>
             </Link>
           </div>
 
