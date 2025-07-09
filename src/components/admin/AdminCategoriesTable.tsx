@@ -22,7 +22,7 @@ export default function AdminCategoriesTable({ categories, onEditCategory, onDel
         </thead>
         <tbody>
           {categories.map((category) => (
-            <tr key={category.id} className="border-b border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800">
+            <tr key={category.id} className="border-b border-border dark:border-border hover:bg-muted dark:hover:bg-muted">
               <td className="p-2 sm:p-3 md:p-4">
                 <div className="flex items-center">
                   {category.imageUrl ? (
@@ -32,7 +32,7 @@ export default function AdminCategoriesTable({ categories, onEditCategory, onDel
                       className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover"
                     />
                   ) : (
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-muted dark:bg-muted overflow-hidden">
                       <img 
                         src="/no-image.svg" 
                         alt="No image available" 

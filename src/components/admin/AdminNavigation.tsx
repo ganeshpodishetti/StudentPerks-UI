@@ -57,9 +57,9 @@ export default function AdminNavigation() {
                 key={item.path}
                 href={item.path}
                 className={cn(
-                  "flex items-center space-x-2 py-4 px-6 border-b-2 transition-all duration-200 whitespace-nowrap relative hover:bg-muted/50",
+                  "flex items-center space-x-2 py-4 px-6 border-b-2 transition-all duration-200 whitespace-nowrap relative hover:bg-card dark:hover:bg-card",
                   isActive
-                    ? "border-primary text-primary bg-muted/30"
+                    ? "border-primary text-primary bg-card dark:bg-card"
                     : "border-transparent text-muted-foreground hover:text-foreground"
                 )}
               >

@@ -51,7 +51,7 @@ export default function AdminSubmittedDealsTable({ deals, onMarkAsRead, onDelete
         </thead>
         <tbody>
           {deals.map((deal) => (
-            <tr key={deal.id} className="border-b border-neutral-100 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900/50">
+            <tr key={deal.id} className="border-b border-border dark:border-border hover:bg-muted dark:hover:bg-muted">
               <td className="p-2 sm:p-3 md:p-4">
                 <div className="font-medium text-neutral-900 dark:text-neutral-100 text-sm">
                   {deal.name}
@@ -88,7 +88,7 @@ export default function AdminSubmittedDealsTable({ deals, onMarkAsRead, onDelete
                   deal.markedAsRead 
                     ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' 
                     : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
-                }`}>
+                } bg-muted dark:bg-muted`}>
                   {deal.markedAsRead ? 'Read' : 'Unread'}
                 </span>
               </td>
