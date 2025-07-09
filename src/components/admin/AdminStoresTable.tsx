@@ -22,7 +22,7 @@ export default function AdminStoresTable({ stores, onEditStore, onDeleteStore }:
         </thead>
         <tbody>
           {stores.map((store) => (
-            <tr key={store.id} className="border-b border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800">
+            <tr key={store.id} className="border-b border-border dark:border-border hover:bg-muted dark:hover:bg-muted">
               <td className="p-2 sm:p-3 md:p-4">
                 <div className="font-medium text-neutral-900 dark:text-neutral-100 text-xs sm:text-sm">{store.name}</div>
               </td>

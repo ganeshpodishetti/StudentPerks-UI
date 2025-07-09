@@ -11,7 +11,7 @@ interface AdminStoresListProps {
 
 export default function AdminStoresList({ stores, onEditStore, onDeleteStore }: AdminStoresListProps) {
   return (
-    <Card>
+    <Card className="w-full bg-card dark:bg-card shadow-sm border border-border dark:border-border">
       <CardHeader>
         <CardTitle>All Stores</CardTitle>
         <CardDescription>

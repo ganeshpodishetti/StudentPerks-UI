@@ -1,5 +1,6 @@
 import { AppProviders } from '@/providers/AppProviders'
 import { Outfit } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const outfit = Outfit({ 
@@ -34,11 +35,11 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
-      <body className={outfit.className} suppressHydrationWarning>
+      <body className={outfit.className + " bg-[#FAFAFA] dark:bg-neutral-950 min-h-screen"} suppressHydrationWarning>
         <AppProviders>
           {children}
         </AppProviders>
-        <footer className="bg-gray-100 text-neutral-600 dark:bg-neutral-950 dark:text-neutral-400 py-12 border-t dark:border-neutral-800">
+        <footer className="bg-[#FAFAFA] text-neutral-600 dark:bg-neutral-950 dark:text-neutral-400 py-12 border-t dark:border-neutral-800">
         <div className="container mx-auto px-6 md:px-8">
           <div className="flex flex-col items-center justify-center">
             <div className="text-center mb-6">
@@ -76,6 +77,7 @@ export default function RootLayout({
         </div>
       </footer>
       </body>
+       <Script src="https://scripts.simpleanalyticscdn.com/latest.js"  />
     </html>
   )
 }

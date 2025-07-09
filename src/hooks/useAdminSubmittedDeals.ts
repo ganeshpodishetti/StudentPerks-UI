@@ -16,40 +16,36 @@ export const useAdminSubmittedDeals = () => {
       setIsLoading(true);
       const data = await submittedDealService.getSubmittedDeals();
       setDeals(data);
-      
       // Update global unread count
       const unreadCount = data.filter(deal => !deal.markedAsRead).length;
       updateUnreadCount(unreadCount);
-    } catch (error) {
-      console.error('Error loading submitted deals:', error);
+    } catch (_error) {
       showError('Failed to load submitted deals');
     } finally {
       setIsLoading(false);
     }
   }, [showError]);
 
+  // Only call loadDeals once on mount to avoid repeated API calls
   useEffect(() => {
     loadDeals();
-  }, [loadDeals]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleMarkAsRead = async (id: string, isRead: boolean) => {
     try {
       await submittedDealService.markAsRead(id, isRead);
-      
       // Update the local state
       setDeals(prev => {
         const updatedDeals = prev.map(deal => 
           deal.id === id ? { ...deal, markedAsRead: isRead } : deal
         );
-        
         // Update global unread count
         const unreadCount = updatedDeals.filter(deal => !deal.markedAsRead).length;
         updateUnreadCount(unreadCount);
-        
         return updatedDeals;
       });
-    } catch (error) {
-      console.error('Error marking deal as read:', error);
+    } catch (_error) {
       showError('Failed to update deal status');
     }
   };
@@ -61,19 +57,15 @@ export const useAdminSubmittedDeals = () => {
 
     try {
       await submittedDealService.deleteSubmittedDeal(id);
-      
       // Remove from local state and update unread count
       setDeals(prev => {
         const updatedDeals = prev.filter(deal => deal.id !== id);
-        
         // Update global unread count
         const unreadCount = updatedDeals.filter(deal => !deal.markedAsRead).length;
         updateUnreadCount(unreadCount);
-        
         return updatedDeals;
       });
-    } catch (error) {
-      console.error('Error deleting submitted deal:', error);
+    } catch (_error) {
       showError('Failed to delete submitted deal');
     }
   };
@@ -86,9 +78,8 @@ export const useAdminSubmittedDeals = () => {
     try {
       await submittedDealService.getSubmittedDeals();
       alert('API connection successful!');
-    } catch (error) {
-      console.error('API connection test failed:', error);
-      alert('API connection failed. Check console for details.');
+    } catch (_error) {
+      alert('API connection failed.');
     }
   };
 

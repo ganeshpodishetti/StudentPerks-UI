@@ -82,7 +82,7 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
             {recentDeals.length > 0 ? (
               <div className="space-y-2">
                 {recentDeals.map((deal) => (
-                  <div key={deal.id} className="flex justify-between items-start p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                  <div key={deal.id} className="flex justify-between items-start p-2 bg-card dark:bg-card rounded">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
                         {deal.title}
@@ -116,7 +116,7 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
             {expiringDeals.length > 0 ? (
               <div className="space-y-2">
                 {expiringDeals.map((deal) => (
-                  <div key={deal.id} className="flex justify-between items-start p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded border border-yellow-200 dark:border-yellow-800">
+                  <div key={deal.id} className="flex justify-between items-start p-2 bg-muted dark:bg-muted rounded border border-border dark:border-border">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
                         {deal.title}

@@ -48,8 +48,14 @@ const CategoriesPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-neutral-900 dark:text-white mb-8">Categories</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {[...Array(9)].map((_, index) => (
-                <div key={index} className="bg-white dark:bg-neutral-900 rounded-lg p-6 border border-neutral-200 dark:border-neutral-800">
-                  <Skeleton className="h-6 w-24 mb-4" />
+                <div
+                  key={index}
+                  className="relative flex flex-col border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl p-6 h-full shadow-sm"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <Skeleton className="w-12 h-12 rounded-md bg-neutral-100 dark:bg-neutral-800" />
+                    <Skeleton className="h-6 w-24" />
+                  </div>
                   <Skeleton className="h-4 w-full mb-2" />
                   <Skeleton className="h-4 w-3/4" />
                 </div>

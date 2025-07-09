@@ -1,10 +1,10 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { useErrorHandler } from '@/contexts/ErrorContext';
 import {
-    useCreateDealMutation,
-    useDealsQuery,
-    useDeleteDealMutation,
-    useUpdateDealMutation
+  useCreateDealMutation,
+  useDealsQuery,
+  useDeleteDealMutation,
+  useUpdateDealMutation
 } from '@/hooks/queries/useDealsQuery';
 import { Deal } from '@/types/Deal';
 import { useState } from 'react';
@@ -24,32 +24,18 @@ export const useAdminDeals = () => {
   // Test connectivity function
   const testConnectivity = async () => {
     try {
-      console.log('Testing backend connectivity...');
-      
       const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5254';
-      
       // Test 1: Basic API connection
       const response = await fetch(API_BASE_URL + '/api/deals', {
         credentials: 'include',
         method: 'GET'
       });
-      
-      console.log('API Response:', {
-        status: response.status,
-        ok: response.ok,
-        headers: response.headers
-      });
-      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
-      const data = await response.json();
-      console.log('Fetched deals:', data);
-      
+      await response.json();
       showSuccess('Backend connectivity test successful!');
     } catch (error) {
-      console.error('Connectivity test failed:', error);
       showError(`Connectivity test failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
@@ -72,8 +58,7 @@ export const useAdminDeals = () => {
     try {
       await deleteDealMutation.mutateAsync(dealId);
       showSuccess('Deal deleted successfully');
-    } catch (error) {
-      console.error('Error deleting deal:', error);
+    } catch (_error) {
       showError('Failed to delete deal');
     }
   };
@@ -94,8 +79,7 @@ export const useAdminDeals = () => {
       }
       setIsModalOpen(false);
       setEditingDeal(null);
-    } catch (error) {
-      console.error('Error saving deal:', error);
+    } catch (_error) {
       showError(editingDeal ? 'Failed to update deal' : 'Failed to create deal');
     }
   };
