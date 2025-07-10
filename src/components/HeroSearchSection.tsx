@@ -1,6 +1,5 @@
 'use client'
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import React, { useEffect, useState } from 'react';
 import { Category, fetchCategories } from '../services/categoryService';
 
@@ -43,13 +42,12 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
         <div className="relative max-w-lg mx-auto">
           <div className="relative flex items-center justify-center">
             <Input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => onSearch(e.target.value)}
-              autoComplete="off"
-              placeholder="Search for deals, stores, or categories..."
-              className="h-10 text-sm border-none rounded-full shadow bg-white/90 dark:bg-neutral-900/90 backdrop-blur focus:ring-1 focus:ring-neutral-700 dark:focus:ring-neutral-400 focus:outline-none text-center placeholder:text-center placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-neutral-800 dark:text-neutral-100 transition-all duration-200 pl-10 pr-3 max-w-xs"
-              style={{ boxShadow: '0 2px 8px 0 rgba(0,0,0,0.06)' }}
+                type="text"
+                value={searchTerm}
+                onChange={(e) => onSearch(e.target.value)}
+                autoComplete="off"
+                placeholder="Search for deals, stores, or categories..."
+                className="h-10 text-sm border border-neutral-200 dark:border-neutral-800 rounded-full shadow-md bg-white dark:bg-neutral-900 backdrop-blur focus:ring-2 focus:ring-blue-400 dark:focus:ring-neutral-400 focus:outline-none text-center placeholder:text-center placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-neutral-800 dark:text-neutral-100 transition-all duration-200 pl-10 pr-3 max-w-xs"
             />
           </div>
         </div>

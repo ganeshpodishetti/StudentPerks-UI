@@ -1,7 +1,3 @@
-/**
- * Development utilities for testing token refresh functionality
- */
-
 import { authService } from '@/services/authService';
 
 export const tokenTestUtils = {

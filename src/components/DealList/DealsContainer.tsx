@@ -57,7 +57,7 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
 
   if (loading) {
     return (
-      <div className="bg-[#FAFAFA] dark:bg-neutral-950">
+      <div className="bg-white dark:bg-neutral-950">
         {/* Header */}
         <div className="mb-10 text-center">
           <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Student Deals</h1>
@@ -70,7 +70,7 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
 
   if (error) {
     return (
-      <div className="bg-[#FAFAFA] dark:bg-neutral-950">
+      <div className="bg-white dark:bg-neutral-950">
         {/* Header */}
         <div className="mb-10 text-center">
           <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Student Deals</h1>
@@ -90,7 +90,7 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   }
 
   return (
-    <div className="bg-[#FAFAFA] dark:bg-neutral-950">
+    <div className="bg-white dark:bg-neutral-950">
         {/* Hero Section - only show if showHeroSection is true */}
         {showHeroSection && (
           <div className="mb-6 text-center max-w-4xl mx-auto px-4">

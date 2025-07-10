@@ -35,11 +35,11 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
-      <body className={outfit.className + " bg-[#FAFAFA] dark:bg-neutral-950 min-h-screen"} suppressHydrationWarning>
+      <body className={outfit.className + "dark:bg-neutral-950 min-h-screen"} suppressHydrationWarning>
         <AppProviders>
           {children}
         </AppProviders>
-        <footer className="bg-[#FAFAFA] text-neutral-600 dark:bg-neutral-950 dark:text-neutral-400 py-12 border-t dark:border-neutral-800">
+        <footer className="text-neutral-600 dark:bg-neutral-950 dark:text-neutral-400 py-12 border-t border-gray-100 dark:border-gray-900">
         <div className="container mx-auto px-6 md:px-8">
           <div className="flex flex-col items-center justify-center">
             <div className="text-center mb-6">
@@ -71,7 +71,7 @@ export default function RootLayout({
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-200 dark:border-neutral-800 mt-8 pt-8 text-center text-xs">
+          <div className="border-t border-gray-100 dark:border-gray-900 mt-8 pt-8 text-center text-xs">
             <span>&copy; {new Date().getFullYear()} StudentPerks · All rights reserved</span>
           </div>
         </div>
