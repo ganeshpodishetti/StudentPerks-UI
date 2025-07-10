@@ -43,7 +43,7 @@ const UniversitiesPage: React.FC = () => {
 
   if (loading) {
       return (
-        <div className="py-12 bg-white dark:bg-neutral-950 transition-colors">
+        <div className="py-12 bg-background dark:bg-background transition-colors">
           <div className="container mx-auto px-6 md:px-8">
             <div className="max-w-5xl mx-auto">
               <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">Universities</h1>
