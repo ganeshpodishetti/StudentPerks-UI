@@ -34,7 +34,7 @@ const UniversityDealsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="py-12 bg-white dark:bg-neutral-950 transition-colors">
+      <div className="py-12 bg-background dark:bg-background transition-colors">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-5xl mx-auto">
             <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">{university?.name || 'University'} Deals</h1>
@@ -80,7 +80,7 @@ const UniversityDealsPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full min-h-screen bg-white dark:bg-neutral-950 transition-colors">
+    <div className="w-full min-h-screen bg-background dark:bg-background transition-colors">
       <div className="container mx-auto p-4" style={{ maxWidth: '80%'}}>
       {/* Back button */}
       <Button

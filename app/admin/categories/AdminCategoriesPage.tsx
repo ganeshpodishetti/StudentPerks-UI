@@ -49,15 +49,11 @@ export default function AdminCategoriesPage() {
         createButtonText="Create Category"
       />
 
-      <div className="space-y-6">
-        <Card>
-            <AdminCategoriesList 
+      <AdminCategoriesList 
               categories={categories}
               onEditCategory={handleEditCategory}
               onDeleteCategory={handleDeleteCategory}
             />
-        </Card>
-      </div>
 
       <CategoryFormModal
         isOpen={isModalOpen}
@@ -68,4 +64,3 @@ export default function AdminCategoriesPage() {
     </AdminLayout>
   );
 }
-// ...original code will be placed here...

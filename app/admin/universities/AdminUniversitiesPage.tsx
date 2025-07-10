@@ -61,13 +61,11 @@ export default function AdminUniversitiesPage() {
         createButtonText="Create University"
       />
 
-        <Card>
-            <AdminUniversitiesList 
+       <AdminUniversitiesList 
               universities={universities}
               onEditUniversity={handleEditUniversity}
               onDeleteUniversity={handleDeleteUniversity}
             />
-        </Card>
       
 
       <UniversityFormModal

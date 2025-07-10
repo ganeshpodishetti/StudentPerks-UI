@@ -35,7 +35,15 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
-      <body className={outfit.className + "dark:bg-neutral-950 min-h-screen"} suppressHydrationWarning>
+      <body className={outfit.className + " bg-background dark:bg-background min-h-screen"} suppressHydrationWarning style={{
+        backgroundColor: 'hsl(var(--background))',
+        color: 'hsl(var(--foreground))',
+        minHeight: '100vh',
+        WebkitOverflowScrolling: 'touch',
+        WebkitTapHighlightColor: 'transparent',
+        paddingTop: 'env(safe-area-inset-top)',
+        paddingBottom: 'env(safe-area-inset-bottom)',
+      }}>
         <AppProviders>
           {children}
         </AppProviders>
