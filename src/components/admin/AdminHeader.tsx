@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Activity, LogOut, Plus } from 'lucide-react';
+import AdminDealsSearchBar from './AdminDealsSearchBar';
 
 interface AdminHeaderProps {
   user: {
@@ -13,6 +14,7 @@ interface AdminHeaderProps {
   onTestConnectivity: () => void;
   title?: string;
   createButtonText?: string;
+  onSearchDeals?: (term: string) => void;
 }
 
 export default function AdminHeader({ 
@@ -21,7 +23,8 @@ export default function AdminHeader({
   onLogout, 
   onTestConnectivity,
   title = "Admin Dashboard",
-  createButtonText = "Create Deal"
+  createButtonText = "Create Deal",
+  onSearchDeals
 }: AdminHeaderProps) {
   return (
     <Card className="mb-6">
@@ -35,8 +38,12 @@ export default function AdminHeader({
               Welcome back, {user?.firstName}! Manage your {title.toLowerCase().includes('dashboard') ? 'content' : title.toLowerCase()} here.
             </p>
           </div>
-          
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {onSearchDeals && (
+              <div className="flex items-center gap-2">
+                <AdminDealsSearchBar onSearch={onSearchDeals} placeholder="Search deals..." />
+              </div>
+            )}
             <div className="flex items-center gap-2">
               <ThemeToggle />
               <Button 
@@ -49,9 +56,7 @@ export default function AdminHeader({
                 Test API
               </Button>
             </div>
-            
             <Separator orientation="vertical" className="hidden sm:block h-6" />
-            
             <div className="flex gap-2">
               {onCreateDeal && (
                 <Button 
@@ -63,7 +68,6 @@ export default function AdminHeader({
                   {createButtonText}
                 </Button>
               )}
-              
               <Button 
                 variant="outline" 
                 onClick={onLogout} 

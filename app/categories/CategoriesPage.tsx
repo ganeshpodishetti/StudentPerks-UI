@@ -40,32 +40,27 @@ const CategoriesPage: React.FC = () => {
     setSelectedCategory(categoryName);
   };
 
-  if (loading) {
-    return (
-      <div className="py-12">
-        <div className="container mx-auto px-6 md:px-8">
-          <div className="max-w-5xl mx-auto">
-            <h1 className="text-3xl font-bold text-neutral-900 dark:text-white mb-8">Categories</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {[...Array(9)].map((_, index) => (
-                <div
-                  key={index}
-                  className="relative flex flex-col border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl p-6 h-full shadow-sm"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <Skeleton className="w-12 h-12 rounded-md bg-neutral-100 dark:bg-neutral-800" />
-                    <Skeleton className="h-6 w-24" />
-                  </div>
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-4 w-3/4" />
-                </div>
-              ))}
-            </div>
+if (loading) {
+  return (
+    <div className="py-12 bg-white dark:bg-neutral-950 transition-colors">
+      <div className="container mx-auto px-6 md:px-8">
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">Categories</h1>
+          <div className="flex flex-wrap gap-3 justify-center mb-8">
+            {[...Array(12)].map((_, index) => (
+              <div
+                key={index}
+                className="py-2 px-4 rounded-full bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/40 shadow-sm w-40 h-10 flex items-center justify-center"
+              >
+                <Skeleton className="h-5 w-24 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (error) {
     return (
@@ -94,7 +89,7 @@ const CategoriesPage: React.FC = () => {
         <div className="max-w-6xl mx-auto">
           {/* Header Section */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-neutral-900 dark:text-white mb-4">Categories</h1>
+            <h1 className="text-4xl font-bold text-neutral-800 dark:text-neutral-100 mb-4">Categories</h1>
           </div>
         
           {/* Categories Section - Always visible */}
@@ -108,7 +103,7 @@ const CategoriesPage: React.FC = () => {
                 <button
                   key={category.id}
                   onClick={() => handleCategorySelect(category.name || '')}
-                  className="py-2 px-4 rounded-full bg-neutral-800 dark:bg-neutral-800/90 hover:bg-neutral-700 dark:hover:bg-neutral-700 hover:scale-105 hover:shadow-lg transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary/40 text-white font-medium text-sm shadow-sm border border-neutral-700/40 group"
+                  className="py-2 px-4 rounded-full bg-neutral-900 dark:bg-neutral-800/90 hover:bg-neutral-700 dark:hover:bg-neutral-700 hover:scale-105 hover:shadow-lg transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary/40 text-white font-medium text-sm shadow-sm border border-neutral-700/40 group"
                 >
                   <span className="group-hover:text-white transition-colors duration-200">{category.name}</span>
                 </button>

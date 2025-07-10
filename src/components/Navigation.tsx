@@ -79,7 +79,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                 className="h-6 w-6 mr-2 sm:h-8 sm:w-8"
                 priority
               />
-              <span className="bg-gradient-to-r from-neutral-400 to-neutral-500 bg-clip-text text-transparent">StudentPerks</span>
+              <span className="bg-gradient-to-r from-neutral-500 to-neutral-600 bg-clip-text text-transparent">StudentPerks</span>
             </Link>
           </div>
 

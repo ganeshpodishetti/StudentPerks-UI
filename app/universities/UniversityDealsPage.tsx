@@ -34,21 +34,21 @@ const UniversityDealsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto p-4">
-        <div className="mb-6">
-          <Skeleton className="h-10 w-32 mb-4" />
-          <Skeleton className="h-8 w-64 mb-2" />
-          <Skeleton className="h-4 w-96" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="border rounded-lg p-4">
-              <Skeleton className="h-48 w-full mb-4" />
-              <Skeleton className="h-6 w-3/4 mb-2" />
-              <Skeleton className="h-4 w-1/2 mb-2" />
-              <Skeleton className="h-4 w-full" />
+      <div className="py-12 bg-white dark:bg-neutral-950 transition-colors">
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="max-w-5xl mx-auto">
+            <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">{university?.name || 'University'} Deals</h1>
+            <div className="flex flex-wrap gap-3 justify-center mb-8">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="py-4 px-6 rounded-2xl bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/40 shadow-sm w-80 flex flex-col items-center justify-center">
+                  <Skeleton className="h-8 w-32 mb-4 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
+                  <Skeleton className="h-6 w-40 mb-2 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
+                  <Skeleton className="h-4 w-32 mb-2 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
+                  <Skeleton className="h-4 w-24 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     );
@@ -80,7 +80,8 @@ const UniversityDealsPage: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="w-full min-h-screen bg-white dark:bg-neutral-950 transition-colors">
+      <div className="container mx-auto p-4" style={{ maxWidth: '80%'}}>
       {/* Back button */}
       <Button
         variant="outline"
@@ -151,20 +152,21 @@ const UniversityDealsPage: React.FC = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {deals.map((deal) => (
               <DealCard
                 key={deal.id}
                 deal={deal}
                 showUniversityInfo={false}
+                showCategoryAndStore={true}
               />
             ))}
           </div>
         )}
+      </div>
       </div>
     </div>
   );
 };
 
 export default UniversityDealsPage;
-// ...original code will be placed here...

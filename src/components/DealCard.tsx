@@ -11,9 +11,10 @@ interface DealCardProps {
   deal: Deal;
   showUniversityInfo?: boolean;
   compact?: boolean;
+  showCategoryAndStore?: boolean;
 }
 
-const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = false, compact = false }) => {
+const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = false, compact = false, showCategoryAndStore = true }) => {
   const [imageError, setImageError] = useState(false);
   const imageUrl = deal.imageUrl;
   
@@ -83,7 +84,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
         {deal.discount && (
           <Badge 
             variant="default" 
-            className="text-sm font-medium px-3 py-1 bg-neutral-800 hover:bg-neutral-700 text-white dark:bg-neutral-200 dark:hover:bg-neutral-300 dark:text-neutral-800"
+            className="text-sm font-medium px-2 py-0.5 bg-neutral-800 hover:bg-neutral-700 text-white dark:bg-neutral-200 dark:hover:bg-neutral-300 dark:text-neutral-800"
           >
             {deal.discount}
           </Badge>
@@ -176,14 +177,16 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
       )} */}
       
       {/* Footer with Tags */}
-      <div className="flex items-center flex-wrap gap-4 mt-auto pt-2 border-t border-neutral-100 dark:border-neutral-800">
-        <div className="text-xs text-neutral-500 dark:text-neutral-400">
-          {deal.categoryName}
+      {showCategoryAndStore && (
+        <div className="flex items-center flex-wrap gap-4 mt-auto pt-2 border-t border-neutral-100 dark:border-neutral-800">
+          <div className="text-xs text-neutral-500 dark:text-neutral-400">
+            {deal.categoryName}
+          </div>
+          <div className="text-xs text-neutral-500 dark:text-neutral-400">
+            {deal.storeName}
+          </div>
         </div>
-        <div className="text-xs text-neutral-500 dark:text-neutral-400">
-          {deal.storeName}
-        </div>
-      </div>
+      )}
     </Card>
   );
 });
