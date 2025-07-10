@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { University } from '@/types/University';
 import { Edit, Trash2 } from 'lucide-react';
+import Image from 'next/image';
 
 interface AdminUniversitiesCardsProps {
   universities: University[];
@@ -20,17 +21,23 @@ export default function AdminUniversitiesCards({ universities, onEditUniversity,
               <div className="flex items-start gap-3 flex-1">
                 <div className="flex-shrink-0">
                   {university.imageUrl ? (
-                    <img 
-                      src={university.imageUrl} 
-                      alt={university.name || 'University'} 
+                    <Image
+                      src={university.imageUrl}
+                      alt={university.name || 'University'}
+                      width={40}
+                      height={40}
                       className="w-10 h-10 rounded-md object-cover"
+                      unoptimized
                     />
                   ) : (
                     <div className="w-10 h-10 rounded-md bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
-                      <img 
-                        src="/no-image.svg" 
-                        alt="No image available" 
+                      <Image
+                        src="/no-image.svg"
+                        alt="No image available"
+                        width={40}
+                        height={40}
                         className="w-full h-full object-cover"
+                        unoptimized
                       />
                     </div>
                   )}

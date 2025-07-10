@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { University } from '@/types/University';
 import { Edit, Trash2 } from 'lucide-react';
+import Image from 'next/image';
 
 interface AdminUniversitiesTableProps {
   universities: University[];
@@ -29,17 +30,23 @@ export default function AdminUniversitiesTable({ universities, onEditUniversity,
               <td className="p-2 sm:p-3 md:p-4">
                 <div className="flex items-center">
                   {university.imageUrl ? (
-                    <img 
-                      src={university.imageUrl} 
-                      alt={university.name || 'University'} 
+                    <Image
+                      src={university.imageUrl}
+                      alt={university.name || 'University'}
+                      width={40}
+                      height={40}
                       className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover"
+                      unoptimized
                     />
                   ) : (
                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-muted dark:bg-muted overflow-hidden">
-                      <img 
-                        src="/no-image.svg" 
-                        alt="No image available" 
+                      <Image
+                        src="/no-image.svg"
+                        alt="No image available"
+                        width={40}
+                        height={40}
                         className="w-full h-full object-cover"
+                        unoptimized
                       />
                     </div>
                   )}
