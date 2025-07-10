@@ -8,6 +8,7 @@ import AdminNavigation from '@/components/admin/AdminNavigation';
 import { AdminLayout } from '@/components/admin/shared/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAdminDeals } from '@/hooks/useAdminDeals';
+import { useMemo, useState } from 'react';
 
 export default function AdminDealsPage() {
   const {
@@ -25,6 +26,19 @@ export default function AdminDealsPage() {
     closeModal
   } = useAdminDeals();
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const filteredDeals = useMemo(() => {
+    if (!searchTerm.trim()) return deals;
+    const term = searchTerm.toLowerCase();
+    return deals.filter(d =>
+      d.title.toLowerCase().includes(term) ||
+      d.description.toLowerCase().includes(term) ||
+      d.storeName.toLowerCase().includes(term) ||
+      d.categoryName.toLowerCase().includes(term) ||
+      (d.discount?.toLowerCase().includes(term) ?? false)
+    );
+  }, [deals, searchTerm]);
+
   if (isLoading) {
     return <AdminLoadingSpinner />;
   }
@@ -39,6 +53,7 @@ export default function AdminDealsPage() {
         onLogout={handleLogout}
         onTestConnectivity={testConnectivity}
         title="Deals Management"
+        onSearchDeals={setSearchTerm}
       />
 
       <div className="space-y-6">
@@ -51,7 +66,7 @@ export default function AdminDealsPage() {
           </CardHeader>
           <CardContent>
             <AdminDealsList 
-              deals={deals}
+              deals={filteredDeals}
               onEditDeal={handleEditDeal}
               onDeleteDeal={handleDeleteDeal}
             />
@@ -68,4 +83,3 @@ export default function AdminDealsPage() {
     </AdminLayout>
   );
 }
-// ...original code will be placed here...

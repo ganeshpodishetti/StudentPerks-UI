@@ -42,24 +42,26 @@ const UniversitiesPage: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="container mx-auto p-4">
-        <div className="mb-6">
-          <Skeleton className="h-8 w-48 mb-2" />
-          <Skeleton className="h-4 w-96" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="border rounded-lg p-4">
-              <Skeleton className="h-32 w-full mb-4" />
-              <Skeleton className="h-6 w-3/4 mb-2" />
-              <Skeleton className="h-4 w-1/2" />
+      return (
+        <div className="py-12 bg-white dark:bg-neutral-950 transition-colors">
+          <div className="container mx-auto px-6 md:px-8">
+            <div className="max-w-5xl mx-auto">
+              <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">Universities</h1>
+              <div className="flex flex-wrap gap-3 justify-center mb-8">
+                {[...Array(12)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="py-2 px-4 rounded-full bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/40 shadow-sm w-40 h-10 flex items-center justify-center"
+                  >
+                    <Skeleton className="h-5 w-24 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
-    );
-  }
+      );
+    }
 
   if (error) {
     return (
@@ -122,4 +124,3 @@ const UniversitiesPage: React.FC = () => {
 };
 
 export default UniversitiesPage;
-// ...original code will be placed here...

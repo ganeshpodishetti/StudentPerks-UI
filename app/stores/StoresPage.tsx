@@ -42,22 +42,17 @@ const StoresPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="py-12">
+      <div className="py-12 bg-white dark:bg-neutral-950 transition-colors">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-5xl mx-auto">
-            <h1 className="text-3xl font-bold text-neutral-900 dark:text-white mb-8">Stores</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {[...Array(9)].map((_, index) => (
+            <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">Stores</h1>
+            <div className="flex flex-wrap gap-3 justify-center mb-8">
+              {[...Array(12)].map((_, index) => (
                 <div
                   key={index}
-                  className="relative flex flex-col border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl p-6 h-full shadow-sm"
+                  className="py-2 px-4 rounded-full bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/40 shadow-sm w-40 h-10 flex items-center justify-center"
                 >
-                  <div className="flex items-center gap-4 mb-4">
-                    <Skeleton className="w-12 h-12 rounded-md bg-neutral-100 dark:bg-neutral-800" />
-                    <Skeleton className="h-6 w-24" />
-                  </div>
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-5 w-24 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
                 </div>
               ))}
             </div>
