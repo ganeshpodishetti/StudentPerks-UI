@@ -56,23 +56,11 @@ export default function AdminDealsPage() {
         onSearchDeals={setSearchTerm}
       />
 
-      <div className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Deals</CardTitle>
-            <CardDescription>
-              Manage deals and special offers for students
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AdminDealsList 
+      <AdminDealsList 
               deals={filteredDeals}
               onEditDeal={handleEditDeal}
               onDeleteDeal={handleDeleteDeal}
             />
-          </CardContent>
-        </Card>
-      </div>
 
       <DealFormModal
         isOpen={isModalOpen}

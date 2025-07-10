@@ -49,23 +49,11 @@ export default function AdminStoresPage() {
         createButtonText="Create Store"
       />
 
-      <div className="space-y-6">
-        <Card>
-          {/* <CardHeader>
-            <CardTitle>All Stores</CardTitle>
-            <CardDescription>
-              Manage your stores, edit details, or remove outdated stores.
-            </CardDescription>
-          </CardHeader> */}
-          {/* <CardContent> */}
-            <AdminStoresList 
+      <AdminStoresList 
               stores={stores}
               onEditStore={handleEditStore}
               onDeleteStore={handleDeleteStore}
             />
-          {/* </CardContent> */}
-        </Card>
-      </div>
 
       <StoreFormModal
         isOpen={isModalOpen}
