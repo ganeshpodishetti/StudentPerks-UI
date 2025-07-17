@@ -1,9 +1,9 @@
 // Migrated from src/components/pages/StoresPage.tsx
 'use client'
-import DealList from '@/components/DealList';
-import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/components/ui/use-toast";
-import { Store as StoreType, fetchStores } from '@/services/storeService';
+import DealList from '@/features/deals/components/display/DealList';
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { useToast } from "@/shared/components/ui/use-toast";
+import { Store as StoreType, fetchStores } from '@/features/stores/services/storeService';
 import React, { useEffect, useState } from 'react';
 
 const StoresPage: React.FC = () => {

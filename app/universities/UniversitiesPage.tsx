@@ -1,8 +1,8 @@
 // Migrated from src/components/pages/UniversitiesPage.tsx
 'use client'
-import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/components/ui/use-toast";
-import { University, fetchUniversities } from '@/services/universityService';
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { useToast } from "@/shared/components/ui/use-toast";
+import { University, fetchUniversities } from '@/features/universities/services/universityService';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';

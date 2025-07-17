@@ -1,4 +1,4 @@
-import { AppProviders } from '@/providers/AppProviders'
+import { AppProviders } from '@/shared/providers/AppProviders'
 import { Outfit } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'

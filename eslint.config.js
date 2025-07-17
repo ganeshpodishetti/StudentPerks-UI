@@ -12,10 +12,10 @@ module.exports = [
     rules: {
       "react/display-name": "warn",
       "react/no-unescaped-entities": "warn",
-      "@next/next/no-img-element": "warn",
-      "jsx-a11y/alt-text": "warn",
-      "jsx-a11y/role-has-required-aria-props": "warn",
-      "react-hooks/exhaustive-deps": "warn"
+      "@next/next/no-img-element": "error",
+      "jsx-a11y/alt-text": "error",
+      "jsx-a11y/role-has-required-aria-props": "error",
+      "react-hooks/exhaustive-deps": "error"
     },
   },
 ];

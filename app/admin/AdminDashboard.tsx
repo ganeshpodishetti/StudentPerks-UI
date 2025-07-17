@@ -1,12 +1,12 @@
 // Migrated from src/components/pages/AdminDashboard.tsx
 'use client'
-import AdminHeader from '@/components/admin/AdminHeader';
-import AdminLoadingSpinner from '@/components/admin/AdminLoadingSpinner';
-import AdminNavigation from '@/components/admin/AdminNavigation';
-import AdminOverview from '@/components/admin/AdminOverview';
-import AdminStats from '@/components/admin/AdminStats';
-import { AdminLayout } from '@/components/admin/shared/AdminLayout';
-import { useAdminDashboard } from '@/hooks/useAdminDashboard';
+import AdminOverview from '@/features/admin/components/dashboard/AdminOverview/AdminOverview';
+import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
+import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
+import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
+import AdminStats from '@/features/admin/components/stats/AdminStats/AdminStats';
+import { useAdminDashboard } from '@/features/admin/hooks/useAdminDashboard';
 
 export default function AdminDashboard() {
   const {

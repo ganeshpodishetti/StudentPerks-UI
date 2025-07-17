@@ -1,14 +1,13 @@
 // Migrated from src/components/pages/AdminCategoriesPage.tsx
 'use client'
-import AdminCategoriesList from '@/components/admin/AdminCategoriesList';
-import AdminHeader from '@/components/admin/AdminHeader';
-import AdminLoadingSpinner from '@/components/admin/AdminLoadingSpinner';
-import AdminNavigation from '@/components/admin/AdminNavigation';
-import { AdminLayout } from '@/components/admin/shared/AdminLayout';
-import CategoryFormModal from '@/components/CategoryFormModal';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/contexts/AuthContext';
-import { useAdminCategories } from '@/hooks/useAdminCategories';
+import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
+import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
+import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
+import AdminCategoriesList from '@/features/admin/components/tables/AdminCategoriesList/AdminCategoriesList';
+import { useAdminCategories } from '@/features/admin/hooks/useAdminCategories';
+import { useAuth } from '@/features/auth/contexts/AuthContext';
+import CategoryFormModal from '@/features/categories/components/forms/CategoryFormModal/CategoryFormModal';
 
 export default function AdminCategoriesPage() {
   const {

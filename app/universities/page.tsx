@@ -1,4 +1,4 @@
-import Navigation from '@/components/Navigation'
+import Navigation from '@/shared/components/layout/Navigation/Navigation'
 import UniversitiesPage from './UniversitiesPage'
 
 export const metadata = {

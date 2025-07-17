@@ -1,13 +1,12 @@
 // Migrated from src/components/pages/AdminDealsPage.tsx
 'use client'
-import DealFormModal from '@/components/DealFormModal';
-import AdminDealsList from '@/components/admin/AdminDealsList';
-import AdminHeader from '@/components/admin/AdminHeader';
-import AdminLoadingSpinner from '@/components/admin/AdminLoadingSpinner';
-import AdminNavigation from '@/components/admin/AdminNavigation';
-import { AdminLayout } from '@/components/admin/shared/AdminLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAdminDeals } from '@/hooks/useAdminDeals';
+import AdminDealsList from '@/features/admin/components/tables/AdminDealsList/AdminDealsList';
+import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
+import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
+import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
+import DealFormModal from '@/features/deals/components/forms/DealFormModal';
+import { useAdminDeals } from '@/features/admin/hooks/useAdminDeals';
 import { useMemo, useState } from 'react';
 
 export default function AdminDealsPage() {
