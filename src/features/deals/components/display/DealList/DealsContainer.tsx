@@ -14,12 +14,14 @@ interface DealsContainerProps {
   initialCategory?: string;
   initialStore?: string;
   showHeroSection?: boolean;
+  excludeUniversitySpecific?: boolean;
 }
 
 export const DealsContainer: React.FC<DealsContainerProps> = ({
   initialCategory,
   initialStore,
   showHeroSection = true,
+  excludeUniversitySpecific = false,
 }) => {
   const { deals, loading, error, refetch } = useDealsData();
 
@@ -36,6 +38,7 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
     deals,
     initialCategory,
     initialStore,
+    excludeUniversitySpecific,
   });
 
   const {

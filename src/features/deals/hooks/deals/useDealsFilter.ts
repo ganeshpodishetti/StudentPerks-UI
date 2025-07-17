@@ -32,12 +32,14 @@ interface UseDealsFilterProps {
   deals: Deal[];
   initialCategory?: string;
   initialStore?: string;
+  excludeUniversitySpecific?: boolean;
 }
 
 export const useDealsFilter = ({
   deals,
   initialCategory,
   initialStore,
+  excludeUniversitySpecific = false,
 }: UseDealsFilterProps): UseDealsFilterReturn => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory || 'All');
@@ -82,6 +84,11 @@ export const useDealsFilter = ({
       (deal.promo && deal.promo.toLowerCase().includes(term))
     );
   }, [searchTerm]);
+  
+  const filterByUniversitySpecific = useCallback((deal: Deal) => {
+    if (!excludeUniversitySpecific) return true;
+    return !deal.isUniversitySpecific;
+  }, [excludeUniversitySpecific]);
 
   const sortDeals = useCallback((dealsToSort: Deal[]) => {
     if (!activeSort.value) return dealsToSort;
@@ -124,11 +131,12 @@ export const useDealsFilter = ({
       .filter(filterByActive)
       .filter(filterByCategory)
       .filter(filterByStore)
-      .filter(filterBySearchTerm);
+      .filter(filterBySearchTerm)
+      .filter(filterByUniversitySpecific);
 
     // Apply sorting
     return sortDeals(filtered);
-  }, [deals, filterByActive, filterByCategory, filterByStore, filterBySearchTerm, sortDeals]);
+  }, [deals, filterByActive, filterByCategory, filterByStore, filterBySearchTerm, filterByUniversitySpecific, sortDeals]);
 
   return {
     filteredDeals,

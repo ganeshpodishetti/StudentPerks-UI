@@ -114,7 +114,7 @@ const UniversitiesPage: React.FC = () => {
                   </span>
                 )}
               </div>
-              <span className="group-hover:text-white group-active:text-gray-100 transition-colors duration-200">{university.name}</span>
+              <span className="group-hover:text-white group-active:text-gray-100 transition-colors duration-200">{university.code}</span>
             </button>
           ))}
         </div>
