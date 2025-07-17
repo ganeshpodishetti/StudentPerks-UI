@@ -1,9 +1,9 @@
 // Migrated from src/components/pages/CategoriesPage.tsx
 'use client'
-import DealList from '@/components/DealList';
-import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/components/ui/use-toast";
-import { Category, fetchCategories } from '@/services/categoryService';
+import DealList from '@/features/deals/components/display/DealList';
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { useToast } from "@/shared/components/ui/use-toast";
+import { Category, fetchCategories } from '@/features/categories/services/categoryService';
 import React, { useEffect, useState } from 'react';
 
 const CategoriesPage: React.FC = () => {

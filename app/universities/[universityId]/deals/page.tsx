@@ -1,5 +1,5 @@
 
-import { universityService } from '@/services/universityService';
+import { universityService } from '@/features/universities/services/universityService';
 import UniversityDealsPage from '../../UniversityDealsPage';
 
 // Required for static export (output: 'export')

@@ -1,13 +1,13 @@
 // Migrated from src/components/pages/AdminSubmittedDealsPage.tsx
 'use client'
-import AdminHeader from '@/components/admin/AdminHeader';
-import AdminLoadingSpinner from '@/components/admin/AdminLoadingSpinner';
-import AdminNavigation from '@/components/admin/AdminNavigation';
-import AdminSubmittedDealsList from '@/components/admin/AdminSubmittedDealsList';
-import SubmittedDealStats from '@/components/admin/SubmittedDealStats';
-import { AdminLayout } from '@/components/admin/shared/AdminLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAdminSubmittedDeals } from '@/hooks/useAdminSubmittedDeals';
+import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
+import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
+import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
+import AdminSubmittedDealsList from '@/features/admin/components/tables/AdminSubmittedDealsList/AdminSubmittedDealsList';
+import SubmittedDealStats from '@/features/admin/components/stats/SubmittedDealStats/SubmittedDealStats';
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { useAdminSubmittedDeals } from '@/features/admin/hooks/useAdminSubmittedDeals';
 
 export default function AdminSubmittedDealsPage() {
   const {

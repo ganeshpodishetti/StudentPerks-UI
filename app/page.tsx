@@ -1,5 +1,5 @@
-import DealList from '@/components/DealList'
-import Navigation from '@/components/Navigation'
+import DealList from '@/features/deals/components/display/DealList'
+import Navigation from '@/shared/components/layout/Navigation/Navigation'
 import Script from 'next/script'
 
 export default function HomePage() {

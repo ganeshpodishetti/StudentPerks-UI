@@ -1,10 +1,12 @@
+const path = require('path')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
   trailingSlash: true,
   eslint: {
-    // Ignore ESLint during builds to avoid configuration issues
-    ignoreDuringBuilds: true,
+    // Ensure ESLint runs during builds to maintain code quality
+    ignoreDuringBuilds: false,
   },
   experimental: {
     optimizePackageImports: [
@@ -14,9 +16,18 @@ const nextConfig = {
     ],
   },
   images: {
-    domains: ["localhost", "your-api-domain.com"],
+    domains: ["localhost"],
     unoptimized: true,
   },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, 'src'),
+      '@/shared': path.resolve(__dirname, 'src/shared'),
+      '@/features': path.resolve(__dirname, 'src/features'),
+    }
+    return config
+  }
 };
 
 module.exports = nextConfig;

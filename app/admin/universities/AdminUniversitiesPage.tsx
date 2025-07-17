@@ -1,14 +1,14 @@
 // Migrated from src/components/pages/AdminUniversitiesPage.tsx
 'use client'
-import AdminHeader from '@/components/admin/AdminHeader';
-import AdminLoadingSpinner from '@/components/admin/AdminLoadingSpinner';
-import AdminNavigation from '@/components/admin/AdminNavigation';
-import AdminUniversitiesList from '@/components/admin/AdminUniversitiesList';
-import { AdminLayout } from '@/components/admin/shared/AdminLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import UniversityFormModal from '@/components/UniversityFormModal';
-import { useAuth } from '@/contexts/AuthContext';
-import { useAdminUniversities } from '@/hooks/useAdminUniversities';
+import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
+import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
+import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
+import AdminUniversitiesList from '@/features/admin/components/tables/AdminUniversitiesList/AdminUniversitiesList';
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import UniversityFormModal from '@/features/universities/components/forms/UniversityFormModal/UniversityFormModal';
+import { useAuth } from '@/features/auth/contexts/AuthContext';
+import { useAdminUniversities } from '@/features/admin/hooks/useAdminUniversities';
 
 // Export hook for university selection in other components
 export const useUniversityOptions = () => {
