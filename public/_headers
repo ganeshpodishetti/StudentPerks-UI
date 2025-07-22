@@ -8,10 +8,10 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   
   # Content Security Policy - More restrictive for better security
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' fonts.gstatic.com; connect-src 'self' https://studentperks-dev.azurewebsites.net wss: ws:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none';
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; img-src 'self' data: https: blob: images.unsplash.com via.placeholder.com; font-src 'self' fonts.gstatic.com; connect-src 'self' https://studentperks-api-dev.azurewebsites.net https://studentperks-api.azurewebsites.net wss: ws:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none';
   
-  # HSTS (commented out for development - enable in production)
-  # Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # HSTS - Enable for production security
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
 # Cache control for static assets
 /_next/static/*

@@ -60,7 +60,9 @@ Object.defineProperty(window, 'matchMedia', {
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
+  constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+    // Mock implementation
+  }
   observe() {
     return null;
   }
@@ -70,11 +72,13 @@ global.IntersectionObserver = class IntersectionObserver {
   unobserve() {
     return null;
   }
-};
+} as any;
 
 // Mock ResizeObserver
 global.ResizeObserver = class ResizeObserver {
-  constructor() {}
+  constructor(callback: ResizeObserverCallback) {
+    // Mock implementation
+  }
   observe() {
     return null;
   }
@@ -84,7 +88,7 @@ global.ResizeObserver = class ResizeObserver {
   unobserve() {
     return null;
   }
-};
+} as any;
 
 // Suppress console errors during tests unless explicitly testing them
 const originalError = console.error;
