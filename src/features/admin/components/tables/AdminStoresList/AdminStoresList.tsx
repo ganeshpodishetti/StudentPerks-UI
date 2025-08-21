@@ -1,6 +1,5 @@
 import { Store } from '@/features/stores/services/storeService';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import AdminStoresCards from '../AdminStoresCards/AdminStoresCards';
 import AdminStoresTable from '../AdminStoresTable/AdminStoresTable';
 
 interface AdminStoresListProps {
@@ -21,13 +20,6 @@ export default function AdminStoresList({ stores, onEditStore, onDeleteStore }: 
       <CardContent className="p-0 sm:p-3 md:p-6">
         {/* Desktop Table View */}
         <AdminStoresTable 
-          stores={stores}
-          onEditStore={onEditStore}
-          onDeleteStore={onDeleteStore}
-        />
-
-        {/* Mobile Card View */}
-        <AdminStoresCards 
           stores={stores}
           onEditStore={onEditStore}
           onDeleteStore={onDeleteStore}

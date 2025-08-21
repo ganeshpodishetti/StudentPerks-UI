@@ -37,15 +37,17 @@ export default function AdminDealsTable({ deals, onEditDeal, onDeleteDeal }: Adm
   ];
 
   return (
-    <DataTable
-      data={deals}
-      columns={columns}
-      actions={{
-        onEdit: onEditDeal,
-        onDelete: onDeleteDeal
-      }}
-      emptyMessage="No deals found"
-      className="hidden md2:block overflow-x-auto"
-    />
+    <div className="w-full">
+      <DataTable
+        data={deals}
+        columns={columns}
+        actions={{
+          onEdit: onEditDeal,
+          onDelete: onDeleteDeal
+        }}
+        emptyMessage="No deals found"
+        className="w-full overflow-x-auto"
+      />
+    </div>
   );
 }

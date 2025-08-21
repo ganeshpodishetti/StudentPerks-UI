@@ -1,6 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { University } from '@/shared/types/entities/university';
-import AdminUniversitiesCards from '../AdminUniversitiesCards/AdminUniversitiesCards';
+import { University } from "@/shared/types/entities/university";
 import AdminUniversitiesTable from '../AdminUniversitiesTable/AdminUniversitiesTable';
 
 interface AdminUniversitiesListProps {
@@ -21,13 +20,6 @@ export default function AdminUniversitiesList({ universities, onEditUniversity, 
       <CardContent className="p-0 sm:p-3 md:p-6">
         {/* Desktop Table View */}
         <AdminUniversitiesTable 
-          universities={universities}
-          onEditUniversity={onEditUniversity}
-          onDeleteUniversity={onDeleteUniversity}
-        />
-
-        {/* Mobile Card View */}
-        <AdminUniversitiesCards 
           universities={universities}
           onEditUniversity={onEditUniversity}
           onDeleteUniversity={onDeleteUniversity}

@@ -198,6 +198,46 @@ export const dealService = {
     } catch (error) {
       throw error;
     }
+  },
+
+  searchDeals: async (searchParams: {
+    query?: string;
+    category?: string;
+    store?: string;
+    university?: string;
+    isActive?: boolean;
+  }): Promise<Deal[]> => {
+    const urlParams = new URLSearchParams();
+    
+    if (searchParams.query?.trim()) {
+      urlParams.append('query', searchParams.query.trim());
+    }
+    
+    if (searchParams.category) {
+      urlParams.append('category', searchParams.category);
+    }
+    
+    if (searchParams.store) {
+      urlParams.append('store', searchParams.store);
+    }
+    
+    if (searchParams.university) {
+      urlParams.append('university', searchParams.university);
+    }
+    
+    if (searchParams.isActive !== undefined) {
+      urlParams.append('isActive', searchParams.isActive.toString());
+    }
+
+    const response = await publicApiClient.get(`/api/deals/search?${urlParams.toString()}`);
+      
+    // Handle 204 No Content response (no results)
+    if (response.status === 204 || !response.data){
+      return [];
+    }
+      
+    // Ensure we always return an array
+    return Array.isArray(response.data) ? response.data : [];
   }
 };
 

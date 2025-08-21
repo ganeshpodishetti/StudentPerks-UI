@@ -54,7 +54,7 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
       </div>
 
       {/* Categories Section */}
-      <div className="text-center">
+      {/* <div className="text-center">
         
         {loading ? (
           <div className="flex flex-wrap gap-2 justify-center">
@@ -84,7 +84,7 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
             ))}
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

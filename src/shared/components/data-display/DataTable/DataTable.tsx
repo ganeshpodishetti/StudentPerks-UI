@@ -107,7 +107,7 @@ export function DataTable<T extends { id: string }>({
   }
 
   return (
-    <div className={`hidden md:block overflow-x-auto ${className}`}>
+    <div className={`block overflow-x-auto ${className}`}>
       <table className="w-full border-collapse">
         <thead>
           <tr className="border-b border-neutral-200 dark:border-neutral-700">
