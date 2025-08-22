@@ -1,5 +1,5 @@
 import { useAuth } from '@/features/auth/contexts/AuthContext';
-import { updateUnreadCount } from '@/features/deals/hooks/useUnreadDealsCount';
+import { useUnreadDealsCount } from '@/features/deals/hooks/useUnreadDealsCount';
 import { submittedDealService } from '@/features/deals/services/submittedDealService';
 import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import { SubmittedDeal } from '@/shared/types/entities/submittedDeal';
@@ -10,6 +10,7 @@ export const useAdminSubmittedDeals = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { user, logout } = useAuth();
   const { showError } = useErrorHandler();
+  const { updateCount } = useUnreadDealsCount();
 
   const loadDeals = useCallback(async () => {
     try {
@@ -18,13 +19,13 @@ export const useAdminSubmittedDeals = () => {
       setDeals(data);
       // Update global unread count
       const unreadCount = data.filter(deal => !deal.markedAsRead).length;
-      updateUnreadCount(unreadCount);
+      updateCount(unreadCount);
     } catch (_error) {
       showError('Failed to load submitted deals');
     } finally {
       setIsLoading(false);
     }
-  }, [showError]);
+  }, [showError, updateCount]);
 
   // Only call loadDeals once on mount to avoid repeated API calls
   useEffect(() => {
@@ -42,7 +43,7 @@ export const useAdminSubmittedDeals = () => {
         );
         // Update global unread count
         const unreadCount = updatedDeals.filter(deal => !deal.markedAsRead).length;
-        updateUnreadCount(unreadCount);
+        updateCount(unreadCount);
         return updatedDeals;
       });
     } catch (_error) {
@@ -62,7 +63,7 @@ export const useAdminSubmittedDeals = () => {
         const updatedDeals = prev.filter(deal => deal.id !== id);
         // Update global unread count
         const unreadCount = updatedDeals.filter(deal => !deal.markedAsRead).length;
-        updateUnreadCount(unreadCount);
+        updateCount(unreadCount);
         return updatedDeals;
       });
     } catch (_error) {

@@ -1,5 +1,5 @@
-import { CreateDealRequest, Deal, UpdateDealRequest } from '@/shared/types';
 import apiClient, { publicApiClient } from '@/shared/services/api/apiClient';
+import { CreateDealRequest, Deal, UpdateDealRequest } from '@/shared/types';
 
 export const dealService = {
   // Public endpoint - no authentication required
@@ -196,6 +196,68 @@ export const dealService = {
     try {
       await apiClient.delete(`/api/deals/${id}`);
     } catch (error) {
+      throw error;
+    }
+  },
+
+  searchDeals: async (searchParams: {
+    query?: string;
+    category?: string;
+    store?: string;
+    university?: string;
+    isActive?: boolean;
+  }): Promise<Deal[]> => {
+    try {
+      console.log('DealService: searchDeals called with params:', searchParams);
+      
+      const urlParams = new URLSearchParams();
+      
+      if (searchParams.query?.trim()) {
+        urlParams.append('query', searchParams.query.trim());
+      }
+      
+      if (searchParams.category) {
+        urlParams.append('category', searchParams.category);
+      }
+      
+      if (searchParams.store) {
+        urlParams.append('store', searchParams.store);
+      }
+      
+      if (searchParams.university) {
+        urlParams.append('university', searchParams.university);
+      }
+      
+      if (searchParams.isActive !== undefined) {
+        urlParams.append('isActive', searchParams.isActive.toString());
+      }
+
+      console.log('DealService: URL params:', urlParams.toString());
+
+      // Don't make API call if no search parameters are provided
+      if (urlParams.toString() === '') {
+        console.log('DealService: No parameters, returning empty array');
+        return [];
+      }
+
+      const url = `/api/deals/search?${urlParams.toString()}`;
+      console.log('DealService: Making API call to:', url);
+
+      const response = await publicApiClient.get(url);
+      
+      // Handle 204 No Content response (no results)
+      if (response.status === 204 || !response.data) {
+        return [];
+      }
+      
+      // Ensure we always return an array
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (error: any) {
+      console.error('DealService: Search error:', error);
+      // If it's a 404 error, return empty array instead of throwing
+      if (error.response?.status === 404) {
+        return [];
+      }
       throw error;
     }
   }

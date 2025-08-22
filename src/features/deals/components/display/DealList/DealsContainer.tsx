@@ -1,14 +1,18 @@
-'use client'
+"use client";
+import { useDealsData } from "@/features/deals/hooks/deals/useDealsData";
+import {
+  sortOptions,
+  useDealsFilter,
+} from "@/features/deals/hooks/deals/useDealsFilter";
+import { useDealsLoadMore } from "@/features/deals/hooks/deals/useDealsLoadMore";
 import { Button } from "@/shared/components/ui/button";
-import { useDealsData } from '@/features/deals/hooks/deals/useDealsData';
-import { sortOptions, useDealsFilter } from '@/features/deals/hooks/deals/useDealsFilter';
-import { useDealsLoadMore } from '@/features/deals/hooks/deals/useDealsLoadMore';
-import React from "react";
-import DealSkeleton from '../DealSkeleton/DealSkeleton';
-import HeroSearchSection from '../../search/HeroSearchSection/HeroSearchSection';
-import { DealsFilters } from './DealsFilters';
-import { DealsGrid } from './DealsGrid';
-import { DealsLoadMore } from './DealsLoadMore';
+import { Deal } from "@/shared/types/entities/deal";
+import React, { useCallback, useState } from "react";
+import HeroSearchSection from "../../search/HeroSearchSection/HeroSearchSection";
+import DealSkeleton from "../DealSkeleton/DealSkeleton";
+import { DealsFilters } from "./DealsFilters";
+import { DealsGrid } from "./DealsGrid";
+import { DealsLoadMore } from "./DealsLoadMore";
 
 interface DealsContainerProps {
   initialCategory?: string;
@@ -24,6 +28,12 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   excludeUniversitySpecific = false,
 }) => {
   const { deals, loading, error, refetch } = useDealsData();
+  const [searchResults, setSearchResults] = useState<Deal[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+
+  // Memoize the default filters to prevent recreating the object
+  const defaultSearchFilters = React.useMemo(() => ({ isActive: true }), []);
 
   const {
     filteredDeals,
@@ -41,21 +51,47 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
     excludeUniversitySpecific,
   });
 
-  const {
-    displayedDeals,
-    hasMore,
-    isLoadingMore,
-    loadMore,
-  } = useDealsLoadMore({
-    deals: filteredDeals,
-    pageSize: 12,
-  });
+  // Use search results if available, otherwise use filtered deals
+  const dealsToDisplay = hasSearched ? searchResults : filteredDeals;
+
+  const { displayedDeals, hasMore, isLoadingMore, loadMore } = useDealsLoadMore(
+    {
+      deals: dealsToDisplay,
+      pageSize: 12,
+    }
+  );
+
+  // Handle search results
+  const handleSearchResults = useCallback(
+    (searchDeals: Deal[], loading: boolean, searched: boolean) => {
+      setSearchResults(searchDeals);
+      setIsSearching(loading);
+      setHasSearched(searched);
+    },
+    []
+  );
 
   const generateEmptyMessage = () => {
-    if (searchTerm || (selectedCategory && selectedCategory !== 'All') || (selectedStore && selectedStore !== 'All')) {
-      return `No deals found${selectedCategory && selectedCategory !== 'All' ? ` in ${selectedCategory}` : ''}${selectedStore && selectedStore !== 'All' ? ` from ${selectedStore}` : ''}${searchTerm ? ` matching "${searchTerm}"` : ''}`;
+    if (hasSearched) {
+      return searchResults.length === 0
+        ? "No deals found matching your search criteria."
+        : "";
     }
-    return 'No deals available';
+
+    if (
+      searchTerm ||
+      (selectedCategory && selectedCategory !== "All") ||
+      (selectedStore && selectedStore !== "All")
+    ) {
+      return `No deals found${
+        selectedCategory && selectedCategory !== "All"
+          ? ` in ${selectedCategory}`
+          : ""
+      }${
+        selectedStore && selectedStore !== "All" ? ` from ${selectedStore}` : ""
+      }${searchTerm ? ` matching "${searchTerm}"` : ""}`;
+    }
+    return "No deals available";
   };
 
   if (loading) {
@@ -63,8 +99,12 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
       <div className="bg-white dark:bg-neutral-950">
         {/* Header */}
         <div className="mb-10 text-center">
-          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Student Deals</h1>
-          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">Loading the best offers for students...</p>
+          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+            Student Deals
+          </h1>
+          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+            Loading the best offers for students...
+          </p>
         </div>
         <DealSkeleton count={8} />
       </div>
@@ -76,13 +116,19 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
       <div className="bg-white dark:bg-neutral-950">
         {/* Header */}
         <div className="mb-10 text-center">
-          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Student Deals</h1>
-          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">Exclusive offers for students</p>
+          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+            Student Deals
+          </h1>
+          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+            Exclusive offers for students
+          </p>
         </div>
         <div className="text-center py-16">
-          <p className="text-neutral-500 dark:text-neutral-400 font-medium mb-4">{error}</p>
-          <Button 
-            onClick={refetch} 
+          <p className="text-neutral-500 dark:text-neutral-400 font-medium mb-4">
+            {error}
+          </p>
+          <Button
+            onClick={refetch}
             className="bg-black hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
           >
             Try Again
@@ -94,29 +140,29 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
 
   return (
     <div className="bg-white dark:bg-neutral-950">
-        {/* Hero Section - only show if showHeroSection is true */}
-        {showHeroSection && (
-          <div className="mb-6 text-center max-w-4xl mx-auto px-4">
-            <h1 className="md:text-3xl font-extrabold text-neutral-900 dark:text-neutral-300 mb-6 leading-tight">
-              Unlock Exclusive Student 
-              <span className="bg-gradient-to-r from-neutral-400 to-neutral-500 bg-clip-text text-transparent"> Discounts & Deals</span>
-            </h1>
-            {/* <p className="md:text-lg text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed max-w-3xl mx-auto font-medium">
+      {/* Hero Section - only show if showHeroSection is true */}
+      {showHeroSection && (
+        <div className="mb-6 text-center max-w-4xl mx-auto px-4">
+          <h1 className="md:text-3xl font-extrabold text-neutral-900 dark:text-neutral-300 mb-6 leading-tight">
+            Unlock Exclusive Student Discounts & Deals
+          </h1>
+          {/* <p className="md:text-lg text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed max-w-3xl mx-auto font-medium">
             Discover thousands of verified student perks, discounts, and special offers from top brands.
             </p> */}
-          </div>
-        )}
-        
-        {/* Hero Search Section - only show if showHeroSection is true */}
-        {showHeroSection && (
-          <HeroSearchSection 
-            onSearch={setSearchTerm}
-            onCategorySelect={setSelectedCategory}
-            searchTerm={searchTerm}
-          />
-        )}
-        
-        {/* Filters and Sort */}
+        </div>
+      )}
+
+      {/* Hero Search Section - only show if showHeroSection is true */}
+      {showHeroSection && (
+        <HeroSearchSection
+          onSearchResults={handleSearchResults}
+          defaultFilters={defaultSearchFilters}
+          placeholder="Search for deals, stores, or categories..."
+        />
+      )}
+
+      {/* Filters and Sort - only show if not using search */}
+      {!hasSearched && (
         <DealsFilters
           sortOptions={sortOptions}
           activeSort={activeSort}
@@ -127,15 +173,28 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
           selectedStore={selectedStore}
           searchTerm={searchTerm}
         />
-        
-        {/* Deals Grid */}
-        <DealsGrid
-          deals={displayedDeals}
-          loading={false}
-          emptyMessage={generateEmptyMessage()}
-        />
-        
-        {/* Load More */}
+      )}
+
+      {/* Search Results Header */}
+      {hasSearched && (
+        <div className="mb-6 text-center">
+          <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+            {isSearching
+              ? "Searching..."
+              : `Found ${searchResults.length} deals`}
+          </h2>
+        </div>
+      )}
+
+      {/* Deals Grid */}
+      <DealsGrid
+        deals={displayedDeals}
+        loading={isSearching}
+        emptyMessage={generateEmptyMessage()}
+      />
+
+      {/* Load More - only show if not using search */}
+      {!hasSearched && (
         <DealsLoadMore
           hasMore={hasMore}
           isLoadingMore={isLoadingMore}
@@ -143,6 +202,7 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
           totalDeals={filteredDeals.length}
           displayedCount={displayedDeals.length}
         />
-      </div>
+      )}
+    </div>
   );
 };
