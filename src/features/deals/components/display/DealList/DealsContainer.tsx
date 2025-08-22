@@ -6,7 +6,8 @@ import {
 } from "@/features/deals/hooks/deals/useDealsFilter";
 import { useDealsLoadMore } from "@/features/deals/hooks/deals/useDealsLoadMore";
 import { Button } from "@/shared/components/ui/button";
-import React from "react";
+import { Deal } from "@/shared/types/entities/deal";
+import React, { useCallback, useState } from "react";
 import HeroSearchSection from "../../search/HeroSearchSection/HeroSearchSection";
 import DealSkeleton from "../DealSkeleton/DealSkeleton";
 import { DealsFilters } from "./DealsFilters";
@@ -27,6 +28,12 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   excludeUniversitySpecific = false,
 }) => {
   const { deals, loading, error, refetch } = useDealsData();
+  const [searchResults, setSearchResults] = useState<Deal[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+
+  // Memoize the default filters to prevent recreating the object
+  const defaultSearchFilters = React.useMemo(() => ({ isActive: true }), []);
 
   const {
     filteredDeals,
@@ -44,14 +51,33 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
     excludeUniversitySpecific,
   });
 
+  // Use search results if available, otherwise use filtered deals
+  const dealsToDisplay = hasSearched ? searchResults : filteredDeals;
+
   const { displayedDeals, hasMore, isLoadingMore, loadMore } = useDealsLoadMore(
     {
-      deals: filteredDeals,
+      deals: dealsToDisplay,
       pageSize: 12,
     }
   );
 
+  // Handle search results
+  const handleSearchResults = useCallback(
+    (searchDeals: Deal[], loading: boolean, searched: boolean) => {
+      setSearchResults(searchDeals);
+      setIsSearching(loading);
+      setHasSearched(searched);
+    },
+    []
+  );
+
   const generateEmptyMessage = () => {
+    if (hasSearched) {
+      return searchResults.length === 0
+        ? "No deals found matching your search criteria."
+        : "";
+    }
+
     if (
       searchTerm ||
       (selectedCategory && selectedCategory !== "All") ||
@@ -129,39 +155,54 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
       {/* Hero Search Section - only show if showHeroSection is true */}
       {showHeroSection && (
         <HeroSearchSection
-          onSearch={setSearchTerm}
-          onCategorySelect={setSelectedCategory}
+          onSearchResults={handleSearchResults}
+          defaultFilters={defaultSearchFilters}
+          placeholder="Search for deals, stores, or categories..."
+        />
+      )}
+
+      {/* Filters and Sort - only show if not using search */}
+      {!hasSearched && (
+        <DealsFilters
+          sortOptions={sortOptions}
+          activeSort={activeSort}
+          onSortChange={setActiveSort}
+          totalDeals={deals.length}
+          filteredDeals={filteredDeals.length}
+          selectedCategory={selectedCategory}
+          selectedStore={selectedStore}
           searchTerm={searchTerm}
         />
       )}
 
-      {/* Filters and Sort */}
-      <DealsFilters
-        sortOptions={sortOptions}
-        activeSort={activeSort}
-        onSortChange={setActiveSort}
-        totalDeals={deals.length}
-        filteredDeals={filteredDeals.length}
-        selectedCategory={selectedCategory}
-        selectedStore={selectedStore}
-        searchTerm={searchTerm}
-      />
+      {/* Search Results Header */}
+      {hasSearched && (
+        <div className="mb-6 text-center">
+          <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+            {isSearching
+              ? "Searching..."
+              : `Found ${searchResults.length} deals`}
+          </h2>
+        </div>
+      )}
 
       {/* Deals Grid */}
       <DealsGrid
         deals={displayedDeals}
-        loading={false}
+        loading={isSearching}
         emptyMessage={generateEmptyMessage()}
       />
 
-      {/* Load More */}
-      <DealsLoadMore
-        hasMore={hasMore}
-        isLoadingMore={isLoadingMore}
-        onLoadMore={loadMore}
-        totalDeals={filteredDeals.length}
-        displayedCount={displayedDeals.length}
-      />
+      {/* Load More - only show if not using search */}
+      {!hasSearched && (
+        <DealsLoadMore
+          hasMore={hasMore}
+          isLoadingMore={isLoadingMore}
+          onLoadMore={loadMore}
+          totalDeals={filteredDeals.length}
+          displayedCount={displayedDeals.length}
+        />
+      )}
     </div>
   );
 };
