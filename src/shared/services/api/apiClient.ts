@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { authService } from '@/features/auth/services/authService';
+import axios, { AxiosInstance } from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -9,16 +9,16 @@ if (!process.env.NEXT_PUBLIC_API_URL && process.env.NODE_ENV === 'production') {
 
 let isRefreshing = false;
 let failedQueue: Array<{
-  resolve: (token: string) => void;
+  resolve: (value?: unknown) => void;
   reject: (error: any) => void;
 }> = [];
 
-const processQueue = (error: any, token: string | null = null) => {
+const processQueue = (error: any = null) => {
   failedQueue.forEach(({ resolve, reject }) => {
     if (error) {
       reject(error);
     } else {
-      resolve(token!);
+      resolve();
     }
   });
   failedQueue = [];
@@ -27,36 +27,28 @@ const processQueue = (error: any, token: string | null = null) => {
 const createApiClient = (isPublic = false): AxiosInstance => {
   const instance = axios.create({
     baseURL: API_BASE_URL,
-    withCredentials: true,
+    withCredentials: true, // Always send cookies with requests
     headers: {
       'Content-Type': 'application/json',
     },
   });
 
   if (!isPublic) {
-    instance.interceptors.request.use(
-      (config) => {
-        const token = authService.getAccessToken();
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
-
+    // Response interceptor to handle 401 errors and token refresh
     instance.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
 
+        // Handle 401 errors (unauthorized) by attempting token refresh
         if (error.response?.status === 401 && !originalRequest._retry) {
           if (isRefreshing) {
+            // If already refreshing, queue this request
             return new Promise((resolve, reject) => {
               failedQueue.push({ resolve, reject });
             })
-              .then((token) => {
-                originalRequest.headers.Authorization = `Bearer ${token}`;
+              .then(() => {
+                // Retry the original request after refresh completes
                 return instance(originalRequest);
               })
               .catch((err) => Promise.reject(err));
@@ -66,13 +58,15 @@ const createApiClient = (isPublic = false): AxiosInstance => {
           isRefreshing = true;
 
           try {
-            const newToken = await authService.refreshToken();
-            processQueue(null, newToken);
-            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            // Attempt to refresh the token (cookies will be updated automatically)
+            await authService.refreshToken();
+            processQueue();
+            // Retry the original request with new cookies
             return instance(originalRequest);
           } catch (refreshError) {
-            processQueue(refreshError, null);
-            authService.clearAccessToken();
+            processQueue(refreshError);
+            // Clear user data on refresh failure
+            localStorage.removeItem('user');
             if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
               window.location.href = '/login';
             }

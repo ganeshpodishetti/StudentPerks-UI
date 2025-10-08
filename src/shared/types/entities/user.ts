@@ -1,21 +1,22 @@
 // User entity types
 export interface User {
-  id: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  name?: string;
-  role: 'user' | 'admin';
-  createdAt: string;
-  updatedAt: string;
+  emailConfirmed: boolean;
+  roles: string[];
 }
 
 export interface CreateUserRequest {
   email: string;
   password: string;
-  name?: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface UpdateUserRequest {
-  name?: string;
+  firstName?: string;
+  lastName?: string;
   email?: string;
 }
 
@@ -25,7 +26,7 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
+  requiresMfa: boolean;
+  lockoutEnd: string | null;
+  message: string;
 }
