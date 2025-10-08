@@ -46,10 +46,21 @@ const LoginPage: React.FC = () => {
       });
       // router.push('/admin'); // Remove direct push, let useEffect handle it
     } catch (error: any) {
+      const errorMessage = error.response?.data?.message ||
+                          error.response?.data?.title ||
+                          error.message ||
+                          "An error occurred during login";
+      
+      // Check if error is related to email confirmation
+      const isEmailNotConfirmed = errorMessage.toLowerCase().includes('email') &&
+                                  (errorMessage.toLowerCase().includes('confirm') ||
+                                   errorMessage.toLowerCase().includes('verify'));
+      
       toast({
         title: "Error",
-        description: error.message || "An error occurred during login",
-        variant: "destructive"
+        description: errorMessage,
+        variant: "destructive",
+        duration: isEmailNotConfirmed ? 7000 : 5000,
       });
     } finally {
       setIsSubmitting(false);

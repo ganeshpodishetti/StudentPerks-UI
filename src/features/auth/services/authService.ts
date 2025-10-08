@@ -80,6 +80,13 @@ export const authService = {
     return response.data;
   },
 
+  async confirmEmail(token: string): Promise<{ message: string }> {
+    const response = await apiClient.get(`/api/auth/confirm-email?token=${encodeURIComponent(token)}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+
   async refreshToken(): Promise<void> {
     try {
       await apiClient.post('/api/auth/refresh-token', {}, {
