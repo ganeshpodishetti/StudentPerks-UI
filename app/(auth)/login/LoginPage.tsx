@@ -46,40 +46,39 @@ const LoginPage: React.FC = () => {
       });
       // router.push('/admin'); // Remove direct push, let useEffect handle it
     } catch (error: any) {
+      console.log('Login error:', error);
+      console.log('Error response:', error.response);
+      console.log('Error response data:', error.response?.data);
+      
       const errorMessage = error.response?.data?.message ||
                           error.response?.data?.title ||
                           error.message ||
                           "An error occurred during login";
       
+      const statusCode = error.response?.status;
+      
       // Check if error is related to email confirmation
-      const isEmailNotConfirmed = errorMessage.toLowerCase().includes('email') &&
-                                  (errorMessage.toLowerCase().includes('confirm') ||
-                                   errorMessage.toLowerCase().includes('verify') ||
-                                   errorMessage.toLowerCase().includes('not confirmed'));
+      // 403 Forbidden typically means email not confirmed
+      const isEmailNotConfirmed =
+        statusCode === 403 ||
+        (errorMessage.toLowerCase().includes('email') &&
+         (errorMessage.toLowerCase().includes('confirm') ||
+          errorMessage.toLowerCase().includes('verify') ||
+          errorMessage.toLowerCase().includes('not confirmed')));
       
       if (isEmailNotConfirmed) {
-        // Show a more helpful message with action button
+        // Show message and redirect to resend confirmation page
         toast({
           title: "Email Verification Required",
-          description: (
-            <div className="space-y-2">
-              <p>For security reasons, you must verify your email address before logging in.</p>
-              <p className="text-xs">This helps protect your account and ensures you can recover access if needed.</p>
-            </div>
-          ),
-          variant: "destructive",
-          duration: 10000,
-          action: (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => router.push('/resend-confirmation')}
-              className="mt-2"
-            >
-              Resend Email
-            </Button>
-          ),
+          description: "For security reasons, you must verify your email address before logging in. Redirecting you to resend confirmation email...",
+          variant: "default",
+          duration: 3000,
         });
+        
+        // Redirect to resend confirmation page with email pre-filled
+        setTimeout(() => {
+          router.push(`/resend-confirmation?email=${encodeURIComponent(formData.email)}`);
+        }, 2000);
       } else {
         toast({
           title: "Error",
