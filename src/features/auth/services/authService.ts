@@ -105,6 +105,36 @@ export const authService = {
     return response.data;
   },
 
+  async forgotPassword(email: string): Promise<{ message: string }> {
+    const response = await apiClient.post('/api/auth/forgot-password',
+      { email },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  },
+
+  async validateResetToken(token: string): Promise<{ message: string }> {
+    const response = await apiClient.get(`/api/auth/validate-reset-token?token=${encodeURIComponent(token)}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+
+  async resetPassword(token: string, newPassword: string, confirmNewPassword: string): Promise<{ message: string }> {
+    const response = await apiClient.post(`/api/auth/reset-password?token=${encodeURIComponent(token)}`,
+      {
+        newPassword,
+        confirmNewPassword
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  },
+
   async refreshToken(): Promise<void> {
     try {
       await apiClient.post('/api/auth/refresh-token', {}, {
