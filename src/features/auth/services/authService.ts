@@ -95,6 +95,16 @@ export const authService = {
     return response.data;
   },
 
+  async resendConfirmationEmail(email: string): Promise<{ message: string }> {
+    const response = await apiClient.post('/api/auth/send-confirmation-email',
+      { email },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  },
+
   async refreshToken(): Promise<void> {
     try {
       await apiClient.post('/api/auth/refresh-token', {}, {

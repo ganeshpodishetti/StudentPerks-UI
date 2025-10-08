@@ -54,14 +54,40 @@ const LoginPage: React.FC = () => {
       // Check if error is related to email confirmation
       const isEmailNotConfirmed = errorMessage.toLowerCase().includes('email') &&
                                   (errorMessage.toLowerCase().includes('confirm') ||
-                                   errorMessage.toLowerCase().includes('verify'));
+                                   errorMessage.toLowerCase().includes('verify') ||
+                                   errorMessage.toLowerCase().includes('not confirmed'));
       
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
-        duration: isEmailNotConfirmed ? 7000 : 5000,
-      });
+      if (isEmailNotConfirmed) {
+        // Show a more helpful message with action button
+        toast({
+          title: "Email Verification Required",
+          description: (
+            <div className="space-y-2">
+              <p>For security reasons, you must verify your email address before logging in.</p>
+              <p className="text-xs">This helps protect your account and ensures you can recover access if needed.</p>
+            </div>
+          ),
+          variant: "destructive",
+          duration: 10000,
+          action: (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push('/resend-confirmation')}
+              className="mt-2"
+            >
+              Resend Email
+            </Button>
+          ),
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -136,7 +162,7 @@ const LoginPage: React.FC = () => {
             </form>
           </CardContent>
           <CardFooter>
-            <div className="text-center w-full">
+            <div className="text-center w-full space-y-2">
               <p className="text-sm text-muted-foreground">
                 Don&apos;t have an account?{' '}
                 <Link
@@ -144,6 +170,15 @@ const LoginPage: React.FC = () => {
                   className="underline underline-offset-4 hover:text-primary"
                 >
                   Sign up
+                </Link>
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Need to verify your email?{' '}
+                <Link
+                  href="/resend-confirmation"
+                  className="underline underline-offset-4 hover:text-primary"
+                >
+                  Resend confirmation email
                 </Link>
               </p>
             </div>
