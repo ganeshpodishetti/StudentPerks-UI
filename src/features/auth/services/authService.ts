@@ -74,10 +74,18 @@ export const authService = {
   },
 
   async register(registerData: RegisterRequest) {
-    const response = await apiClient.post('/api/auth/register', registerData, {
-      withCredentials: true,
-    });
-    return response.data;
+    try {
+      console.log('authService: Registering user with data:', registerData);
+      const response = await apiClient.post('/api/auth/register', registerData, {
+        withCredentials: true,
+      });
+      console.log('authService: Registration successful:', response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error('authService: Registration failed:', error);
+      console.error('authService: Error response:', error.response?.data);
+      throw error;
+    }
   },
 
   async confirmEmail(token: string): Promise<{ message: string }> {
