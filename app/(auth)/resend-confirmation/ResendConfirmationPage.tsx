@@ -74,14 +74,14 @@ export default function ResendConfirmationPage() {
                 Email Sent!
               </CardTitle>
               <CardDescription className="text-center">
-                We've sent a confirmation email to your inbox
+                We&apos;ve sent a confirmation email to your inbox
               </CardDescription>
             </CardHeader>
             
             <CardContent className="space-y-4">
               <div className="text-center text-sm text-neutral-600 dark:text-neutral-400">
                 <p className="mb-2">Please check your email and click the confirmation link to verify your account.</p>
-                <p className="text-xs">If you don't see the email, check your spam folder.</p>
+                <p className="text-xs">If you don&apos;t see the email, check your spam folder.</p>
               </div>
             </CardContent>
 

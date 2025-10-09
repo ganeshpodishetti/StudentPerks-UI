@@ -1,6 +1,7 @@
-import { submittedDealService } from '../services/submittedDealService';
+import { useAuth } from '@/features/auth/contexts/AuthContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { createContext, ReactNode, useCallback, useMemo } from 'react';
+import { submittedDealService } from '../services/submittedDealService';
 
 // Query keys for unread deals
 export const unreadDealsKeys = {
@@ -26,6 +27,10 @@ interface UnreadDealsProviderProps {
 
 export const UnreadDealsProvider: React.FC<UnreadDealsProviderProps> = ({ children }) => {
   const queryClient = useQueryClient();
+  const { user, isAuthenticated } = useAuth();
+
+  // Only fetch unread count if user is authenticated and is an admin
+  const isAdmin = isAuthenticated && user?.roles?.includes('Admin');
 
   // Use React Query for unread count management
   const {
@@ -43,10 +48,11 @@ export const UnreadDealsProvider: React.FC<UnreadDealsProviderProps> = ({ childr
         return 0;
       }
     },
+    enabled: isAdmin, // Only run query if user is an admin
     staleTime: 2 * 60 * 1000, // 2 minutes - notifications should be relatively fresh
     gcTime: 5 * 60 * 1000, // 5 minutes
     refetchOnWindowFocus: true, // Refetch when user returns to tab
-    refetchInterval: 5 * 60 * 1000, // Poll every 5 minutes for new submissions
+    refetchInterval: isAdmin ? 5 * 60 * 1000 : false, // Poll every 5 minutes only for admins
   });
 
   const refreshCount = useCallback(async () => {

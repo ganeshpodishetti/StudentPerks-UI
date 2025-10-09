@@ -24,47 +24,22 @@ export const tokenTestUtils = {
     return `${encodedHeader}.${encodedPayload}.${signature}`;
   },
 
-  // Set a short-lived token for testing
-  setShortLivedToken(expirationInSeconds: number = 60): void {
-    const token = this.createShortLivedToken(expirationInSeconds);
-    authService.setAccessToken(token);
+  // Get user info from authService
+  getUserInfo(): {
+    user: any;
+    isAuthenticated: boolean;
+  } {
+    const user = authService.getUser();
+    
+    return {
+      user,
+      isAuthenticated: !!user
+    };
   },
 
-  // Get current token expiration info
-  getTokenInfo(): {
-    hasToken: boolean;
-    isExpired: boolean;
-    timeUntilExpiration: number;
-    expirationDate: Date | null;
-  } {
-    const token = authService.getAccessToken();
-    
-    if (!token) {
-      return {
-        hasToken: false,
-        isExpired: true,
-        timeUntilExpiration: 0,
-        expirationDate: null
-      };
-    }
-
-    const isExpired = authService.isTokenExpired();
-    const timeUntilExpiration = authService.getTimeUntilTokenExpires();
-    
-    let expirationDate: Date | null = null;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      expirationDate = new Date(payload.exp * 1000);
-    } catch (error) {
-      // Silently handle token parsing errors
-    }
-
-    return {
-      hasToken: true,
-      isExpired,
-      timeUntilExpiration,
-      expirationDate
-    };
+  // Check authentication status
+  async checkAuth(): Promise<boolean> {
+    return await authService.checkAuthStatus();
   }
 };
 

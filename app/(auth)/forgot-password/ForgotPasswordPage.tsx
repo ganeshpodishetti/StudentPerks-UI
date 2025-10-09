@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
             <CardContent className="space-y-4">
               <div className="text-center text-sm text-neutral-600 dark:text-neutral-400">
                 <p className="mb-2">If an account exists with the email <strong>{email}</strong>, you will receive a password reset link shortly.</p>
-                <p className="text-xs">If you don't see the email, check your spam folder.</p>
+                <p className="text-xs">If you don&apos;t see the email, check your spam folder.</p>
               </div>
             </CardContent>
 
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
               Forgot Password?
             </CardTitle>
             <CardDescription className="text-center">
-              Enter your email address and we'll send you a link to reset your password
+              Enter your email address and we&apos;ll send you a link to reset your password
             </CardDescription>
           </CardHeader>
           
@@ -131,7 +131,7 @@ export default function ForgotPasswordPage() {
 
               <div className="text-xs text-neutral-600 dark:text-neutral-400 bg-blue-50 dark:bg-blue-950/20 p-3 rounded-md border border-blue-200 dark:border-blue-800">
                 <p className="font-medium mb-1">🔒 Password Reset</p>
-                <p>For security reasons, we'll send a password reset link to your email if an account exists. The link will expire after a certain period.</p>
+                <p>For security reasons, we&apos;ll send a password reset link to your email if an account exists. The link will expire after a certain period.</p>
               </div>
 
               <Button
