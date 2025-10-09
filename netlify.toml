@@ -1,9 +1,6 @@
 [build]
-  # Build command - install dependencies and build the project for static export
-  command = "npm install && npm run build"
-  
-  # Directory to publish (where the static export files are)
-  publish = "out"
+  # Build command - Netlify will automatically detect Next.js and use the plugin
+  command = "npm run build"
   
   # Base directory (project root)
   base = "."
@@ -12,8 +9,5 @@
   # Use Node.js 18 or higher
   NODE_VERSION = "18"
 
-# Handle client-side routing for Next.js static export
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Netlify automatically installs and uses @netlify/plugin-nextjs
+# No need to manually specify it - it's auto-detected for Next.js projects

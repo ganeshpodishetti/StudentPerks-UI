@@ -2,8 +2,8 @@ const path = require('path')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Removed output: "export" to support dynamic routes and API calls
-  // Static export doesn't work well with authentication and dynamic content
+  // Use standard Next.js build for Netlify (not static export)
+  // This supports dynamic routes and server-side features
   trailingSlash: false,
   eslint: {
     // Ensure ESLint runs during builds to maintain code quality
