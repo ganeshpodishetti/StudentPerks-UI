@@ -2,7 +2,8 @@ const path = require('path')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
+  // Removed output: "export" to support dynamic routes and API calls
+  // Static export doesn't work well with authentication and dynamic content
   trailingSlash: false,
   eslint: {
     // Ensure ESLint runs during builds to maintain code quality
@@ -22,15 +23,32 @@ const nextConfig = {
     ],
   },
   images: {
-    domains: [
-      "localhost",
-      "studentperks-api-dev.azurewebsites.net",
-      "studentperks-api.azurewebsites.net", // production API
-      "images.unsplash.com", // if using Unsplash for placeholder images
-      "via.placeholder.com", // if using placeholder images
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+      {
+        protocol: 'https',
+        hostname: 'studentperks-api-dev.azurewebsites.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'studentperks-api.azurewebsites.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+      },
     ],
-    // Keep unoptimized true for static export compatibility
-    unoptimized: true,
     // Add image formats for better performance
     formats: ['image/webp', 'image/avif'],
   },

@@ -20,8 +20,19 @@ export const useAdminSubmittedDeals = () => {
       // Update global unread count
       const unreadCount = data.filter(deal => !deal.markedAsRead).length;
       updateCount(unreadCount);
-    } catch (_error) {
-      showError('Failed to load submitted deals');
+    } catch (error: any) {
+      // Handle 403 Forbidden - user is not authorized
+      if (error.response?.status === 403) {
+        showError('You do not have permission to access this resource. Please log in as an admin.');
+        // Redirect to login after a short delay
+        setTimeout(() => {
+          if (typeof window !== 'undefined') {
+            window.location.href = '/login';
+          }
+        }, 2000);
+      } else {
+        showError('Failed to load submitted deals');
+      }
     } finally {
       setIsLoading(false);
     }
