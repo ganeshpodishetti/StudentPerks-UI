@@ -1,9 +1,6 @@
 [build]
-  # Build command - install dependencies and build the project for static export
+  # Build command - install dependencies and build the project
   command = "npm install && npm run build"
-  
-  # Directory to publish (where the static export files are)
-  publish = "out"
   
   # Base directory (project root)
   base = "."
@@ -12,8 +9,6 @@
   # Use Node.js 18 or higher
   NODE_VERSION = "18"
 
-# Handle client-side routing for Next.js static export
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Use Netlify's Essential Next.js plugin for proper Next.js support
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
