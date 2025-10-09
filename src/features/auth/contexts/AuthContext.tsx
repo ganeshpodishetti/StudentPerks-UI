@@ -1,13 +1,7 @@
 'use client'
 import { authService } from '@/features/auth/services/authService';
+import { User } from '@/shared/types/entities/user';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
 
 interface AuthContextType {
   user: User | null;
@@ -36,29 +30,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check authentication status and auto-refresh if needed
+  // Check authentication status on mount
   const checkAuthStatus = async () => {
     try {
       setIsLoading(true);
       
-      // First check if we have stored token and user data
-      const token = authService.getAccessToken();
+      // Check if we have stored user data
       const userData = authService.getUser();
       
-      if (token && userData) {
-        // We have both token and user data, set user as authenticated
-        setUser(userData);
+      if (userData) {
+        // Verify authentication by attempting to refresh token
+        const isAuthenticated = await authService.checkAuthStatus();
+        if (isAuthenticated) {
+          setUser(userData);
+        } else {
+          setUser(null);
+          localStorage.removeItem('user');
+        }
       } else {
         setUser(null);
-        // Clear any stale data
-        localStorage.removeItem('user');
-        authService.clearAccessToken();
       }
     } catch (error) {
       console.error('AuthContext: Auth status check failed:', error);
       setUser(null);
       localStorage.removeItem('user');
-      authService.clearAccessToken();
     } finally {
       setIsLoading(false);
     }
@@ -69,48 +64,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     checkAuthStatus();
   }, []);
 
-  // Set up smart token refresh based on token expiration
-  useEffect(() => {
-    if (!user) return;
-
-    const setupTokenRefresh = () => {
-      const timeUntilExpiration = authService.getTimeUntilTokenExpires();
-      if (timeUntilExpiration <= 0) {
-        // Token already expired, try to refresh immediately
-        return;
-      }
-      // Disabled proactive token refresh for now due to backend issues
-    };
-
-    setupTokenRefresh();
-
-    return () => {
-      // Cleanup function (currently no timeout to clear since refresh is disabled)
-    };
-  }, [user]);
-
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
       const response = await authService.login({ email, password });
       
-      // Extract user data from the flat response structure
-      const userData = {
-        id: response.id,
-        firstName: response.firstName,
-        lastName: response.lastName,
-        email: response.email
-      };
+      // After successful login, get user data from localStorage (set by authService)
+      const userData = authService.getUser();
+      console.log('AuthContext: User data after login:', userData);
       
-      setUser(userData);
-      
-      // Wait a bit to ensure state is updated
-      await new Promise(resolve => setTimeout(resolve, 50));
+      if (userData) {
+        setUser(userData);
+      } else {
+        // If still no user data, something went wrong
+        throw new Error('Failed to retrieve user data after login');
+      }
       
     } catch (error) {
       console.error('AuthContext: Login failed:', error);
-      // Clear any existing tokens on login failure
-      authService.clearAccessToken();
       localStorage.removeItem('user');
       setUser(null);
       throw error;
@@ -141,21 +112,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const value: AuthContextType = {
     user,
     isLoading,
-    isAuthenticated: !!user && !!authService.getAccessToken(),
+    isAuthenticated: !!user,
     login,
     register,
     logout,
   };
-
-  // Debug auth state (remove logging for production)
-  // useEffect(() => {
-  //   // Uncomment for debugging only
-  //   // console.log('AuthContext: Auth state updated', {
-  //   //   isAuthenticated: !!user && !!authService.getAccessToken(),
-  //   //   hasUser: !!user,
-  //   //   hasToken: !!authService.getAccessToken()
-  //   // });
-  // }, [user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

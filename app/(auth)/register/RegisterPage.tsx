@@ -61,14 +61,19 @@ export default function RegisterPage() {
       await register(formData.firstName, formData.lastName, formData.email, formData.password);
       toast({
         title: "Success",
-        description: "Account created successfully! Please log in.",
+        description: "Account created successfully! Please check your email to confirm your account.",
+        duration: 7000,
       });
       router.push('/login'); // Redirect to login page
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration error:', error);
+      const errorMessage = error.response?.data?.message ||
+                          error.response?.data?.title ||
+                          error.message ||
+                          'Failed to create account. Please try again.';
       toast({
         title: "Error",
-        description: "Failed to create account. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {

@@ -3,7 +3,7 @@ const path = require('path')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
-  trailingSlash: true,
+  trailingSlash: false,
   eslint: {
     // Ensure ESLint runs during builds to maintain code quality
     ignoreDuringBuilds: false,

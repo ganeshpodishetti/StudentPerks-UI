@@ -1,7 +1,5 @@
 // authService.ts
-import { getTimeUntilExpiration, isTokenExpired } from '@/lib/tokenUtils';
 import { apiClient } from '@/shared/services/api/apiClient'; // Use shared apiClient
-import { clearGlobalTokenManager, getGlobalTokenManager } from '@/shared/services/tokenManager';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 if (!API_BASE_URL) {
@@ -24,102 +22,126 @@ export interface RegisterRequest {
 }
 
 export interface LoginResponse {
-  id: string;
+  requiresMfa: boolean;
+  lockoutEnd: string | null;
+  message: string;
+}
+
+export interface UserProfile {
   firstName: string;
   lastName: string;
   email: string;
-  accessToken: string;
+  emailConfirmed: boolean;
+  roles: string[];
 }
 
 export interface RefreshTokenResponse {
-  accessToken: string;
+  message: string;
 }
 
-let currentAccessToken: string | null = null;
-
 export const authService = {
-  setAccessToken(token: string) {
-    currentAccessToken = token;
-    localStorage.setItem('accessToken', token);
-    this.scheduleProactiveRefresh();
-  },
-
-  getAccessToken(): string | null {
-    if (!currentAccessToken) {
-      currentAccessToken = localStorage.getItem('accessToken');
-    }
-    return currentAccessToken;
-  },
-
-  clearAccessToken() {
-    currentAccessToken = null;
-    localStorage.removeItem('accessToken');
-    this.clearProactiveRefresh();
-  },
-
-  scheduleProactiveRefresh() {
+  async getUserProfile(): Promise<UserProfile | null> {
     try {
-      const tokenManager = getGlobalTokenManager(
-        async () => {
-          await this.refreshToken();
-        },
-        () => this.getAccessToken()
-      );
-      tokenManager.scheduleProactiveRefresh();
-    } catch (_error) {
-      // Silent fail for production, optionally log to remote error service
-    }
-  },
-
-  clearProactiveRefresh() {
-    try {
-      clearGlobalTokenManager();
-    } catch (_error) {
-      // Silent fail for production, optionally log to remote error service
+      const response = await apiClient.get('/api/auth/me', {
+        withCredentials: true,
+      });
+      console.log('authService: User profile from API:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+      return null;
     }
   },
 
   async login(loginData: LoginRequest): Promise<LoginResponse> {
-    const response = await apiClient.post('/api/auth/login', loginData);
+    const response = await apiClient.post('/api/auth/login', loginData, {
+      withCredentials: true,
+    });
     const responseData = response.data;
 
-    if (responseData.accessToken) {
-      this.setAccessToken(responseData.accessToken);
-    }
-
-    if (responseData.id && responseData.firstName && responseData.lastName && responseData.email) {
-      const userData = {
-        id: responseData.id,
-        firstName: responseData.firstName,
-        lastName: responseData.lastName,
-        email: responseData.email,
-      };
-      this.setUser(userData);
+    // Fetch user profile after successful login
+    const userProfile = await this.getUserProfile();
+    console.log('authService: Fetched user profile:', userProfile);
+    
+    if (userProfile) {
+      this.setUser(userProfile);
+      console.log('authService: User profile stored in localStorage');
+    } else {
+      console.error('authService: Failed to fetch user profile');
     }
 
     return responseData;
   },
 
   async register(registerData: RegisterRequest) {
-    const response = await apiClient.post('/api/auth/register', registerData);
+    try {
+      console.log('authService: Registering user with data:', registerData);
+      const response = await apiClient.post('/api/auth/register', registerData, {
+        withCredentials: true,
+      });
+      console.log('authService: Registration successful:', response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error('authService: Registration failed:', error);
+      console.error('authService: Error response:', error.response?.data);
+      throw error;
+    }
+  },
+
+  async confirmEmail(token: string): Promise<{ message: string }> {
+    const response = await apiClient.get(`/api/auth/confirm-email?token=${encodeURIComponent(token)}`, {
+      withCredentials: true,
+    });
     return response.data;
   },
 
-  async refreshToken(): Promise<string> {
+  async resendConfirmationEmail(email: string): Promise<{ message: string }> {
+    const response = await apiClient.post('/api/auth/send-confirmation-email',
+      { email },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  },
+
+  async forgotPassword(email: string): Promise<{ message: string }> {
+    const response = await apiClient.post('/api/auth/forgot-password',
+      { email },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  },
+
+  async validateResetToken(token: string): Promise<{ message: string }> {
+    const response = await apiClient.get(`/api/auth/validate-reset-token?token=${encodeURIComponent(token)}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  },
+
+  async resetPassword(token: string, newPassword: string, confirmNewPassword: string): Promise<{ message: string }> {
+    const response = await apiClient.post(`/api/auth/reset-password?token=${encodeURIComponent(token)}`,
+      {
+        newPassword,
+        confirmNewPassword
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  },
+
+  async refreshToken(): Promise<void> {
     try {
-      const response = await apiClient.post('/api/auth/refresh-token', {}, {
+      await apiClient.post('/api/auth/refresh-token', {}, {
         withCredentials: true,
       });
-      const { accessToken } = response.data;
-
-      if (accessToken) {
-        this.setAccessToken(accessToken);
-        return accessToken;
-      }
-
-      throw new Error('No access token received from refresh endpoint');
+      // Tokens are now in HTTP-only cookies, no need to handle them here
     } catch (error: any) {
-      this.clearAccessToken();
       if (error.response?.status === 401 || error.response?.status === 403) {
         throw new Error('Refresh token invalid or expired');
       }
@@ -130,43 +152,21 @@ export const authService = {
     }
   },
 
-  isTokenExpired(): boolean {
-    const token = this.getAccessToken();
-    if (!token) return true;
-    return isTokenExpired(token);
-  },
-
-  getTimeUntilTokenExpires(): number {
-    const token = this.getAccessToken();
-    if (!token) return 0;
-    return getTimeUntilExpiration(token);
-  },
-
   async checkAuthStatus(): Promise<boolean> {
-    const token = this.getAccessToken();
-
-    if (!token) {
+    try {
+      // Try to refresh the token to verify authentication
+      await this.refreshToken();
+      return true;
+    } catch (refreshError: any) {
+      if (
+        refreshError.message?.includes('invalid') ||
+        refreshError.message?.includes('expired') ||
+        refreshError.message?.includes('revoked')
+      ) {
+        localStorage.removeItem('user');
+      }
       return false;
     }
-
-    if (this.isTokenExpired()) {
-      try {
-        await this.refreshToken();
-        return true;
-      } catch (refreshError: any) {
-        if (
-          refreshError.message?.includes('invalid') ||
-          refreshError.message?.includes('expired') ||
-          refreshError.message?.includes('revoked')
-        ) {
-          this.clearAccessToken();
-          localStorage.removeItem('user');
-        }
-        return false;
-      }
-    }
-
-    return true;
   },
 
   getUser() {
@@ -184,27 +184,13 @@ export const authService = {
 
   async logout() {
     try {
-      await apiClient.post('/api/auth/logout');
+      await apiClient.post('/api/auth/logout', {}, {
+        withCredentials: true,
+      });
     } catch (_error) {
       // Silent fail for production, optionally log to remote error service
     } finally {
-      this.clearAccessToken();
       localStorage.removeItem('user');
-    }
-  },
-
-  getRefreshStatus() {
-    try {
-      const tokenManager = getGlobalTokenManager();
-      return {
-        isScheduled: tokenManager.isRefreshScheduled(),
-        timeUntilRefresh: tokenManager.getTimeUntilRefresh(),
-      };
-    } catch {
-      return {
-        isScheduled: false,
-        timeUntilRefresh: 0,
-      };
     }
   },
 };

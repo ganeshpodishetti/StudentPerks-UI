@@ -46,11 +46,47 @@ const LoginPage: React.FC = () => {
       });
       // router.push('/admin'); // Remove direct push, let useEffect handle it
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "An error occurred during login",
-        variant: "destructive"
-      });
+      console.log('Login error:', error);
+      console.log('Error response:', error.response);
+      console.log('Error response data:', error.response?.data);
+      
+      const errorMessage = error.response?.data?.message ||
+                          error.response?.data?.title ||
+                          error.message ||
+                          "An error occurred during login";
+      
+      const statusCode = error.response?.status;
+      
+      // Check if error is related to email confirmation
+      // 403 Forbidden typically means email not confirmed
+      const isEmailNotConfirmed =
+        statusCode === 403 ||
+        (errorMessage.toLowerCase().includes('email') &&
+         (errorMessage.toLowerCase().includes('confirm') ||
+          errorMessage.toLowerCase().includes('verify') ||
+          errorMessage.toLowerCase().includes('not confirmed')));
+      
+      if (isEmailNotConfirmed) {
+        // Show message and redirect to resend confirmation page
+        toast({
+          title: "Email Verification Required",
+          description: "For security reasons, you must verify your email address before logging in. Redirecting you to resend confirmation email...",
+          variant: "default",
+          duration: 3000,
+        });
+        
+        // Redirect to resend confirmation page with email pre-filled
+        setTimeout(() => {
+          router.push(`/resend-confirmation?email=${encodeURIComponent(formData.email)}`);
+        }, 2000);
+      } else {
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -100,9 +136,17 @@ const LoginPage: React.FC = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Password
-                </label>
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    Password
+                  </label>
+                  <Link
+                    href="/forgot-password"
+                    className="text-xs text-muted-foreground hover:text-primary underline underline-offset-4"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
                 <Input
                   id="password"
                   name="password"
@@ -125,7 +169,7 @@ const LoginPage: React.FC = () => {
             </form>
           </CardContent>
           <CardFooter>
-            <div className="text-center w-full">
+            <div className="text-center w-full space-y-2">
               <p className="text-sm text-muted-foreground">
                 Don&apos;t have an account?{' '}
                 <Link
@@ -133,6 +177,15 @@ const LoginPage: React.FC = () => {
                   className="underline underline-offset-4 hover:text-primary"
                 >
                   Sign up
+                </Link>
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Need to verify your email?{' '}
+                <Link
+                  href="/resend-confirmation"
+                  className="underline underline-offset-4 hover:text-primary"
+                >
+                  Resend confirmation email
                 </Link>
               </p>
             </div>
