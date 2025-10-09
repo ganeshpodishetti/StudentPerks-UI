@@ -35,27 +35,32 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       setIsLoading(true);
       
-      // Check if we have stored user data
-      const userData = authService.getUser();
-      
-      if (userData) {
-        // Verify authentication by attempting to refresh token
-        try {
-          const isAuthenticated = await authService.checkAuthStatus();
-          if (isAuthenticated) {
-            setUser(userData);
+      // Try to refresh token and get user profile
+      try {
+        const isAuthenticated = await authService.checkAuthStatus();
+        
+        if (isAuthenticated) {
+          // If refresh token is valid, fetch user profile using public client to avoid interceptor
+          const userProfile = await authService.getUserProfile(true);
+          
+          if (userProfile) {
+            authService.setUser(userProfile);
+            setUser(userProfile);
           } else {
+            // If we can't get user profile, clear everything
             setUser(null);
             localStorage.removeItem('user');
           }
-        } catch (authError) {
-          // If auth check fails (e.g., refresh token invalid), clear user data
-          console.error('AuthContext: Auth verification failed:', authError);
+        } else {
+          // Refresh token invalid, clear user data
           setUser(null);
           localStorage.removeItem('user');
         }
-      } else {
+      } catch (authError) {
+        // If auth check fails (e.g., refresh token invalid), clear user data
+        console.error('AuthContext: Auth verification failed:', authError);
         setUser(null);
+        localStorage.removeItem('user');
       }
     } catch (error) {
       console.error('AuthContext: Auth status check failed:', error);
@@ -67,7 +72,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
-    // Initial auth check
+    // Always perform auth check on mount
+    // This will validate refresh token and auto-login if valid
     checkAuthStatus();
   }, []);
 
