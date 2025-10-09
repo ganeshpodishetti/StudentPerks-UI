@@ -1,13 +1,9 @@
 [build]
-  # Build command - Netlify will automatically detect Next.js and use the plugin
   command = "npm run build"
-  
-  # Base directory (project root)
-  base = "."
+  publish = ".next"
 
 [build.environment]
-  # Use Node.js 18 or higher
   NODE_VERSION = "18"
 
-# Netlify automatically installs and uses @netlify/plugin-nextjs
-# No need to manually specify it - it's auto-detected for Next.js projects
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
