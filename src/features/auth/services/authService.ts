@@ -40,9 +40,10 @@ export interface RefreshTokenResponse {
 }
 
 export const authService = {
-  async getUserProfile(): Promise<UserProfile | null> {
+  async getUserProfile(usePublicClient: boolean = false): Promise<UserProfile | null> {
     try {
-      const response = await apiClient.get('/api/auth/me', {
+      const client = usePublicClient ? publicApiClient : apiClient;
+      const response = await client.get('/api/auth/me', {
         withCredentials: true,
       });
       console.log('authService: User profile from API:', response.data);
