@@ -40,10 +40,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (userData) {
         // Verify authentication by attempting to refresh token
-        const isAuthenticated = await authService.checkAuthStatus();
-        if (isAuthenticated) {
-          setUser(userData);
-        } else {
+        try {
+          const isAuthenticated = await authService.checkAuthStatus();
+          if (isAuthenticated) {
+            setUser(userData);
+          } else {
+            setUser(null);
+            localStorage.removeItem('user');
+          }
+        } catch (authError) {
+          // If auth check fails (e.g., refresh token invalid), clear user data
+          console.error('AuthContext: Auth verification failed:', authError);
           setUser(null);
           localStorage.removeItem('user');
         }

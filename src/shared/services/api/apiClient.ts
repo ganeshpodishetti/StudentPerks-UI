@@ -67,8 +67,20 @@ const createApiClient = (isPublic = false): AxiosInstance => {
             processQueue(refreshError);
             // Clear user data on refresh failure
             localStorage.removeItem('user');
-            if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
-              window.location.href = '/login';
+            
+            // Only redirect if not already on login or auth pages
+            if (typeof window !== 'undefined') {
+              const pathname = window.location.pathname;
+              const isAuthPage = pathname.includes('/login') ||
+                                 pathname.includes('/register') ||
+                                 pathname.includes('/forgot-password') ||
+                                 pathname.includes('/reset-password') ||
+                                 pathname.includes('/resend-confirmation') ||
+                                 pathname.includes('/confirm-email');
+              
+              if (!isAuthPage) {
+                window.location.href = '/login';
+              }
             }
             return Promise.reject(refreshError);
           } finally {

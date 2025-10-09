@@ -1,5 +1,5 @@
 // authService.ts
-import { apiClient } from '@/shared/services/api/apiClient'; // Use shared apiClient
+import { apiClient, publicApiClient } from '@/shared/services/api/apiClient'; // Use shared apiClient
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 if (!API_BASE_URL) {
@@ -137,7 +137,8 @@ export const authService = {
 
   async refreshToken(): Promise<void> {
     try {
-      await apiClient.post('/api/auth/refresh-token', {}, {
+      // Use publicApiClient to avoid the 401 interceptor loop
+      await publicApiClient.post('/api/auth/refresh-token', {}, {
         withCredentials: true,
       });
       // Tokens are now in HTTP-only cookies, no need to handle them here
