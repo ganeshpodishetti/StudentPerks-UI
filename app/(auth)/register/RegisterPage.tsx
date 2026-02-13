@@ -11,8 +11,6 @@ import { useState } from 'react';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
     password: ''
   });
@@ -58,7 +56,7 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      await register(formData.firstName, formData.lastName, formData.email, formData.password);
+      await register(formData.email, formData.password);
       toast({
         title: "Success",
         description: "Account created successfully! Please check your email to confirm your account.",
@@ -108,42 +106,6 @@ export default function RegisterPage() {
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label htmlFor="firstName" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    First name
-                  </label>
-                  <Input
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                    autoComplete="given-name"
-                    required
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    placeholder="First name"
-                    className="w-full"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="lastName" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                    Last name
-                  </label>
-                  <Input
-                    id="lastName"
-                    name="lastName"
-                    type="text"
-                    autoComplete="family-name"
-                    required
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    placeholder="Last name"
-                    className="w-full"
-                  />
-                </div>
-              </div>
-
               <div className="space-y-2">
                 <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
                   Email address
