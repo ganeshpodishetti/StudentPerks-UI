@@ -1,7 +1,7 @@
-import { User } from '@/shared/types/entities/user';
 import { Badge } from '@/shared/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { Mail, Shield, User as UserIcon, CheckCircle, XCircle } from 'lucide-react';
+import { User } from '@/shared/types/entities/user';
+import { AtSign, CheckCircle, Mail, Shield, User as UserIcon, XCircle } from 'lucide-react';
 
 interface UserProfileProps {
   user: User | null;
@@ -32,15 +32,35 @@ export default function UserProfile({ user }: UserProfileProps) {
         <CardDescription>Your account information and details</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Name Section */}
+        {/* Username Section */}
+        {user.username && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-muted-foreground">Username</label>
+            <div className="flex items-center gap-2">
+              <AtSign className="h-4 w-4 text-muted-foreground" />
+              <p className="text-base">{user.username}</p>
+            </div>
+          </div>
+        )}
+
+        {/* First Name Section */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">Full Name</label>
+          <label className="text-sm font-medium text-muted-foreground">First Name</label>
           <div className="flex items-center gap-2">
             <UserIcon className="h-4 w-4 text-muted-foreground" />
             <p className="text-base font-medium">
-              {user.firstName && user.lastName
-                ? `${user.firstName} ${user.lastName}`
-                : user.email || 'Name not available'}
+              {user.firstName || <span className="text-muted-foreground italic">Not provided</span>}
+            </p>
+          </div>
+        </div>
+
+        {/* Last Name Section */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-muted-foreground">Last Name</label>
+          <div className="flex items-center gap-2">
+            <UserIcon className="h-4 w-4 text-muted-foreground" />
+            <p className="text-base font-medium">
+              {user.lastName || <span className="text-muted-foreground italic">Not provided</span>}
             </p>
           </div>
         </div>

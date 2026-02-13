@@ -50,21 +50,26 @@ const LoginPage: React.FC = () => {
       console.log('Error response:', error.response);
       console.log('Error response data:', error.response?.data);
       
-      const errorMessage = error.response?.data?.message ||
+      const errorMessage = error.response?.data?.detail ||
+                          error.response?.data?.message ||
                           error.response?.data?.title ||
                           error.message ||
                           "An error occurred during login";
       
       const statusCode = error.response?.status;
+      const errorDetail = error.response?.data?.detail || '';
       
       // Check if error is related to email confirmation
-      // 403 Forbidden typically means email not confirmed
+      // Only redirect to email verification if the message specifically mentions confirmation/verification
+      // Do NOT redirect for "Invalid Email or Password!" errors
       const isEmailNotConfirmed =
-        statusCode === 403 ||
-        (errorMessage.toLowerCase().includes('email') &&
-         (errorMessage.toLowerCase().includes('confirm') ||
-          errorMessage.toLowerCase().includes('verify') ||
-          errorMessage.toLowerCase().includes('not confirmed')));
+        statusCode === 403 &&
+        !errorDetail.toLowerCase().includes('invalid') &&
+        (errorMessage.toLowerCase().includes('confirm') ||
+         errorMessage.toLowerCase().includes('verify') ||
+         errorMessage.toLowerCase().includes('not confirmed') ||
+         errorDetail.toLowerCase().includes('confirm') ||
+         errorDetail.toLowerCase().includes('verify'));
       
       if (isEmailNotConfirmed) {
         // Show message and redirect to resend confirmation page

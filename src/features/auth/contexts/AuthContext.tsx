@@ -8,7 +8,7 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
+  register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -103,8 +103,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const register = async (firstName: string, lastName: string, email: string, password: string) => {
-    const response = await authService.register({ firstName, lastName, email, password });
+  const register = async (email: string, password: string) => {
+    const response = await authService.register({ email, password });
     // After registration, you might want to automatically log in the user
     // or redirect them to login page - this depends on your backend behavior
     return response;
