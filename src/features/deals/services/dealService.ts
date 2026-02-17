@@ -88,6 +88,23 @@ export const dealService = {
     }
   },
 
+  // Get user-related deals - authentication required
+  async getUserDeals(): Promise<Deal[]> {
+    try {
+      const response = await apiClient.get('/api/deals/user');
+      
+      // Handle 204 No Content response (empty database)
+      if (response.status === 204 || !response.data) {
+        return [];
+      }
+      
+      // Ensure we always return an array
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (error: any) {
+      throw error;
+    }
+  },
+
   // Admin endpoints - authentication required
   async createDeal(dealData: CreateDealRequest): Promise<Deal> {
     try {

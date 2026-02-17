@@ -1,6 +1,5 @@
 import { dealService } from '@/features/deals/services/dealService';
 import { useErrorHandler } from '@/shared/contexts/ErrorContext';
-import { Deal } from '@/shared/types/entities/deal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Query keys for caching
@@ -13,6 +12,7 @@ export const dealKeys = {
   byCategory: (category: string) => [...dealKeys.all, 'category', category] as const,
   byStore: (store: string) => [...dealKeys.all, 'store', store] as const,
   byUniversity: (university: string) => [...dealKeys.all, 'university', university] as const,
+  userDeals: () => [...dealKeys.all, 'user'] as const,
 };
 
 // Fetch all deals
@@ -91,6 +91,28 @@ export const useDealQuery = (id: string) => {
     queryFn: () => dealService.getDeal(id),
     enabled: !!id,
     staleTime: 5 * 60 * 1000,
+    meta: {
+      onError: handleApiError,
+    },
+  });
+};
+
+// Fetch user-related deals (authenticated) - for admin page
+export const useUserDealsQuery = () => {
+  const { handleApiError } = useErrorHandler();
+  
+  return useQuery({
+    queryKey: dealKeys.userDeals(),
+    queryFn: () => dealService.getUserDeals(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: (failureCount, error: any) => {
+      // Don't retry on 4xx errors
+      if (error?.response?.status >= 400 && error?.response?.status < 500) {
+        return false;
+      }
+      return failureCount < 3;
+    },
     meta: {
       onError: handleApiError,
     },

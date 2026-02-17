@@ -1,11 +1,11 @@
 import { useAuth } from '@/features/auth/contexts/AuthContext';
-import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import {
-  useCreateDealMutation,
-  useDealsQuery,
-  useDeleteDealMutation,
-  useUpdateDealMutation
+    useCreateDealMutation,
+    useDeleteDealMutation,
+    useUpdateDealMutation,
+    useUserDealsQuery
 } from '@/features/deals/hooks/useDealsQuery';
+import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import { Deal } from '@/shared/types/entities/deal';
 import { useState } from 'react';
 
@@ -15,8 +15,8 @@ export const useAdminDeals = () => {
   const { user, logout } = useAuth();
   const { showError, showSuccess } = useErrorHandler();
 
-  // React Query hooks
-  const { data: deals = [], isLoading } = useDealsQuery();
+  // React Query hooks - fetch user-related deals after authentication
+  const { data: deals = [], isLoading } = useUserDealsQuery();
   const createDealMutation = useCreateDealMutation();
   const updateDealMutation = useUpdateDealMutation();
   const deleteDealMutation = useDeleteDealMutation();
@@ -25,8 +25,8 @@ export const useAdminDeals = () => {
   const testConnectivity = async () => {
     try {
       const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5254';
-      // Test 1: Basic API connection
-      const response = await fetch(API_BASE_URL + '/api/deals', {
+      // Test API connection with user endpoint
+      const response = await fetch(API_BASE_URL + '/api/deals/user', {
         credentials: 'include',
         method: 'GET'
       });
