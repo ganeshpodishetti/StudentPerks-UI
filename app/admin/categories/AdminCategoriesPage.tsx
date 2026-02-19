@@ -24,6 +24,8 @@ export default function AdminCategoriesPage() {
   } = useAdminCategories();
 
   const { logout } = useAuth();
+  
+  const isSuperAdmin = user?.roles?.includes('SuperAdmin') ?? false;
 
   const handleLogout = async () => {
     try {
@@ -50,8 +52,8 @@ export default function AdminCategoriesPage() {
 
       <AdminCategoriesList 
               categories={categories}
-              onEditCategory={handleEditCategory}
-              onDeleteCategory={handleDeleteCategory}
+              onEditCategory={isSuperAdmin ? handleEditCategory : undefined}
+              onDeleteCategory={isSuperAdmin ? handleDeleteCategory : undefined}
             />
 
       <CategoryFormModal

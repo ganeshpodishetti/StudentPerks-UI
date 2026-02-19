@@ -1,10 +1,10 @@
-import { DataTable, ColumnDef, cellRenderers } from '@/shared/components/data-display/DataTable';
 import { Store } from '@/features/stores/services/storeService';
+import { ColumnDef, DataTable, cellRenderers } from '@/shared/components/data-display/DataTable';
 
 interface AdminStoresTableProps {
   stores: Store[];
-  onEditStore: (store: Store) => void;
-  onDeleteStore: (storeId: string) => void;
+  onEditStore?: (store: Store) => void;
+  onDeleteStore?: (storeId: string) => void;
 }
 
 export default function AdminStoresTable({ stores, onEditStore, onDeleteStore }: AdminStoresTableProps) {
@@ -26,14 +26,17 @@ export default function AdminStoresTable({ stores, onEditStore, onDeleteStore }:
     }
   ];
 
+  // Only include actions if handlers are provided
+  const actions = (onEditStore || onDeleteStore) ? {
+    onEdit: onEditStore,
+    onDelete: onDeleteStore
+  } : undefined;
+
   return (
     <DataTable
       data={stores}
       columns={columns}
-      actions={{
-        onEdit: onEditStore,
-        onDelete: onDeleteStore
-      }}
+      actions={actions}
       emptyMessage="No stores found"
     />
   );

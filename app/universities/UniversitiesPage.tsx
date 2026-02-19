@@ -52,14 +52,14 @@ const UniversitiesPage: React.FC = () => {
       <div className="py-8 bg-background dark:bg-background transition-colors">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3">
               {[...Array(8)].map((_, index) => (
-                <Card key={index} className="p-4">
-                  <div className="flex items-center gap-3">
-                    <Skeleton className="w-10 h-10 rounded-md" />
+                <Card key={index} className="p-3 sm:p-4">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <Skeleton className="w-8 h-8 sm:w-10 sm:h-10 rounded-md" />
                     <div className="flex-1">
-                      <Skeleton className="h-4 w-3/4 mb-1" />
-                      <Skeleton className="h-3 w-1/2" />
+                      <Skeleton className="h-3 sm:h-4 w-3/4 mb-1" />
+                      <Skeleton className="h-2 sm:h-3 w-1/2 hidden sm:block" />
                     </div>
                   </div>
                 </Card>
@@ -92,15 +92,15 @@ const UniversitiesPage: React.FC = () => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3">
           {universities.map((university) => (
             <Card
               key={university.id}
               onClick={() => handleUniversitySelect(university.id)}
-              className="group hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-xl p-4 cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700"
+              className="group hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-xl p-3 sm:p-4 cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 flex items-center justify-center overflow-hidden rounded-md bg-neutral-100 dark:bg-neutral-800 shrink-0">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center overflow-hidden rounded-md bg-neutral-100 dark:bg-neutral-800 shrink-0">
                   {university.imageUrl ? (
                     <Image
                       src={university.imageUrl}
@@ -111,22 +111,22 @@ const UniversitiesPage: React.FC = () => {
                       unoptimized={university.imageUrl.startsWith('/')}
                     />
                   ) : (
-                    <span className="text-neutral-500 font-semibold text-sm">
+                    <span className="text-neutral-500 font-semibold text-xs sm:text-sm">
                       {university.code || university.name.substring(0, 2).toUpperCase()}
                     </span>
                   )}
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 truncate">
+                  <h3 className="text-xs sm:text-sm font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 truncate">
                     {university.name}
                   </h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs font-medium px-1.5 py-0.5 bg-neutral-800 text-white dark:bg-neutral-200 dark:text-neutral-800 rounded">
+                  <div className="flex items-center gap-1 sm:gap-2 mt-0.5 sm:mt-1">
+                    <span className="text-[10px] sm:text-xs font-medium px-1 sm:px-1.5 py-0.5 bg-neutral-800 text-white dark:bg-neutral-200 dark:text-neutral-800 rounded">
                       {university.code}
                     </span>
                     {getLocation(university) && (
-                      <span className="text-xs text-neutral-400 truncate">
+                      <span className="text-[10px] sm:text-xs text-neutral-400 truncate hidden sm:inline">
                         {getLocation(university)}
                       </span>
                     )}

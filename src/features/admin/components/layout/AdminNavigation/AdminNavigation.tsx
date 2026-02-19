@@ -1,8 +1,9 @@
 'use client'
-import { Badge } from '@/shared/components/ui/badge';
-import { Card, CardContent } from '@/shared/components/ui/card';
+import { useAuth } from '@/features/auth/contexts/AuthContext';
 import { useUnreadDealsCount } from '@/features/deals/hooks/useUnreadDealsCount';
 import { cn } from '@/lib/utils';
+import { Badge } from '@/shared/components/ui/badge';
+import { Card, CardContent } from '@/shared/components/ui/card';
 import { GraduationCap, LayoutDashboard, MessagesSquare, ShoppingBag, Store, Tag } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -10,45 +11,59 @@ import { usePathname } from 'next/navigation';
 export default function AdminNavigation() {
   const pathname = usePathname();
   const { unreadCount } = useUnreadDealsCount();
+  const { user } = useAuth();
+  
+  const isSuperAdmin = user?.roles?.includes('SuperAdmin') ?? false;
 
   const navItems = [
     {
       path: '/admin',
       label: 'Dashboard',
       icon: LayoutDashboard,
+      requiresSuperAdmin: false,
     },
     {
       path: '/admin/deals',
       label: 'Deals',
       icon: ShoppingBag,
+      requiresSuperAdmin: false,
     },
     {
       path: '/admin/submitted-deals',
       label: 'Submitted Deals',
       icon: MessagesSquare,
+      requiresSuperAdmin: true,
     },
     {
       path: '/admin/stores',
       label: 'Stores', 
       icon: Store,
+      requiresSuperAdmin: false,
     },
     {
       path: '/admin/categories',
       label: 'Categories',
       icon: Tag,
+      requiresSuperAdmin: false,
     },
     {
       path: '/admin/universities',
       label: 'Universities',
       icon: GraduationCap,
+      requiresSuperAdmin: false,
     },
   ];
+
+  // Filter nav items based on user role
+  const visibleNavItems = navItems.filter(item => 
+    !item.requiresSuperAdmin || isSuperAdmin
+  );
 
   return (
     <Card>
       <CardContent>
         <nav className="flex space-x-0 overflow-x-auto">
-          {navItems.map((item) => {
+          {visibleNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.path;
             

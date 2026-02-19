@@ -1,10 +1,10 @@
-import { DataTable, ColumnDef, cellRenderers } from '@/shared/components/data-display/DataTable';
 import { Category } from '@/features/categories/services/categoryService';
+import { ColumnDef, DataTable, cellRenderers } from '@/shared/components/data-display/DataTable';
 
 interface AdminCategoriesTableProps {
   categories: Category[];
-  onEditCategory: (category: Category) => void;
-  onDeleteCategory: (categoryId: string) => void;
+  onEditCategory?: (category: Category) => void;
+  onDeleteCategory?: (categoryId: string) => void;
 }
 
 export default function AdminCategoriesTable({ categories, onEditCategory, onDeleteCategory }: AdminCategoriesTableProps) {
@@ -26,14 +26,17 @@ export default function AdminCategoriesTable({ categories, onEditCategory, onDel
     }
   ];
 
+  // Only include actions if handlers are provided
+  const actions = (onEditCategory || onDeleteCategory) ? {
+    onEdit: onEditCategory,
+    onDelete: onDeleteCategory
+  } : undefined;
+
   return (
     <DataTable
       data={categories}
       columns={columns}
-      actions={{
-        onEdit: onEditCategory,
-        onDelete: onDeleteCategory
-      }}
+      actions={actions}
       emptyMessage="No categories found"
     />
   );

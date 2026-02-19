@@ -4,8 +4,8 @@ import AdminUniversitiesTable from '../AdminUniversitiesTable/AdminUniversitiesT
 
 interface AdminUniversitiesListProps {
   universities: University[];
-  onEditUniversity: (university: University) => void;
-  onDeleteUniversity: (universityId: string) => void;
+  onEditUniversity?: (university: University) => void;
+  onDeleteUniversity?: (universityId: string) => void;
 }
 
 export default function AdminUniversitiesList({ universities, onEditUniversity, onDeleteUniversity }: AdminUniversitiesListProps) {
@@ -14,7 +14,9 @@ export default function AdminUniversitiesList({ universities, onEditUniversity, 
       <CardHeader>
         <CardTitle>All Universities</CardTitle>
         <CardDescription>
-          Manage your universities, edit details, or remove outdated universities.
+          {onEditUniversity || onDeleteUniversity
+            ? 'Manage your universities, edit details, or remove outdated universities.'
+            : 'View all universities in the system.'}
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0 sm:p-3 md:p-6">
