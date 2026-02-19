@@ -1,13 +1,13 @@
 import { useAuth } from '@/features/auth/contexts/AuthContext';
+import { useUserDealsQuery } from '@/features/deals/hooks/useDealsQuery';
 import { useErrorHandler } from '@/shared/contexts/ErrorContext';
-import { useDealsQuery } from '@/features/deals/hooks/useDealsQuery';
 
 export const useAdminDashboard = () => {
   const { user, logout } = useAuth();
   const { showError, showSuccess } = useErrorHandler();
 
-  // React Query hooks
-  const { data: deals = [], isLoading } = useDealsQuery();
+  // React Query hooks - fetch user-specific deals
+  const { data: deals = [], isLoading } = useUserDealsQuery();
 
   // Test connectivity function
   const testConnectivity = async () => {

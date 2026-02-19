@@ -1,7 +1,7 @@
 // Migrated from src/components/pages/AdminDashboard.tsx
 'use client'
-import AdminOverview from '@/features/admin/components/dashboard/AdminOverview/AdminOverview';
 import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
+import AdminOverview from '@/features/admin/components/dashboard/AdminOverview/AdminOverview';
 import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
 import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
