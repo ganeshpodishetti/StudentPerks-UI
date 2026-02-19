@@ -24,18 +24,18 @@ export default function HomePage() {
 
       <main className="flex-grow py-14 md:py-16 bg-background dark:bg-background">
         <div className="w-full max-w-7xl mx-auto px-6 md:px-8 bg-background dark:bg-background">
-          <div className="flex gap-6">
-            {/* Category Sidebar */}
-            <aside className="hidden lg:block w-48 shrink-0">
-              <div className="sticky top-24">
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Category Sidebar - horizontal on mobile, vertical on desktop */}
+            <aside className="w-full md:w-48 shrink-0">
+              <div className="md:sticky md:top-24">
                 <h3 className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-3 flex items-center gap-2">
                   <Tag className="h-4 w-4" />
                   Categories
                 </h3>
-                <nav className="space-y-1">
+                <nav className="flex md:flex-col gap-2 md:gap-1 overflow-x-auto md:overflow-visible pb-2 md:pb-0">
                   <button
                     onClick={() => setSelectedCategory(undefined)}
-                    className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${
+                    className={`whitespace-nowrap text-left px-3 py-2 text-sm rounded-lg transition-colors ${
                       !selectedCategory
                         ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium'
                         : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
@@ -47,7 +47,7 @@ export default function HomePage() {
                     <button
                       key={category.id}
                       onClick={() => setSelectedCategory(category.name)}
-                      className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${
+                      className={`whitespace-nowrap text-left px-3 py-2 text-sm rounded-lg transition-colors ${
                         selectedCategory === category.name
                           ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium'
                           : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
@@ -65,6 +65,7 @@ export default function HomePage() {
               <DealsContainer 
                 excludeUniversitySpecific={true} 
                 initialCategory={selectedCategory}
+                showHeroSection={false}
                 key={selectedCategory}
               />
             </div>

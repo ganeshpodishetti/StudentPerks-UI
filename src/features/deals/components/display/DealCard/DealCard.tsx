@@ -54,24 +54,11 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
   const isExpiring = daysRemaining !== null && daysRemaining <= 7 && daysRemaining > 0;
 
   const cardContent = (
-    <Card className={`relative overflow-hidden flex flex-col group hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] active:shadow-md transition-all duration-300 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl ${compact ? 'p-4' : 'p-5'} ${isExpired ? 'opacity-70' : ''} h-full cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700 touch-manipulation`}>
-      {/* External link - positioned as subtle overlay */}
-      <div className="absolute top-5 right-5 z-10">
-        <a
-          href={deal.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => e.stopPropagation()}
-          className="bg-transparent text-neutral-400 hover:text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-200 active:text-neutral-700 dark:active:text-neutral-100 transition-colors touch-manipulation"
-        >
-          <ExternalLink className="h-5 w-5" />
-        </a>
-      </div>
-
+    <Card className={`relative overflow-hidden flex flex-col group hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] active:shadow-md transition-all duration-300 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl p-3 sm:p-4 ${compact ? 'sm:p-4' : 'sm:p-5'} ${isExpired ? 'opacity-70' : ''} h-full cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700 touch-manipulation`}>
       {/* Header with Icon and Title */}
-      <div className="flex items-center gap-4 mb-3">
+      <div className="flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3">
         <div className="shrink-0">
-          <div className={`${compact ? 'w-12' : 'w-14'} h-auto flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-105 rounded-md`}>
+          <div className={`w-10 sm:w-12 ${compact ? 'sm:w-12' : 'sm:w-14'} h-auto flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-105 rounded-md`}>
             {!imageError && imageUrl ? (
               <Image
                 src={imageUrl}
@@ -97,24 +84,21 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
           </div>
         </div>
         
-        {/* Deal Title and Promo */}
+        {/* Deal Title and Discount */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <h3 className={`${compact ? 'text-sm' : 'text-base'} font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors duration-300 line-clamp-2`}>
+          <h3 className={`text-sm ${compact ? 'sm:text-sm' : 'sm:text-base'} font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors duration-300 line-clamp-2`}>
             {deal.title}
           </h3>
-          <div className="mt-1.5 flex items-center gap-2 flex-wrap">
-            {deal.discount && (
+          {deal.discount && (
+            <div className="mt-1 sm:mt-1.5">
               <Badge 
                 variant="default" 
-                className="text-xs font-medium px-2 py-0.5 bg-neutral-800 hover:bg-neutral-700 text-white dark:bg-neutral-200 dark:hover:bg-neutral-300 dark:text-neutral-800"
+                className="text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 bg-neutral-800 hover:bg-neutral-700 text-white dark:bg-neutral-200 dark:hover:bg-neutral-300 dark:text-neutral-800"
               >
                 {deal.discount}
               </Badge>
-            )}
-            <Badge variant="outline" className="text-xs px-2 py-0.5 text-neutral-500 border-neutral-200 dark:border-neutral-700 bg-transparent">
-              {deal.promo ? deal.promo : 'No code'}
-            </Badge>
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -136,16 +120,27 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
         </div>
       )}
       
-      {/* Footer with Tags */}
+      {/* Footer with Tags and Link */}
       {showCategoryAndStore && (
-        <div className="flex items-center flex-wrap gap-3 mt-auto pt-2 border-t border-neutral-100 dark:border-neutral-800">
-          <span className="text-xs text-neutral-500 dark:text-neutral-400">
-            {deal.categoryName}
-          </span>
-          <span className="text-xs text-neutral-400 dark:text-neutral-500">•</span>
-          <span className="text-xs text-neutral-500 dark:text-neutral-400">
-            {deal.storeName}
-          </span>
+        <div className="flex items-center justify-between mt-auto pt-2 border-t border-neutral-100 dark:border-neutral-800">
+          <div className="flex items-center flex-wrap gap-2 sm:gap-3">
+            <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
+              {deal.categoryName}
+            </span>
+            <span className="text-[10px] sm:text-xs text-neutral-400 dark:text-neutral-500">•</span>
+            <span className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400">
+              {deal.storeName}
+            </span>
+          </div>
+          <a
+            href={deal.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300 transition-colors touch-manipulation"
+          >
+            <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          </a>
         </div>
       )}
     </Card>

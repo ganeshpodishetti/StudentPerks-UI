@@ -1,14 +1,13 @@
 // Migrated from src/components/pages/AdminStoresPage.tsx
 'use client'
-import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
 import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
+import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
 import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
 import AdminStoresList from '@/features/admin/components/tables/AdminStoresList/AdminStoresList';
-import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
-import StoreFormModal from '@/features/stores/components/forms/StoreFormModal/StoreFormModal';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { useAuth } from '@/features/auth/contexts/AuthContext';
 import { useAdminStores } from '@/features/admin/hooks/useAdminStores';
+import { useAuth } from '@/features/auth/contexts/AuthContext';
+import StoreFormModal from '@/features/stores/components/forms/StoreFormModal/StoreFormModal';
 
 export default function AdminStoresPage() {
   const {
@@ -25,6 +24,8 @@ export default function AdminStoresPage() {
   } = useAdminStores();
 
   const { logout } = useAuth();
+  
+  const isSuperAdmin = user?.roles?.includes('SuperAdmin') ?? false;
 
   const handleLogout = async () => {
     try {
@@ -51,8 +52,8 @@ export default function AdminStoresPage() {
 
       <AdminStoresList 
               stores={stores}
-              onEditStore={handleEditStore}
-              onDeleteStore={handleDeleteStore}
+              onEditStore={isSuperAdmin ? handleEditStore : undefined}
+              onDeleteStore={isSuperAdmin ? handleDeleteStore : undefined}
             />
 
       <StoreFormModal

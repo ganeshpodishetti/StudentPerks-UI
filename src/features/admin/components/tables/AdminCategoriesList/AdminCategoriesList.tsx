@@ -4,8 +4,8 @@ import AdminCategoriesTable from '../AdminCategoriesTable/AdminCategoriesTable';
 
 interface AdminCategoriesListProps {
   categories: Category[];
-  onEditCategory: (category: Category) => void;
-  onDeleteCategory: (categoryId: string) => void;
+  onEditCategory?: (category: Category) => void;
+  onDeleteCategory?: (categoryId: string) => void;
 }
 
 export default function AdminCategoriesList({ categories, onEditCategory, onDeleteCategory }: AdminCategoriesListProps) {
@@ -14,7 +14,9 @@ export default function AdminCategoriesList({ categories, onEditCategory, onDele
       <CardHeader>
         <CardTitle>All Categories</CardTitle>
         <CardDescription>
-          Manage your categories, edit details, or remove outdated categories.
+          {onEditCategory || onDeleteCategory
+            ? 'Manage your categories, edit details, or remove outdated categories.'
+            : 'View all categories in the system.'}
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0 sm:p-3 md:p-6">

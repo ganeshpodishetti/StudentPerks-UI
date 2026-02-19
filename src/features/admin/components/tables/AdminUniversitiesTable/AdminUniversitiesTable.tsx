@@ -3,8 +3,8 @@ import { University } from '@/shared/types/entities/university';
 
 interface AdminUniversitiesTableProps {
   universities: University[];
-  onEditUniversity: (university: University) => void;
-  onDeleteUniversity: (universityId: string) => void;
+  onEditUniversity?: (university: University) => void;
+  onDeleteUniversity?: (universityId: string) => void;
 }
 
 export default function AdminUniversitiesTable({ universities, onEditUniversity, onDeleteUniversity }: AdminUniversitiesTableProps) {
@@ -44,14 +44,17 @@ export default function AdminUniversitiesTable({ universities, onEditUniversity,
     }
   ];
 
+  // Only include actions if handlers are provided
+  const actions = (onEditUniversity || onDeleteUniversity) ? {
+    onEdit: onEditUniversity,
+    onDelete: onDeleteUniversity
+  } : undefined;
+
   return (
     <DataTable
       data={universities}
       columns={columns}
-      actions={{
-        onEdit: onEditUniversity,
-        onDelete: onDeleteUniversity
-      }}
+      actions={actions}
       emptyMessage="No universities found"
     />
   );

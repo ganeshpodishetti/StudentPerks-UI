@@ -4,8 +4,8 @@ import AdminStoresTable from '../AdminStoresTable/AdminStoresTable';
 
 interface AdminStoresListProps {
   stores: Store[];
-  onEditStore: (store: Store) => void;
-  onDeleteStore: (storeId: string) => void;
+  onEditStore?: (store: Store) => void;
+  onDeleteStore?: (storeId: string) => void;
 }
 
 export default function AdminStoresList({ stores, onEditStore, onDeleteStore }: AdminStoresListProps) {
@@ -14,7 +14,9 @@ export default function AdminStoresList({ stores, onEditStore, onDeleteStore }: 
       <CardHeader>
         <CardTitle>All Stores</CardTitle>
         <CardDescription>
-          Manage your stores, edit details, or remove outdated stores.
+          {onEditStore || onDeleteStore 
+            ? 'Manage your stores, edit details, or remove outdated stores.'
+            : 'View all stores in the system.'}
         </CardDescription>
       </CardHeader>
       <CardContent className="p-0 sm:p-3 md:p-6">
