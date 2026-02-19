@@ -1,11 +1,11 @@
 'use client'
-import { GraduationCap, Menu, Plus, Store, Tag, X } from 'lucide-react';
+import SubmittedDealFormModal from '@/features/deals/components/forms/SubmittedDealFormModal/SubmittedDealFormModal';
+import { useToast } from '@/shared/components/ui/use-toast';
+import { GraduationCap, Menu, Plus, Store, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import SubmittedDealFormModal from '@/features/deals/components/forms/SubmittedDealFormModal/SubmittedDealFormModal';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
-import { useToast } from '@/shared/components/ui/use-toast';
 
 interface NavigationProps {
   // Props removed as admin/user functionality is hidden
@@ -89,16 +89,6 @@ const Navigation: React.FC<NavigationProps> = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-6 lg:space-x-8">
             <Link 
-              href="/categories" 
-              className={`flex items-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white font-medium text-sm transition-colors focus:outline-none ${
-                pathname === '/categories' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
-              }`}
-            >
-              <Tag className="mr-1.5 h-3.5 w-3.5" />
-              Categories
-            </Link>
-            
-            <Link 
               href="/stores" 
               className={`flex items-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white font-medium text-sm transition-colors focus:outline-none ${
                 pathname === '/stores' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
@@ -156,19 +146,6 @@ const Navigation: React.FC<NavigationProps> = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-neutral-50 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
-              <Link 
-                href="/categories" 
-                className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                  pathname === '/categories' 
-                    ? 'bg-neutral-200 dark:bg-neutral-800 text-black dark:text-white' 
-                    : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white'
-                }`}
-                onClick={closeMobileMenu}
-              >
-                <Tag className="mr-2 h-4 w-4" />
-                Categories
-              </Link>
-              
               <Link 
                 href="/stores" 
                 className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${

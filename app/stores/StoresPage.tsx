@@ -1,17 +1,18 @@
 // Migrated from src/components/pages/StoresPage.tsx
 'use client'
-import DealList from '@/features/deals/components/display/DealList';
+import { Store as StoreType, fetchStores } from '@/features/stores/services/storeService';
+import { Card } from "@/shared/components/ui/card";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { useToast } from "@/shared/components/ui/use-toast";
-import { Store as StoreType, fetchStores } from '@/features/stores/services/storeService';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const StoresPage: React.FC = () => {
   const [stores, setStores] = useState<StoreType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedStore, setSelectedStore] = useState<string | null>(null);
   const { toast } = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     const loadStores = async () => {
@@ -37,23 +38,25 @@ const StoresPage: React.FC = () => {
   }, [toast]);
 
   const handleStoreSelect = (storeName: string) => {
-    setSelectedStore(storeName);
+    router.push(`/stores/${encodeURIComponent(storeName)}/deals`);
   };
 
   if (loading) {
     return (
-      <div className="py-12 bg-background dark:bg-background transition-colors">
+      <div className="py-8 bg-background dark:bg-background transition-colors">
         <div className="container mx-auto px-6 md:px-8">
-          <div className="max-w-5xl mx-auto">
-            <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">Stores</h1>
-            <div className="flex flex-wrap gap-3 justify-center mb-8">
-              {[...Array(12)].map((_, index) => (
-                <div
-                  key={index}
-                  className="py-2 px-4 rounded-full bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/40 shadow-sm w-40 h-10 flex items-center justify-center"
-                >
-                  <Skeleton className="h-5 w-24 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
-                </div>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              {[...Array(8)].map((_, index) => (
+                <Card key={index} className="p-4">
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="w-10 h-10 rounded-md" />
+                    <div className="flex-1">
+                      <Skeleton className="h-4 w-3/4 mb-1" />
+                      <Skeleton className="h-3 w-1/2" />
+                    </div>
+                  </div>
+                </Card>
               ))}
             </div>
           </div>
@@ -64,10 +67,9 @@ const StoresPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="py-12">
+      <div className="py-8">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-5xl mx-auto text-center">
-            <h1 className="text-3xl font-bold text-neutral-900 dark:text-white mb-4">Stores</h1>
             <div className="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 p-4 rounded-md">
               {error}
             </div>
@@ -84,49 +86,46 @@ const StoresPage: React.FC = () => {
   }
 
   return (
-    <div className="py-12">
-      <div className="container mx-auto px-6 md:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Header Section */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-neutral-900 dark:text-white mb-4">Stores</h1>
-          </div>
-          
-          {/* Stores Section - Always visible */}
-          {stores.length === 0 ? (
-            <div className="text-center py-12 bg-neutral-50 dark:bg-neutral-900 rounded-md border border-neutral-100 dark:border-neutral-800">
-              <p className="text-neutral-500 dark:text-neutral-400">No stores found</p>
-            </div>
-          ) : (
-            <div className="flex flex-wrap gap-3 justify-center mb-8">
-              {stores.map((store) => (
-                <button
-                  key={store.id}
-                  onClick={() => handleStoreSelect(store.name)}
-                  className="py-2 px-4 rounded-full bg-neutral-800 dark:bg-neutral-800/90 hover:bg-neutral-700 dark:hover:bg-neutral-700 hover:scale-105 hover:shadow-lg transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary/40 text-white font-medium text-sm shadow-sm border border-neutral-700/40 group"
-                >
-                  <span className="group-hover:text-white transition-colors duration-200">{store.name}</span>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Deals Section - Show when store is selected */}
-          {selectedStore && (
-            <div className="mt-8">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">
-                  {selectedStore} Deals
-                </h2>
-              </div>
-              <DealList initialStore={selectedStore} />
-            </div>
-          )}
+    <div className="container mx-auto p-4">
+      {stores.length === 0 ? (
+        <div className="text-center py-8">
+          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No Stores Found</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
+            Check back soon!
+          </p>
         </div>
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+          {stores.map((store) => (
+            <Card
+              key={store.id}
+              onClick={() => handleStoreSelect(store.name)}
+              className="group hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-xl p-4 cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 flex items-center justify-center overflow-hidden rounded-md bg-neutral-100 dark:bg-neutral-800 shrink-0">
+                  <span className="text-neutral-500 font-semibold text-sm">
+                    {store.name.substring(0, 2).toUpperCase()}
+                  </span>
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 truncate">
+                    {store.name}
+                  </h3>
+                  {store.description && (
+                    <p className="text-xs text-neutral-400 mt-0.5 truncate">
+                      {store.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 export default StoresPage;
-// ...original code will be placed here...

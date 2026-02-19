@@ -1,8 +1,9 @@
 // Migrated from src/components/pages/UniversitiesPage.tsx
 'use client'
+import { University, fetchUniversities } from '@/features/universities/services/universityService';
+import { Card } from "@/shared/components/ui/card";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { useToast } from "@/shared/components/ui/use-toast";
-import { University, fetchUniversities } from '@/features/universities/services/universityService';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -41,27 +42,34 @@ const UniversitiesPage: React.FC = () => {
     router.push(`/universities/${universityId}/deals`);
   };
 
+  const getLocation = (university: University) => {
+    const parts = [university.city, university.state, university.country].filter(Boolean);
+    return parts.join(', ') || '';
+  };
+
   if (loading) {
-      return (
-        <div className="py-12 bg-background dark:bg-background transition-colors">
-          <div className="container mx-auto px-6 md:px-8">
-            <div className="max-w-5xl mx-auto">
-              <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">Universities</h1>
-              <div className="flex flex-wrap gap-3 justify-center mb-8">
-                {[...Array(12)].map((_, index) => (
-                  <div
-                    key={index}
-                    className="py-2 px-4 rounded-full bg-neutral-100 dark:bg-neutral-800/80 border border-neutral-200 dark:border-neutral-700/40 shadow-sm w-40 h-10 flex items-center justify-center"
-                  >
-                    <Skeleton className="h-5 w-24 bg-neutral-200 dark:bg-neutral-700 rounded-full" />
+    return (
+      <div className="py-8 bg-background dark:bg-background transition-colors">
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              {[...Array(8)].map((_, index) => (
+                <Card key={index} className="p-4">
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="w-10 h-10 rounded-md" />
+                    <div className="flex-1">
+                      <Skeleton className="h-4 w-3/4 mb-1" />
+                      <Skeleton className="h-3 w-1/2" />
+                    </div>
                   </div>
-                ))}
-              </div>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
+  }
 
   if (error) {
     return (
@@ -76,46 +84,56 @@ const UniversitiesPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Universities</h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Browse universities and discover exclusive student deals and offers.
-        </p>
-      </div>
-
       {universities.length === 0 ? (
         <div className="text-center py-8">
-          <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No Universities Found</h2>
-          <p className="text-gray-500 dark:text-gray-400">
-            We&apos;re working on adding universities to our platform. Check back soon!
+          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No Universities Found</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
+            Check back soon!
           </p>
         </div>
       ) : (
-        <div className="flex flex-wrap gap-3 justify-center mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           {universities.map((university) => (
-            <button
+            <Card
               key={university.id}
               onClick={() => handleUniversitySelect(university.id)}
-              className="flex items-center gap-2 px-3 py-2 rounded-full bg-neutral-900/90 dark:bg-neutral-800/90 hover:bg-neutral-900 dark:hover:bg-neutral-900 active:bg-neutral-800 dark:active:bg-neutral-700 hover:scale-105 active:scale-95 hover:shadow-lg active:shadow-md transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary/40 text-white font-medium text-sm shadow-sm border border-neutral-800/40 group touch-manipulation"
+              className="group hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-xl p-4 cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700"
             >
-              <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden transition-all duration-200">
-                {university.imageUrl ? (
-                  <Image
-                    src={university.imageUrl}
-                    alt={university.name}
-                    width={32}
-                    height={32}
-                    className="w-full h-full object-cover"
-                    unoptimized={university.imageUrl.startsWith('/')}
-                  />
-                ) : (
-                  <span className="text-white font-bold text-xs opacity-60 group-hover:opacity-90 group-active:opacity-100 transition-opacity duration-200">
-                    {university.name.substring(0, 2).toUpperCase()}
-                  </span>
-                )}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 flex items-center justify-center overflow-hidden rounded-md bg-neutral-100 dark:bg-neutral-800 shrink-0">
+                  {university.imageUrl ? (
+                    <Image
+                      src={university.imageUrl}
+                      alt={university.name}
+                      width={40}
+                      height={40}
+                      className="object-contain rounded-md"
+                      unoptimized={university.imageUrl.startsWith('/')}
+                    />
+                  ) : (
+                    <span className="text-neutral-500 font-semibold text-sm">
+                      {university.code || university.name.substring(0, 2).toUpperCase()}
+                    </span>
+                  )}
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 truncate">
+                    {university.name}
+                  </h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs font-medium px-1.5 py-0.5 bg-neutral-800 text-white dark:bg-neutral-200 dark:text-neutral-800 rounded">
+                      {university.code}
+                    </span>
+                    {getLocation(university) && (
+                      <span className="text-xs text-neutral-400 truncate">
+                        {getLocation(university)}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
-              <span className="group-hover:text-white group-active:text-gray-100 transition-colors duration-200">{university.code}</span>
-            </button>
+            </Card>
           ))}
         </div>
       )}
