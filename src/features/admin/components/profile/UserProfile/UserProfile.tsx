@@ -8,9 +8,6 @@ interface UserProfileProps {
 }
 
 export default function UserProfile({ user }: UserProfileProps) {
-  // Debug: Log user data
-  console.log('UserProfile - user data:', user);
-
   if (!user) {
     return (
       <Card className="border-0">

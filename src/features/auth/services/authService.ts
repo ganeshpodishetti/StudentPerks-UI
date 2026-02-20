@@ -44,7 +44,6 @@ export const authService = {
       const response = await client.get('/api/auth/me', {
         withCredentials: true,
       });
-      console.log('authService: User profile from API:', response.data);
       return response.data;
     } catch (error) {
       console.error('Failed to fetch user profile:', error);
@@ -60,31 +59,19 @@ export const authService = {
 
     // Fetch user profile after successful login
     const userProfile = await this.getUserProfile();
-    console.log('authService: Fetched user profile:', userProfile);
     
     if (userProfile) {
       this.setUser(userProfile);
-      console.log('authService: User profile stored in localStorage');
-    } else {
-      console.error('authService: Failed to fetch user profile');
     }
 
     return responseData;
   },
 
   async register(registerData: RegisterRequest) {
-    try {
-      console.log('authService: Registering user with data:', registerData);
-      const response = await apiClient.post('/api/auth/register', registerData, {
-        withCredentials: true,
-      });
-      console.log('authService: Registration successful:', response.data);
-      return response.data;
-    } catch (error: any) {
-      console.error('authService: Registration failed:', error);
-      console.error('authService: Error response:', error.response?.data);
-      throw error;
-    }
+    const response = await apiClient.post('/api/auth/register', registerData, {
+      withCredentials: true,
+    });
+    return response.data;
   },
 
   async confirmEmail(token: string): Promise<{ message: string }> {

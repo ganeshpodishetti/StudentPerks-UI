@@ -66,7 +66,6 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
 
       // Don't search if the query is empty
       if (!trimmedQuery) {
-        console.log("Search aborted: empty query");
         return;
       }
 
@@ -76,8 +75,6 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
         isActive: memoizedDefaultFilters.isActive ?? true, // Default to active deals only
       };
 
-      console.log("Search params before cleanup:", searchParams);
-
       // Remove undefined values
       Object.keys(searchParams).forEach((key) => {
         if (searchParams[key as keyof typeof searchParams] === undefined) {
@@ -85,7 +82,6 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
         }
       });
 
-      console.log("Search params after cleanup:", searchParams);
       searchDeals(searchParams);
     },
     [searchDeals, memoizedDefaultFilters]

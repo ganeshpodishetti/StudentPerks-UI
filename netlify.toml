@@ -4,6 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # Skip secret scanning for public env vars (they're meant to be in client bundle)
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_API_URL"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
