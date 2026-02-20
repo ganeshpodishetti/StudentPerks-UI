@@ -10,7 +10,7 @@ interface AdminDealsListProps {
 
 export default function AdminDealsList({ deals, onEditDeal, onDeleteDeal }: AdminDealsListProps) {
   return (
-    <Card className="w-full">
+    <Card className="w-full border-0">
       <div className="w-full">
         <AdminDealsTable 
           deals={deals}

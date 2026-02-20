@@ -1,26 +1,48 @@
 'use client'
+import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
+import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
+import { useAuth } from '@/features/auth/contexts/AuthContext';
 import StoreForm from '@/features/stores/components/forms/StoreForm';
 import { useCreateStoreMutation } from '@/features/stores/hooks/useStoresQuery';
 import { CreateStoreRequest } from '@/features/stores/services/storeService';
-import { useToast } from '@/shared/components/ui/use-toast';
+import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 
 export default function NewStorePage() {
-  const { toast } = useToast();
+  const { isLoading: authLoading } = useAuth();
+  const { showSuccess, showError } = useErrorHandler();
   const createStoreMutation = useCreateStoreMutation();
 
   const handleSave = async (storeData: CreateStoreRequest) => {
-    await createStoreMutation.mutateAsync(storeData);
-    toast({
-      title: "Store created",
-      description: "The store has been created successfully.",
-    });
+    try {
+      await createStoreMutation.mutateAsync(storeData);
+      showSuccess('Store created successfully');
+    } catch (error) {
+      showError('Failed to create store');
+      throw error;
+    }
   };
 
+  if (authLoading) {
+    return (
+      <AdminLayout>
+        <AdminLoadingSpinner />
+      </AdminLayout>
+    );
+  }
+
   return (
-    <StoreForm
-      onSave={handleSave}
-      title="Create New Store"
-      description="Add a new store to the system"
-    />
+    <AdminLayout>
+      <AdminHeader 
+        title="Create New Store"
+        description="Fill in the details to create a new store"
+      />
+
+      <StoreForm
+        onSave={handleSave}
+        title="Store Information"
+        description="Enter the details for your new store."
+      />
+    </AdminLayout>
   );
 }

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { Card, CardContent } from '@/shared/components/ui/card';
 import { University } from "@/shared/types/entities/university";
 import AdminUniversitiesTable from '../AdminUniversitiesTable/AdminUniversitiesTable';
 
@@ -10,15 +10,7 @@ interface AdminUniversitiesListProps {
 
 export default function AdminUniversitiesList({ universities, onEditUniversity, onDeleteUniversity }: AdminUniversitiesListProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>All Universities</CardTitle>
-        <CardDescription>
-          {onEditUniversity || onDeleteUniversity
-            ? 'Manage your universities, edit details, or remove outdated universities.'
-            : 'View all universities in the system.'}
-        </CardDescription>
-      </CardHeader>
+    <Card className="border-0">
       <CardContent className="p-0 sm:p-3 md:p-6">
         {/* Desktop Table View */}
         <AdminUniversitiesTable 

@@ -1,26 +1,48 @@
 'use client'
+import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
+import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
+import { useAuth } from '@/features/auth/contexts/AuthContext';
 import UniversityForm from '@/features/universities/components/forms/UniversityForm';
 import { useCreateUniversityMutation } from '@/features/universities/hooks/useUniversitiesQuery';
-import { useToast } from '@/shared/components/ui/use-toast';
+import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import { CreateUniversityRequest } from '@/shared/types/entities/university';
 
 export default function NewUniversityPage() {
-  const { toast } = useToast();
+  const { isLoading: authLoading } = useAuth();
+  const { showSuccess, showError } = useErrorHandler();
   const createUniversityMutation = useCreateUniversityMutation();
 
   const handleSave = async (universityData: CreateUniversityRequest) => {
-    await createUniversityMutation.mutateAsync(universityData);
-    toast({
-      title: "University created",
-      description: "The university has been created successfully.",
-    });
+    try {
+      await createUniversityMutation.mutateAsync(universityData);
+      showSuccess('University created successfully');
+    } catch (error) {
+      showError('Failed to create university');
+      throw error;
+    }
   };
 
+  if (authLoading) {
+    return (
+      <AdminLayout>
+        <AdminLoadingSpinner />
+      </AdminLayout>
+    );
+  }
+
   return (
-    <UniversityForm
-      onSave={handleSave}
-      title="Create New University"
-      description="Add a new university to the system"
-    />
+    <AdminLayout>
+      <AdminHeader 
+        title="Create New University"
+        description="Fill in the details to create a new university"
+      />
+
+      <UniversityForm
+        onSave={handleSave}
+        title="University Information"
+        description="Enter the details for your new university."
+      />
+    </AdminLayout>
   );
 }

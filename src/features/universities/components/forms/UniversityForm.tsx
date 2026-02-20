@@ -114,7 +114,7 @@ export default function UniversityForm({ university, onSave, title, description 
         Back to Universities
       </Button>
 
-      <Card>
+      <Card className="border-0">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>

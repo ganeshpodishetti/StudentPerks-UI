@@ -61,7 +61,7 @@ export default function AdminSubmittedDealsPage() {
         <SubmittedDealStats {...stats} />
 
         {/* Submitted Deals List */}
-        <Card>
+        <Card className="border-0">
           <CardHeader>
             <CardTitle>Deal Submissions</CardTitle>
             <CardDescription>

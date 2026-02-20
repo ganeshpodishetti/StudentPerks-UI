@@ -30,7 +30,7 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
     <div className="grid gap-3 sm:gap-4 md:gap-6">
       <div className="grid md:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
         {/* Recent Deals */}
-        <Card>
+        <Card className="border-0">
           <CardHeader>
             <CardTitle className="text-base sm:text-lg flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
@@ -64,7 +64,7 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
         </Card>
 
         {/* Expiring Soon */}
-        <Card>
+        <Card className="border-0">
           <CardHeader>
             <CardTitle className="text-base sm:text-lg flex items-center gap-2">
               <Clock className="h-4 w-4" />
@@ -76,7 +76,7 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
             {expiringDeals.length > 0 ? (
               <div className="space-y-2">
                 {expiringDeals.map((deal) => (
-                  <div key={deal.id} className="flex justify-between items-start p-2 bg-muted dark:bg-muted rounded border border-border dark:border-border">
+                  <div key={deal.id} className="flex justify-between items-start p-2 bg-muted dark:bg-muted rounded">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
                         {deal.title}

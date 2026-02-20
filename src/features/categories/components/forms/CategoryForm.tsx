@@ -86,7 +86,7 @@ export default function CategoryForm({ category, onSave, title, description }: C
         Back to Categories
       </Button>
 
-      <Card>
+      <Card className="border-0">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>

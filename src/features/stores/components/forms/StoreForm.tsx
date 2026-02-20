@@ -81,7 +81,7 @@ export default function StoreForm({ store, onSave, title, description }: StoreFo
         Back to Stores
       </Button>
 
-      <Card>
+      <Card className="border-0">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>

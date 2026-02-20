@@ -1,5 +1,5 @@
 import { Category } from '@/features/categories/services/categoryService';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { Card, CardContent } from '@/shared/components/ui/card';
 import AdminCategoriesTable from '../AdminCategoriesTable/AdminCategoriesTable';
 
 interface AdminCategoriesListProps {
@@ -10,15 +10,7 @@ interface AdminCategoriesListProps {
 
 export default function AdminCategoriesList({ categories, onEditCategory, onDeleteCategory }: AdminCategoriesListProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>All Categories</CardTitle>
-        <CardDescription>
-          {onEditCategory || onDeleteCategory
-            ? 'Manage your categories, edit details, or remove outdated categories.'
-            : 'View all categories in the system.'}
-        </CardDescription>
-      </CardHeader>
+    <Card className="border-0">
       <CardContent className="p-0 sm:p-3 md:p-6">
         {/* Desktop Table View */}
         <AdminCategoriesTable 

@@ -152,7 +152,7 @@ export default function DealForm({ deal, onSave, title, description }: DealFormP
         Back to Deals
       </Button>
 
-      <Card>
+      <Card className="border-0">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
