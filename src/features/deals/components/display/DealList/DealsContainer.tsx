@@ -1,8 +1,8 @@
 "use client";
 import { useDealsData } from "@/features/deals/hooks/deals/useDealsData";
 import {
-  sortOptions,
-  useDealsFilter,
+    sortOptions,
+    useDealsFilter,
 } from "@/features/deals/hooks/deals/useDealsFilter";
 import { useDealsLoadMore } from "@/features/deals/hooks/deals/useDealsLoadMore";
 import { Button } from "@/shared/components/ui/button";
@@ -19,6 +19,7 @@ interface DealsContainerProps {
   initialStore?: string;
   showHeroSection?: boolean;
   excludeUniversitySpecific?: boolean;
+  showFilters?: boolean;
 }
 
 export const DealsContainer: React.FC<DealsContainerProps> = ({
@@ -26,6 +27,7 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   initialStore,
   showHeroSection = true,
   excludeUniversitySpecific = false,
+  showFilters = true,
 }) => {
   const { deals, loading, error, refetch } = useDealsData();
   const [searchResults, setSearchResults] = useState<Deal[]>([]);
@@ -161,8 +163,8 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
         />
       )}
 
-      {/* Filters and Sort - only show if not using search */}
-      {!hasSearched && (
+      {/* Filters and Sort - only show if not using search and showFilters is true */}
+      {!hasSearched && showFilters && (
         <DealsFilters
           sortOptions={sortOptions}
           activeSort={activeSort}

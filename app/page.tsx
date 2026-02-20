@@ -66,6 +66,7 @@ export default function HomePage() {
                 excludeUniversitySpecific={true} 
                 initialCategory={selectedCategory}
                 showHeroSection={false}
+                showFilters={false}
                 key={selectedCategory}
               />
             </div>
