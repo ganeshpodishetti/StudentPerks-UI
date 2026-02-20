@@ -1,5 +1,4 @@
 import { Deal } from '@/shared/types/entities/deal';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 
 interface UseDealsLoadMoreReturn {
   displayedDeals: Deal[];
@@ -11,51 +10,33 @@ interface UseDealsLoadMoreReturn {
 
 interface UseDealsLoadMoreProps {
   deals: Deal[];
-  pageSize?: number;
+  hasMore?: boolean;
+  isFetchingNextPage?: boolean;
+  fetchNextPage?: () => void;
+  pageSize?: number; // kept for backward compatibility but not used for server pagination
 }
 
 export const useDealsLoadMore = ({
   deals,
-  pageSize = 12,
+  hasMore = false,
+  isFetchingNextPage = false,
+  fetchNextPage,
 }: UseDealsLoadMoreProps): UseDealsLoadMoreReturn => {
-  const [loadedCount, setLoadedCount] = useState(pageSize);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const displayedDeals = useMemo(() => {
-    return deals.slice(0, loadedCount);
-  }, [deals, loadedCount]);
-
-  const hasMore = useMemo(() => {
-    return loadedCount < deals.length;
-  }, [loadedCount, deals.length]);
-
-  // Reset when deals array length changes (indicating filter change)
-  useEffect(() => {
-    setLoadedCount(pageSize);
-  }, [deals.length, pageSize]);
-
-  const loadMore = useCallback(() => {
-    if (hasMore && !isLoadingMore) {
-      setIsLoadingMore(true);
-      
-      // Simulate loading delay for better UX
-      setTimeout(() => {
-        const newCount = Math.min(loadedCount + pageSize, deals.length);
-        setLoadedCount(newCount);
-        setIsLoadingMore(false);
-      }, 500);
+  const loadMore = () => {
+    if (hasMore && !isFetchingNextPage && fetchNextPage) {
+      fetchNextPage();
     }
-  }, [hasMore, isLoadingMore, loadedCount, pageSize, deals.length]);
+  };
 
-  const reset = useCallback(() => {
-    setLoadedCount(pageSize);
-    setIsLoadingMore(false);
-  }, [pageSize]);
+  const reset = () => {
+    // Reset is handled by refetching the query
+  };
 
   return {
-    displayedDeals,
+    displayedDeals: deals,
     hasMore,
-    isLoadingMore,
+    isLoadingMore: isFetchingNextPage,
     loadMore,
     reset,
   };

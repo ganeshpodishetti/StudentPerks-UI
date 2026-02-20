@@ -29,7 +29,7 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   excludeUniversitySpecific = false,
   showFilters = true,
 }) => {
-  const { deals, loading, error, refetch } = useDealsData();
+  const { deals, loading, error, refetch, hasMore: serverHasMore, isFetchingNextPage, fetchNextPage } = useDealsData();
   const [searchResults, setSearchResults] = useState<Deal[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
@@ -59,7 +59,9 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   const { displayedDeals, hasMore, isLoadingMore, loadMore } = useDealsLoadMore(
     {
       deals: dealsToDisplay,
-      pageSize: 12,
+      hasMore: serverHasMore,
+      isFetchingNextPage,
+      fetchNextPage,
     }
   );
 

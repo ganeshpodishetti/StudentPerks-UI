@@ -100,6 +100,13 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
   };
 }
 
+// Cursor-based pagination response
+export interface CursorPaginatedResponse<T> {
+  items: T[];
+  nextCursor: string | null;
+  hasMore: boolean;
+}
+
 // Common component variants
 export type ComponentSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type ComponentVariant = 'default' | 'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost';

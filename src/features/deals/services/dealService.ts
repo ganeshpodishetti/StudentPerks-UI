@@ -1,19 +1,51 @@
 import apiClient, { publicApiClient } from '@/shared/services/api/apiClient';
-import { CreateDealRequest, Deal, UpdateDealRequest } from '@/shared/types';
+import { CreateDealRequest, CursorPaginatedResponse, Deal, UpdateDealRequest } from '@/shared/types';
+
+// Default page size from environment variable
+const DEFAULT_PAGE_SIZE = parseInt(process.env.NEXT_PUBLIC_PAGE_SIZE || '10', 10);
+
+export interface GetDealsParams {
+  cursor?: string | null;
+  pageSize?: number;
+}
 
 export const dealService = {
   // Public endpoint - no authentication required
-  async getDeals(): Promise<Deal[]> {
+  async getDeals(params?: GetDealsParams): Promise<CursorPaginatedResponse<Deal>> {
     try {
-      const response = await publicApiClient.get('/api/deals');
+      const { cursor, pageSize = DEFAULT_PAGE_SIZE } = params || {};
+      const queryParams = new URLSearchParams();
+      queryParams.append('pageSize', String(pageSize));
+      if (cursor) {
+        queryParams.append('cursor', cursor);
+      }
+      
+      const url = `/api/deals?${queryParams.toString()}`;
+      const response = await publicApiClient.get(url);
       
       // Handle 204 No Content response (empty database)
       if (response.status === 204 || !response.data) {
-        return [];
+        return { items: [], nextCursor: null, hasMore: false };
       }
       
-      // Ensure we always return an array
-      return Array.isArray(response.data) ? response.data : [];
+      // Handle case where backend returns empty array [] instead of proper format
+      if (Array.isArray(response.data)) {
+        return { items: response.data, nextCursor: null, hasMore: false };
+      }
+      
+      // Parse hasMore - handle both boolean and string "true"/"false"
+      const hasMore = response.data.hasMore === true || response.data.hasMore === 'true';
+      
+      // Keep nextCursor as-is (don't convert empty string to null)
+      const nextCursor = response.data.nextCursor !== undefined && response.data.nextCursor !== null 
+        ? response.data.nextCursor 
+        : null;
+      
+      return {
+        items: Array.isArray(response.data.items) ? response.data.items : [],
+        nextCursor,
+        hasMore,
+      };
     } catch (error: any) {
       throw error;
     }

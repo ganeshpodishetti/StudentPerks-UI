@@ -1,6 +1,8 @@
 import { dealService } from '@/features/deals/services/dealService';
 import { useErrorHandler } from '@/shared/contexts/ErrorContext';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { CursorPaginatedResponse } from '@/shared/types';
+import { Deal } from '@/shared/types/entities/deal';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Query keys for caching
 export const dealKeys = {
@@ -13,15 +15,48 @@ export const dealKeys = {
   byStore: (store: string) => [...dealKeys.all, 'store', store] as const,
   byUniversity: (university: string) => [...dealKeys.all, 'university', university] as const,
   userDeals: () => [...dealKeys.all, 'user'] as const,
+  infinite: () => [...dealKeys.all, 'infinite'] as const,
 };
 
-// Fetch all deals
+// Fetch all deals with cursor-based pagination
+export const useDealsInfiniteQuery = () => {
+  const { handleApiError } = useErrorHandler();
+  
+  return useInfiniteQuery<CursorPaginatedResponse<Deal>, Error>({
+    queryKey: dealKeys.infinite(),
+    queryFn: ({ pageParam }) => dealService.getDeals({ cursor: pageParam as string | null }),
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.hasMore && lastPage.nextCursor && lastPage.nextCursor !== '') {
+        return lastPage.nextCursor;
+      }
+      return undefined;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: (failureCount, error: any) => {
+      // Don't retry on 4xx errors
+      if (error?.response?.status >= 400 && error?.response?.status < 500) {
+        return false;
+      }
+      return failureCount < 3;
+    },
+    meta: {
+      onError: handleApiError,
+    },
+  });
+};
+
+// Legacy hook for backward compatibility (fetches first page only)
 export const useDealsQuery = () => {
   const { handleApiError } = useErrorHandler();
   
   return useQuery({
     queryKey: dealKeys.lists(),
-    queryFn: () => dealService.getDeals(),
+    queryFn: async () => {
+      const response = await dealService.getDeals();
+      return response.items;
+    },
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (previously cacheTime)
     retry: (failureCount, error: any) => {
