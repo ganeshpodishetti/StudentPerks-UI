@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/sha
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { Textarea } from '@/shared/components/ui/textarea';
-import { useToast } from '@/shared/components/ui/use-toast';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -26,7 +25,6 @@ interface StoreFormProps {
 export default function StoreForm({ store, onSave, title, description }: StoreFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const [formData, setFormData] = useState<FormData>(() => {
     if (store) {
@@ -60,11 +58,7 @@ export default function StoreForm({ store, onSave, title, description }: StoreFo
       await onSave(storeData);
       router.push('/admin/stores');
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save store. Please try again.",
-        variant: "destructive",
-      });
+      // Error handling is done by the parent component
     } finally {
       setIsLoading(false);
     }

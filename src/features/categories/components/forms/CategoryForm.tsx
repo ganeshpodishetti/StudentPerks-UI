@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/sha
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { Textarea } from '@/shared/components/ui/textarea';
-import { useToast } from '@/shared/components/ui/use-toast';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -26,7 +25,6 @@ interface CategoryFormProps {
 export default function CategoryForm({ category, onSave, title, description }: CategoryFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const [formData, setFormData] = useState<FormData>(() => {
     if (category) {
@@ -65,11 +63,7 @@ export default function CategoryForm({ category, onSave, title, description }: C
       await onSave(categoryData);
       router.push('/admin/categories');
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save category. Please try again.",
-        variant: "destructive",
-      });
+      // Error handling is done by the parent component
     } finally {
       setIsLoading(false);
     }

@@ -1,7 +1,6 @@
 'use client'
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { useToast } from '@/shared/components/ui/use-toast';
 import { CreateDealRequest, Deal } from '@/shared/types/entities/deal';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -42,7 +41,6 @@ interface DealFormProps {
 export default function DealForm({ deal, onSave, title, description }: DealFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const [formData, setFormData] = useState<FormData>(() => {
     if (deal) {
@@ -131,11 +129,7 @@ export default function DealForm({ deal, onSave, title, description }: DealFormP
       await onSave(dealData);
       router.push('/admin/deals');
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save deal. Please try again.",
-        variant: "destructive",
-      });
+      // Error handling is done by the parent component
     } finally {
       setIsLoading(false);
     }

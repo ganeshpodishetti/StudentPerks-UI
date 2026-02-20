@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/sha
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { Switch } from '@/shared/components/ui/switch';
-import { useToast } from '@/shared/components/ui/use-toast';
 import { CreateUniversityRequest, University, UpdateUniversityRequest } from '@/shared/types/entities/university';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -30,7 +29,6 @@ interface UniversityFormProps {
 export default function UniversityForm({ university, onSave, title, description }: UniversityFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const [formData, setFormData] = useState<FormData>(() => {
     if (university) {
@@ -93,11 +91,7 @@ export default function UniversityForm({ university, onSave, title, description 
       await onSave(universityData);
       router.push('/admin/universities');
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to save university. Please try again.",
-        variant: "destructive",
-      });
+      // Error handling is done by the parent component
     } finally {
       setIsLoading(false);
     }
