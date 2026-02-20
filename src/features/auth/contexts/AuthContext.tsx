@@ -84,7 +84,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       // After successful login, get user data from localStorage (set by authService)
       const userData = authService.getUser();
-      console.log('AuthContext: User data after login:', userData);
       
       if (userData) {
         setUser(userData);

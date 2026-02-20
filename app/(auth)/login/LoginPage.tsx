@@ -46,10 +46,6 @@ const LoginPage: React.FC = () => {
       });
       // router.push('/admin'); // Remove direct push, let useEffect handle it
     } catch (error: any) {
-      console.log('Login error:', error);
-      console.log('Error response:', error.response);
-      console.log('Error response data:', error.response?.data);
-      
       const errorMessage = error.response?.data?.detail ||
                           error.response?.data?.message ||
                           error.response?.data?.title ||

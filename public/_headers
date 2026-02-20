@@ -7,8 +7,8 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   
-  # Content Security Policy - More restrictive for better security
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://scripts.simpleanalyticscdn.com; script-src-elem 'self' 'unsafe-inline' https://scripts.simpleanalyticscdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob: images.unsplash.com via.placeholder.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://studentperks-api.onrender.com https://queue.simpleanalyticscdn.com wss: ws:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none';
+  # Content Security Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://scripts.simpleanalyticscdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.studentperks.org wss: ws:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
   
   # HSTS - Enable for production security
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
