@@ -3,7 +3,6 @@
 import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
 import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
-import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
 import SubmittedDealStats from '@/features/admin/components/stats/SubmittedDealStats/SubmittedDealStats';
 import AdminSubmittedDealsList from '@/features/admin/components/tables/AdminSubmittedDealsList/AdminSubmittedDealsList';
 import { useAdminSubmittedDeals } from '@/features/admin/hooks/useAdminSubmittedDeals';
@@ -16,12 +15,9 @@ export default function AdminSubmittedDealsPage() {
   const {
     deals,
     isLoading,
-    user,
     stats,
     handleMarkAsRead,
     handleDelete,
-    handleLogout,
-    testConnectivity,
   } = useAdminSubmittedDeals();
   
   const { user: authUser } = useAuth();
@@ -37,23 +33,27 @@ export default function AdminSubmittedDealsPage() {
   }, [isLoading, authUser, isSuperAdmin, router]);
 
   if (isLoading) {
-    return <AdminLoadingSpinner />;
+    return (
+      <AdminLayout>
+        <AdminLoadingSpinner />
+      </AdminLayout>
+    );
   }
   
   // Don't render if not SuperAdmin
   if (!isSuperAdmin) {
-    return <AdminLoadingSpinner />;
+    return (
+      <AdminLayout>
+        <AdminLoadingSpinner />
+      </AdminLayout>
+    );
   }
 
   return (
-    <AdminLayout
-      navigation={<AdminNavigation />}
-    >
+    <AdminLayout>
       <AdminHeader 
-        user={user}
-        onLogout={handleLogout}
-        onTestConnectivity={testConnectivity}
         title="Submitted Deals"
+        description="Review and manage user-submitted deals"
       />
 
       <div className="space-y-6">
@@ -80,4 +80,3 @@ export default function AdminSubmittedDealsPage() {
     </AdminLayout>
   );
 }
-// ...original code will be placed here...

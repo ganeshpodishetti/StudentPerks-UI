@@ -1,9 +1,9 @@
-import { DataTable, ColumnDef, cellRenderers } from '@/shared/components/data-display/DataTable';
+import { ColumnDef, DataTable, cellRenderers } from '@/shared/components/data-display/DataTable';
 import { Deal } from '@/shared/types/entities/deal';
 
 interface AdminDealsTableProps {
   deals: Deal[];
-  onEditDeal: (deal: Deal) => void;
+  onEditDeal: (dealId: string) => void;
   onDeleteDeal: (dealId: string) => void;
 }
 
@@ -42,7 +42,7 @@ export default function AdminDealsTable({ deals, onEditDeal, onDeleteDeal }: Adm
         data={deals}
         columns={columns}
         actions={{
-          onEdit: onEditDeal,
+          onEdit: (deal) => onEditDeal(deal.id),
           onDelete: onDeleteDeal
         }}
         emptyMessage="No deals found"

@@ -12,7 +12,7 @@ import { useState } from 'react';
 export const useAdminDeals = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { showError, showSuccess } = useErrorHandler();
 
   // React Query hooks - fetch user-related deals after authentication
@@ -20,25 +20,6 @@ export const useAdminDeals = () => {
   const createDealMutation = useCreateDealMutation();
   const updateDealMutation = useUpdateDealMutation();
   const deleteDealMutation = useDeleteDealMutation();
-
-  // Test connectivity function
-  const testConnectivity = async () => {
-    try {
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5254';
-      // Test API connection with user endpoint
-      const response = await fetch(API_BASE_URL + '/api/deals/user', {
-        credentials: 'include',
-        method: 'GET'
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      await response.json();
-      showSuccess('Backend connectivity test successful!');
-    } catch (error) {
-      showError(`Connectivity test failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  };
 
   const handleCreateDeal = () => {
     setEditingDeal(null);
@@ -84,10 +65,6 @@ export const useAdminDeals = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-  };
-
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingDeal(null);
@@ -103,8 +80,6 @@ export const useAdminDeals = () => {
     handleEditDeal,
     handleDeleteDeal,
     handleSaveDeal,
-    handleLogout,
-    testConnectivity,
     closeModal
   };
 };

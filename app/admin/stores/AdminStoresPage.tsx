@@ -3,7 +3,6 @@
 import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
 import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
-import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
 import AdminStoresList from '@/features/admin/components/tables/AdminStoresList/AdminStoresList';
 import { useAdminStores } from '@/features/admin/hooks/useAdminStores';
 import { useAuth } from '@/features/auth/contexts/AuthContext';
@@ -23,38 +22,32 @@ export default function AdminStoresPage() {
     closeModal
   } = useAdminStores();
 
-  const { logout } = useAuth();
+  const { } = useAuth();
   
   const isSuperAdmin = user?.roles?.includes('SuperAdmin') ?? false;
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
   if (isLoading) {
-    return <AdminLoadingSpinner />;
+    return (
+      <AdminLayout>
+        <AdminLoadingSpinner />
+      </AdminLayout>
+    );
   }
 
   return (
-    <AdminLayout navigation={<AdminNavigation />}>
+    <AdminLayout>
       <AdminHeader 
-        user={user}
-        onCreateDeal={handleCreateStore}
-        onLogout={handleLogout}
-        onTestConnectivity={() => {}}
         title="Store Management"
+        description="Manage stores and their information"
+        onCreateAction={handleCreateStore}
         createButtonText="Create Store"
       />
 
       <AdminStoresList 
-              stores={stores}
-              onEditStore={isSuperAdmin ? handleEditStore : undefined}
-              onDeleteStore={isSuperAdmin ? handleDeleteStore : undefined}
-            />
+        stores={stores}
+        onEditStore={isSuperAdmin ? handleEditStore : undefined}
+        onDeleteStore={isSuperAdmin ? handleDeleteStore : undefined}
+      />
 
       <StoreFormModal
         isOpen={isModalOpen}
@@ -65,4 +58,3 @@ export default function AdminStoresPage() {
     </AdminLayout>
   );
 }
-// ...original code will be placed here...

@@ -4,7 +4,7 @@ import AdminDealsTable from '../AdminDealsTable/AdminDealsTable';
 
 interface AdminDealsListProps {
   deals: Deal[];
-  onEditDeal: (deal: Deal) => void;
+  onEditDeal: (dealId: string) => void;
   onDeleteDeal: (dealId: string) => void;
 }
 

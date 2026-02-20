@@ -1,29 +1,19 @@
 // Migrated from src/components/pages/AdminDealsPage.tsx
 'use client'
-import AdminDealsList from '@/features/admin/components/tables/AdminDealsList/AdminDealsList';
-import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
 import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
-import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
+import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
-import DealFormModal from '@/features/deals/components/forms/DealFormModal';
-import { useAdminDeals } from '@/features/admin/hooks/useAdminDeals';
+import AdminDealsList from '@/features/admin/components/tables/AdminDealsList/AdminDealsList';
+import { useDeleteDealMutation, useUserDealsQuery } from '@/features/deals/hooks/useDealsQuery';
+import { useErrorHandler } from '@/shared/contexts/ErrorContext';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
 export default function AdminDealsPage() {
-  const {
-    deals,
-    isLoading,
-    isModalOpen,
-    editingDeal,
-    user,
-    handleCreateDeal,
-    handleEditDeal,
-    handleDeleteDeal,
-    handleSaveDeal,
-    handleLogout,
-    testConnectivity,
-    closeModal
-  } = useAdminDeals();
+  const router = useRouter();
+  const { data: deals = [], isLoading } = useUserDealsQuery();
+  const deleteDealMutation = useDeleteDealMutation();
+  const { showSuccess, showError } = useErrorHandler();
 
   const [searchTerm, setSearchTerm] = useState('');
   const filteredDeals = useMemo(() => {
@@ -38,34 +28,49 @@ export default function AdminDealsPage() {
     );
   }, [deals, searchTerm]);
 
+  const handleCreateDeal = () => {
+    router.push('/admin/deals/new');
+  };
+
+  const handleEditDeal = (dealId: string) => {
+    router.push(`/admin/deals/${dealId}/edit`);
+  };
+
+  const handleDeleteDeal = async (dealId: string) => {
+    if (!confirm('Are you sure you want to delete this deal?')) {
+      return;
+    }
+
+    try {
+      await deleteDealMutation.mutateAsync(dealId);
+      showSuccess('Deal deleted successfully');
+    } catch (_error) {
+      showError('Failed to delete deal');
+    }
+  };
+
   if (isLoading) {
-    return <AdminLoadingSpinner />;
+    return (
+      <AdminLayout>
+        <AdminLoadingSpinner />
+      </AdminLayout>
+    );
   }
 
   return (
-    <AdminLayout
-      navigation={<AdminNavigation />}
-    >
+    <AdminLayout>
       <AdminHeader 
-        user={user}
-        onCreateDeal={handleCreateDeal}
-        onLogout={handleLogout}
-        onTestConnectivity={testConnectivity}
         title="Deals Management"
+        description="Create and manage your deals"
+        onCreateAction={handleCreateDeal}
+        createButtonText="Create Deal"
         onSearchDeals={setSearchTerm}
       />
 
       <AdminDealsList 
-              deals={filteredDeals}
-              onEditDeal={handleEditDeal}
-              onDeleteDeal={handleDeleteDeal}
-            />
-
-      <DealFormModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSave={handleSaveDeal}
-        deal={editingDeal}
+        deals={filteredDeals}
+        onEditDeal={handleEditDeal}
+        onDeleteDeal={handleDeleteDeal}
       />
     </AdminLayout>
   );

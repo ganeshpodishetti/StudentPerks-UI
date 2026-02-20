@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from 'react';
 export const useAdminSubmittedDeals = () => {
   const [deals, setDeals] = useState<SubmittedDeal[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { showError } = useErrorHandler();
   const { updateCount } = useUnreadDealsCount();
 
@@ -82,19 +82,6 @@ export const useAdminSubmittedDeals = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-  };
-
-  const testConnectivity = async () => {
-    try {
-      await submittedDealService.getSubmittedDeals();
-      alert('API connection successful!');
-    } catch (_error) {
-      alert('API connection failed.');
-    }
-  };
-
   // Get stats
   const stats = {
     total: deals.length,
@@ -109,8 +96,6 @@ export const useAdminSubmittedDeals = () => {
     stats,
     handleMarkAsRead,
     handleDelete,
-    handleLogout,
-    testConnectivity,
     refreshDeals: loadDeals,
   };
 };
