@@ -225,8 +225,6 @@ export const dealService = {
     isActive?: boolean;
   }): Promise<Deal[]> => {
     try {
-      console.log('DealService: searchDeals called with params:', searchParams);
-      
       const urlParams = new URLSearchParams();
       
       if (searchParams.query?.trim()) {
@@ -249,16 +247,12 @@ export const dealService = {
         urlParams.append('isActive', searchParams.isActive.toString());
       }
 
-      console.log('DealService: URL params:', urlParams.toString());
-
       // Don't make API call if no search parameters are provided
       if (urlParams.toString() === '') {
-        console.log('DealService: No parameters, returning empty array');
         return [];
       }
 
       const url = `/api/deals/search?${urlParams.toString()}`;
-      console.log('DealService: Making API call to:', url);
 
       const response = await publicApiClient.get(url);
       
