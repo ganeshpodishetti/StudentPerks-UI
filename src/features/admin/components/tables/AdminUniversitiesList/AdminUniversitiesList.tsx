@@ -4,7 +4,7 @@ import AdminUniversitiesTable from '../AdminUniversitiesTable/AdminUniversitiesT
 
 interface AdminUniversitiesListProps {
   universities: University[];
-  onEditUniversity?: (university: University) => void;
+  onEditUniversity?: (universityId: string) => void;
   onDeleteUniversity?: (universityId: string) => void;
 }
 

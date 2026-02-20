@@ -4,7 +4,7 @@ import AdminCategoriesTable from '../AdminCategoriesTable/AdminCategoriesTable';
 
 interface AdminCategoriesListProps {
   categories: Category[];
-  onEditCategory?: (category: Category) => void;
+  onEditCategory?: (categoryId: string) => void;
   onDeleteCategory?: (categoryId: string) => void;
 }
 

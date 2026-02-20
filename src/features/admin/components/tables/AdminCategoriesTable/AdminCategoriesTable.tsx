@@ -3,7 +3,7 @@ import { ColumnDef, DataTable, cellRenderers } from '@/shared/components/data-di
 
 interface AdminCategoriesTableProps {
   categories: Category[];
-  onEditCategory?: (category: Category) => void;
+  onEditCategory?: (categoryId: string) => void;
   onDeleteCategory?: (categoryId: string) => void;
 }
 
@@ -28,7 +28,7 @@ export default function AdminCategoriesTable({ categories, onEditCategory, onDel
 
   // Only include actions if handlers are provided
   const actions = (onEditCategory || onDeleteCategory) ? {
-    onEdit: onEditCategory,
+    onEdit: onEditCategory ? (category: Category) => onEditCategory(category.id) : undefined,
     onDelete: onDeleteCategory
   } : undefined;
 

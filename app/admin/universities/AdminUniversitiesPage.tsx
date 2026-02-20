@@ -6,7 +6,7 @@ import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
 import AdminUniversitiesList from '@/features/admin/components/tables/AdminUniversitiesList/AdminUniversitiesList';
 import { useAdminUniversities } from '@/features/admin/hooks/useAdminUniversities';
 import { useAuth } from '@/features/auth/contexts/AuthContext';
-import UniversityFormModal from '@/features/universities/components/forms/UniversityFormModal/UniversityFormModal';
+import { useRouter } from 'next/navigation';
 
 // Export hook for university selection in other components
 export const useUniversityOptions = () => {
@@ -21,22 +21,25 @@ export const useUniversityOptions = () => {
 };
 
 export default function AdminUniversitiesPage() {
+  const router = useRouter();
   const {
     universities,
     isLoading,
-    isModalOpen,
-    editingUniversity,
     user,
-    handleCreateUniversity,
-    handleEditUniversity,
     handleDeleteUniversity,
-    handleSaveUniversity,
-    closeModal
   } = useAdminUniversities();
 
   const { } = useAuth();
   
   const isSuperAdmin = user?.roles?.includes('SuperAdmin') ?? false;
+
+  const handleCreateUniversity = () => {
+    router.push('/admin/universities/new');
+  };
+
+  const handleEditUniversity = (universityId: string) => {
+    router.push(`/admin/universities/${universityId}/edit`);
+  };
 
   if (isLoading) {
     return (
@@ -59,13 +62,6 @@ export default function AdminUniversitiesPage() {
         universities={universities}
         onEditUniversity={isSuperAdmin ? handleEditUniversity : undefined}
         onDeleteUniversity={isSuperAdmin ? handleDeleteUniversity : undefined}
-      />
-
-      <UniversityFormModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSave={handleSaveUniversity}
-        university={editingUniversity}
       />
     </AdminLayout>
   );

@@ -4,7 +4,7 @@ import AdminStoresTable from '../AdminStoresTable/AdminStoresTable';
 
 interface AdminStoresListProps {
   stores: Store[];
-  onEditStore?: (store: Store) => void;
+  onEditStore?: (storeId: string) => void;
   onDeleteStore?: (storeId: string) => void;
 }
 

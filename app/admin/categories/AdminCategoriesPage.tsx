@@ -6,25 +6,28 @@ import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
 import AdminCategoriesList from '@/features/admin/components/tables/AdminCategoriesList/AdminCategoriesList';
 import { useAdminCategories } from '@/features/admin/hooks/useAdminCategories';
 import { useAuth } from '@/features/auth/contexts/AuthContext';
-import CategoryFormModal from '@/features/categories/components/forms/CategoryFormModal/CategoryFormModal';
+import { useRouter } from 'next/navigation';
 
 export default function AdminCategoriesPage() {
+  const router = useRouter();
   const {
     categories,
     isLoading,
-    isModalOpen,
-    editingCategory,
     user,
-    handleCreateCategory,
-    handleEditCategory,
     handleDeleteCategory,
-    handleSaveCategory,
-    closeModal
   } = useAdminCategories();
 
   const { } = useAuth();
   
   const isSuperAdmin = user?.roles?.includes('SuperAdmin') ?? false;
+
+  const handleCreateCategory = () => {
+    router.push('/admin/categories/new');
+  };
+
+  const handleEditCategory = (categoryId: string) => {
+    router.push(`/admin/categories/${categoryId}/edit`);
+  };
 
   if (isLoading) {
     return (
@@ -47,13 +50,6 @@ export default function AdminCategoriesPage() {
         categories={categories}
         onEditCategory={isSuperAdmin ? handleEditCategory : undefined}
         onDeleteCategory={isSuperAdmin ? handleDeleteCategory : undefined}
-      />
-
-      <CategoryFormModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSave={handleSaveCategory}
-        category={editingCategory}
       />
     </AdminLayout>
   );
