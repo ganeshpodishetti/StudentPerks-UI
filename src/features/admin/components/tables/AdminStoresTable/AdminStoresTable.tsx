@@ -3,7 +3,7 @@ import { ColumnDef, DataTable, cellRenderers } from '@/shared/components/data-di
 
 interface AdminStoresTableProps {
   stores: Store[];
-  onEditStore?: (store: Store) => void;
+  onEditStore?: (storeId: string) => void;
   onDeleteStore?: (storeId: string) => void;
 }
 
@@ -28,7 +28,7 @@ export default function AdminStoresTable({ stores, onEditStore, onDeleteStore }:
 
   // Only include actions if handlers are provided
   const actions = (onEditStore || onDeleteStore) ? {
-    onEdit: onEditStore,
+    onEdit: onEditStore ? (store: Store) => onEditStore(store.id) : undefined,
     onDelete: onDeleteStore
   } : undefined;
 

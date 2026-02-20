@@ -1,5 +1,5 @@
-import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import { CreateStoreRequest, storeService, UpdateStoreRequest } from '@/features/stores/services/storeService';
+import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Query keys factory for better cache management
@@ -23,6 +23,21 @@ export const useStoresQuery = () => {
     queryFn: () => storeService.getStores(),
     staleTime: 10 * 60 * 1000, // 10 minutes - stores change less frequently
     gcTime: 30 * 60 * 1000, // 30 minutes
+    meta: {
+      onError: handleApiError,
+    },
+  });
+};
+
+// Get single store
+export const useStoreQuery = (id: string) => {
+  const { handleApiError } = useErrorHandler();
+
+  return useQuery({
+    queryKey: storeKeys.detail(id),
+    queryFn: () => storeService.getStore(id),
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000,
     meta: {
       onError: handleApiError,
     },

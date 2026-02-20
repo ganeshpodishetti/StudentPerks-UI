@@ -1,5 +1,5 @@
-import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import { categoryService, CreateCategoryRequest, UpdateCategoryRequest } from '@/features/categories/services/categoryService';
+import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Query keys factory for better cache management
@@ -23,6 +23,21 @@ export const useCategoriesQuery = () => {
     queryFn: () => categoryService.getCategories(),
     staleTime: 10 * 60 * 1000, // 10 minutes - categories change less frequently
     gcTime: 30 * 60 * 1000, // 30 minutes
+    meta: {
+      onError: handleApiError,
+    },
+  });
+};
+
+// Get single category
+export const useCategoryQuery = (id: string) => {
+  const { handleApiError } = useErrorHandler();
+
+  return useQuery({
+    queryKey: categoryKeys.detail(id),
+    queryFn: () => categoryService.getCategory(id),
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000,
     meta: {
       onError: handleApiError,
     },

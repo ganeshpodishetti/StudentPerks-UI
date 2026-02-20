@@ -6,22 +6,14 @@ import { BaseFormProps, ComponentSize, ComponentVariant } from './base';
 // Admin component props
 export interface AdminLayoutProps {
   children: ReactNode;
-  title?: string;
-  actions?: ReactNode;
-  navigation?: ReactNode;
 }
 
 export interface AdminHeaderProps {
-  user: {
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-  } | null;
   title?: string;
+  description?: string;
   onCreateAction?: () => void;
-  onLogout?: () => void;
   createButtonText?: string;
-  additionalActions?: ReactNode;
+  onSearchDeals?: (term: string) => void;
 }
 
 // Deal-specific props

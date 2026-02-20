@@ -1,86 +1,66 @@
 import ThemeToggle from '@/shared/components/layout/ThemeToggle/ThemeToggle';
 import { Button } from '@/shared/components/ui/button';
-import { Card, CardContent } from '@/shared/components/ui/card';
-import { Separator } from '@/shared/components/ui/separator';
-import { Activity, LogOut, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import AdminDealsSearchBar from '../../tables/AdminDealsSearchBar/AdminDealsSearchBar';
 
 interface AdminHeaderProps {
-  user: {
-    firstName?: string;
-  } | null;
-  onCreateDeal?: () => void;
-  onLogout: () => void;
-  onTestConnectivity: () => void;
   title?: string;
+  description?: string;
+  onCreateAction?: () => void;
   createButtonText?: string;
   onSearchDeals?: (term: string) => void;
 }
 
-export default function AdminHeader({ 
-  user, 
-  onCreateDeal, 
-  onLogout, 
-  onTestConnectivity,
-  title = "Admin Dashboard",
-  createButtonText = "Create Deal",
+export default function AdminHeader({
+  title = "Dashboard",
+  description,
+  onCreateAction,
+  createButtonText = "Create",
   onSearchDeals
 }: AdminHeaderProps) {
   return (
-    <Card className="mb-6">
-      <CardContent className="p-6">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="space-y-2">
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">
-              {title}
-            </h1>
-            <p className="text-muted-foreground">
-              Welcome back, {user?.firstName}! Manage your {title.toLowerCase().includes('dashboard') ? 'content' : title.toLowerCase()} here.
+    <div className="mb-6">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        {/* Title section */}
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+            {title}
+          </h1>
+          {description && (
+            <p className="text-muted-foreground mt-1">
+              {description}
             </p>
-          </div>
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            {onSearchDeals && (
-              <div className="flex items-center gap-2">
-                <AdminDealsSearchBar onSearch={onSearchDeals} placeholder="Search deals..." />
-              </div>
-            )}
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
-              <Button 
-                onClick={onTestConnectivity} 
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-2"
-              >
-                <Activity className="h-4 w-4" />
-                Test API
-              </Button>
-            </div>
-            <Separator orientation="vertical" className="hidden sm:block h-6" />
-            <div className="flex gap-2">
-              {onCreateDeal && (
-                <Button 
-                  onClick={onCreateDeal}
-                  size="sm"
-                  className="flex items-center gap-2"
-                >
-                  <Plus className="h-4 w-4" />
-                  {createButtonText}
-                </Button>
-              )}
-              <Button 
-                variant="outline" 
-                onClick={onLogout} 
-                size="sm"
-                className="flex items-center gap-2 text-destructive hover:text-destructive"
-              >
-                <LogOut className="h-4 w-4" />
-                Logout
-              </Button>
-            </div>
-          </div>
+          )}
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Actions section */}
+        <div className="flex items-center gap-3">
+          {onSearchDeals && (
+            <div className="hidden sm:block">
+              <AdminDealsSearchBar onSearch={onSearchDeals} placeholder="Search..." />
+            </div>
+          )}
+          <ThemeToggle />
+          {onCreateAction && (
+            <Button
+              onClick={onCreateAction}
+              size="sm"
+              className="gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">{createButtonText}</span>
+              <span className="sm:hidden">New</span>
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile search */}
+      {onSearchDeals && (
+        <div className="mt-4 sm:hidden">
+          <AdminDealsSearchBar onSearch={onSearchDeals} placeholder="Search..." />
+        </div>
+      )}
+    </div>
   );
 }

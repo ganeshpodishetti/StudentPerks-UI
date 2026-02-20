@@ -3,7 +3,7 @@ import { University } from '@/shared/types/entities/university';
 
 interface AdminUniversitiesTableProps {
   universities: University[];
-  onEditUniversity?: (university: University) => void;
+  onEditUniversity?: (universityId: string) => void;
   onDeleteUniversity?: (universityId: string) => void;
 }
 
@@ -46,7 +46,7 @@ export default function AdminUniversitiesTable({ universities, onEditUniversity,
 
   // Only include actions if handlers are provided
   const actions = (onEditUniversity || onDeleteUniversity) ? {
-    onEdit: onEditUniversity,
+    onEdit: onEditUniversity ? (university: University) => onEditUniversity(university.id) : undefined,
     onDelete: onDeleteUniversity
   } : undefined;
 
