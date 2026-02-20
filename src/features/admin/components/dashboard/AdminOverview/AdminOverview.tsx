@@ -2,7 +2,7 @@
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Deal } from '@/shared/types/entities/deal';
-import { ArrowRight, Clock, TrendingUp } from 'lucide-react';
+import { Clock, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 
 interface AdminOverviewProps {
@@ -28,49 +28,9 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
 
   return (
     <div className="grid gap-3 sm:gap-4 md:gap-6">
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base sm:text-lg">Quick Actions</CardTitle>
-          <CardDescription>Common administrative tasks</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
-            <Button asChild variant="outline" size="sm">
-              <Link href="/admin/deals" className="flex items-center gap-2">
-                <TrendingUp className="h-4 w-4" />
-                <span className="hidden sm:inline">Manage Deals</span>
-                <span className="sm:hidden">Deals</span>
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="sm">
-              <Link href="/admin/stores" className="flex items-center gap-2">
-                <ArrowRight className="h-4 w-4" />
-                <span className="hidden sm:inline">Manage Stores</span>
-                <span className="sm:hidden">Stores</span>
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="sm">
-              <Link href="/admin/categories" className="flex items-center gap-2">
-                <ArrowRight className="h-4 w-4" />
-                <span className="hidden sm:inline">Categories</span>
-                <span className="sm:hidden">Categories</span>
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="sm">
-              <Link href="/admin/universities" className="flex items-center gap-2">
-                <ArrowRight className="h-4 w-4" />
-                <span className="hidden sm:inline">Universities</span>
-                <span className="sm:hidden">Universities</span>
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="grid md:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
         {/* Recent Deals */}
-        <Card>
+        <Card className="border-0">
           <CardHeader>
             <CardTitle className="text-base sm:text-lg flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
@@ -104,7 +64,7 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
         </Card>
 
         {/* Expiring Soon */}
-        <Card>
+        <Card className="border-0">
           <CardHeader>
             <CardTitle className="text-base sm:text-lg flex items-center gap-2">
               <Clock className="h-4 w-4" />
@@ -116,7 +76,7 @@ export default function AdminOverview({ deals }: AdminOverviewProps) {
             {expiringDeals.length > 0 ? (
               <div className="space-y-2">
                 {expiringDeals.map((deal) => (
-                  <div key={deal.id} className="flex justify-between items-start p-2 bg-muted dark:bg-muted rounded border border-border dark:border-border">
+                  <div key={deal.id} className="flex justify-between items-start p-2 bg-muted dark:bg-muted rounded">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">
                         {deal.title}

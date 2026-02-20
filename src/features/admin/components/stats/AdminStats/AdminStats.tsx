@@ -12,7 +12,7 @@ export default function AdminStats({ deals }: AdminStatsProps) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-6 md:mb-8">
-      <Card>
+      <Card className="border-0">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-xs sm:text-sm font-medium">Total Deals</CardTitle>
           <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
@@ -22,7 +22,7 @@ export default function AdminStats({ deals }: AdminStatsProps) {
         </CardContent>
       </Card>
       
-      <Card>
+      <Card className="border-0">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-xs sm:text-sm font-medium">Active Deals</CardTitle>
           <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />

@@ -1,5 +1,5 @@
 import { Badge } from '@/shared/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { Card, CardContent } from '@/shared/components/ui/card';
 import { User } from '@/shared/types/entities/user';
 import { AtSign, CheckCircle, Mail, Shield, User as UserIcon, XCircle } from 'lucide-react';
 
@@ -13,25 +13,17 @@ export default function UserProfile({ user }: UserProfileProps) {
 
   if (!user) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>User Profile</CardTitle>
-          <CardDescription>No user data available</CardDescription>
-        </CardHeader>
+      <Card className="border-0">
+        <CardContent className="p-6">
+          <p className="text-muted-foreground">No user data available</p>
+        </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <UserIcon className="h-5 w-5" />
-          User Profile
-        </CardTitle>
-        <CardDescription>Your account information and details</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <Card className="border-0">
+      <CardContent className="p-6 space-y-6">
         {/* Username Section */}
         {user.username && (
           <div className="space-y-2">

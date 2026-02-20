@@ -10,7 +10,7 @@ interface SubmittedDealStatsProps {
 export default function SubmittedDealStats({ total, unread, read }: SubmittedDealStatsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-      <Card>
+      <Card className="border-0">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Submissions</CardTitle>
           <MessagesSquare className="h-4 w-4 text-neutral-500 dark:text-neutral-400" />
@@ -23,7 +23,7 @@ export default function SubmittedDealStats({ total, unread, read }: SubmittedDea
         </CardContent>
       </Card>
 
-      <Card className={unread > 0 ? 'ring-2 ring-yellow-500/20 bg-yellow-50/50 dark:bg-yellow-950/20' : ''}>
+      <Card className={unread > 0 ? 'border-0 ring-2 ring-yellow-500/20 bg-yellow-50/50 dark:bg-yellow-950/20' : 'border-0'}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Unread</CardTitle>
           <div className="relative">
@@ -43,7 +43,7 @@ export default function SubmittedDealStats({ total, unread, read }: SubmittedDea
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border-0">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Read</CardTitle>
           <MailOpen className="h-4 w-4 text-green-500" />

@@ -3,11 +3,10 @@
 import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
 import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
-import AdminNavigation from '@/features/admin/components/layout/AdminNavigation/AdminNavigation';
 import AdminUniversitiesList from '@/features/admin/components/tables/AdminUniversitiesList/AdminUniversitiesList';
 import { useAdminUniversities } from '@/features/admin/hooks/useAdminUniversities';
 import { useAuth } from '@/features/auth/contexts/AuthContext';
-import UniversityFormModal from '@/features/universities/components/forms/UniversityFormModal/UniversityFormModal';
+import { useRouter } from 'next/navigation';
 
 // Export hook for university selection in other components
 export const useUniversityOptions = () => {
@@ -22,60 +21,48 @@ export const useUniversityOptions = () => {
 };
 
 export default function AdminUniversitiesPage() {
+  const router = useRouter();
   const {
     universities,
     isLoading,
-    isModalOpen,
-    editingUniversity,
     user,
-    handleCreateUniversity,
-    handleEditUniversity,
     handleDeleteUniversity,
-    handleSaveUniversity,
-    closeModal
   } = useAdminUniversities();
 
-  const { logout } = useAuth();
+  const { } = useAuth();
   
   const isSuperAdmin = user?.roles?.includes('SuperAdmin') ?? false;
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+  const handleCreateUniversity = () => {
+    router.push('/admin/universities/new');
+  };
+
+  const handleEditUniversity = (universityId: string) => {
+    router.push(`/admin/universities/${universityId}/edit`);
   };
 
   if (isLoading) {
-    return <AdminLoadingSpinner />;
+    return (
+      <AdminLayout>
+        <AdminLoadingSpinner />
+      </AdminLayout>
+    );
   }
 
   return (
-    <AdminLayout navigation={<AdminNavigation />}>
+    <AdminLayout>
       <AdminHeader 
-        user={user}
-        onCreateDeal={handleCreateUniversity}
-        onLogout={handleLogout}
-        onTestConnectivity={() => {}}
         title="University Management"
+        description="Manage universities and their deals"
+        onCreateAction={handleCreateUniversity}
         createButtonText="Create University"
       />
 
-       <AdminUniversitiesList 
-              universities={universities}
-              onEditUniversity={isSuperAdmin ? handleEditUniversity : undefined}
-              onDeleteUniversity={isSuperAdmin ? handleDeleteUniversity : undefined}
-            />
-      
-
-      <UniversityFormModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSave={handleSaveUniversity}
-        university={editingUniversity}
+      <AdminUniversitiesList 
+        universities={universities}
+        onEditUniversity={isSuperAdmin ? handleEditUniversity : undefined}
+        onDeleteUniversity={isSuperAdmin ? handleDeleteUniversity : undefined}
       />
     </AdminLayout>
   );
 }
-// ...original code will be placed here...

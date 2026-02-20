@@ -4,13 +4,13 @@ import AdminDealsTable from '../AdminDealsTable/AdminDealsTable';
 
 interface AdminDealsListProps {
   deals: Deal[];
-  onEditDeal: (deal: Deal) => void;
+  onEditDeal: (dealId: string) => void;
   onDeleteDeal: (dealId: string) => void;
 }
 
 export default function AdminDealsList({ deals, onEditDeal, onDeleteDeal }: AdminDealsListProps) {
   return (
-    <Card className="w-full">
+    <Card className="w-full border-0">
       <div className="w-full">
         <AdminDealsTable 
           deals={deals}
