@@ -67,7 +67,7 @@ const Navigation: React.FC<NavigationProps> = () => {
     const trimmedQuery = searchQuery.trim();
     if (trimmedQuery) {
       // Navigate to home page with search query
-      router.push(`/search=${encodeURIComponent(trimmedQuery)}`);
+      router.push(`/?search=${encodeURIComponent(trimmedQuery)}`);
       setSearchQuery('');
       closeMobileMenu();
     }

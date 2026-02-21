@@ -1,11 +1,11 @@
 "use client";
 import { useDealsData } from "@/features/deals/hooks/deals/useDealsData";
 import {
-    sortOptions,
-    useDealsFilter,
+  sortOptions,
+  useDealsFilter,
 } from "@/features/deals/hooks/deals/useDealsFilter";
 import { useDealsLoadMore } from "@/features/deals/hooks/deals/useDealsLoadMore";
-import { useSearchDeals } from "@/features/deals/hooks/useSearchDeals";
+import { dealService } from "@/features/deals/services/dealService";
 import { Button } from "@/shared/components/ui/button";
 import { Deal } from "@/shared/types/entities/deal";
 import React, { useCallback, useEffect, useState } from "react";
@@ -37,39 +37,38 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(!!initialSearchQuery);
   
-  // Use search hook for URL-based search
-  const { searchDeals, deals: searchedDeals, isLoading: isSearchLoading, hasSearched: hookHasSearched, clearSearch } = useSearchDeals();
-  
   // Track previous search query to avoid unnecessary calls
-  const prevSearchQueryRef = React.useRef(initialSearchQuery);
+  const prevSearchQueryRef = React.useRef('');
 
   // Memoize the default filters to prevent recreating the object
   const defaultSearchFilters = React.useMemo(() => ({ isActive: true }), []);
   
   // Trigger search when initialSearchQuery changes (from URL params)
   useEffect(() => {
-    // Only trigger if query actually changed
-    if (prevSearchQueryRef.current !== initialSearchQuery) {
+    // Only trigger if query actually changed and is not empty
+    if (initialSearchQuery && prevSearchQueryRef.current !== initialSearchQuery) {
       prevSearchQueryRef.current = initialSearchQuery;
       
-      if (initialSearchQuery) {
-        searchDeals({ query: initialSearchQuery, isActive: true });
-        setHasSearched(true);
-      } else {
-        clearSearch();
-        setSearchResults([]);
-        setHasSearched(false);
-      }
+      // Direct API call instead of using React Query hook
+      setIsSearching(true);
+      dealService.searchDeals({ query: initialSearchQuery })
+        .then(results => {
+          setSearchResults(results);
+          setIsSearching(false);
+          setHasSearched(true);
+        })
+        .catch(err => {
+          console.error('Search error:', err);
+          setIsSearching(false);
+          setSearchResults([]);
+          setHasSearched(true);
+        });
+    } else if (!initialSearchQuery) {
+      // Clear search results if no query
+      setSearchResults([]);
+      setHasSearched(false);
     }
-  }, [initialSearchQuery, searchDeals, clearSearch]);
-  
-  // Sync search results from hook to local state (only when results change)
-  useEffect(() => {
-    if (hookHasSearched && initialSearchQuery) {
-      setSearchResults(searchedDeals);
-      setIsSearching(isSearchLoading);
-    }
-  }, [hookHasSearched, searchedDeals, isSearchLoading, initialSearchQuery]);
+  }, [initialSearchQuery]);
 
   const {
     filteredDeals,

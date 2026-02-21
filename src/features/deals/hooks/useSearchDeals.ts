@@ -29,8 +29,6 @@ export const useSearchDeals = (): UseSearchDealsResult => {
   const searchParamsRef = useRef<SearchParams>(searchParams);
   searchParamsRef.current = searchParams;
 
-  const isEnabled = hasSearched && Object.keys(searchParams).length > 0;
-
   const {
     data: deals = [],
     isLoading,
@@ -43,11 +41,13 @@ export const useSearchDeals = (): UseSearchDealsResult => {
       // Use ref to get the latest searchParams
       return dealService.searchDeals(searchParamsRef.current);
     },
-    enabled: isEnabled,
+    // Always enable the query, we'll control execution via hasSearched
+    enabled: true,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const searchDeals = useCallback((params: SearchParams) => {
+    console.log('useSearchDeals: searchDeals called with:', params);
     setSearchParams(params);
     setHasSearched(true);
   }, []);
