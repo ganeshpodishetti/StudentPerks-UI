@@ -30,10 +30,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Define public routes that don't require auth check
+  const isPublicRoute = (pathname: string): boolean => {
+    const publicPaths = [
+      '/',
+      '/categories',
+      '/stores',
+      '/universities',
+      '/login',
+      '/register',
+      '/forgot-password',
+      '/reset-password',
+      '/confirm-email',
+      '/resend-confirmation',
+    ];
+    return publicPaths.some(path => pathname === path || pathname.startsWith(path + '/'));
+  };
+
   // Check authentication status on mount
   const checkAuthStatus = async () => {
     try {
       setIsLoading(true);
+      
+      // Skip auth check on public routes to avoid unnecessary refresh token calls
+      if (typeof window !== 'undefined' && isPublicRoute(window.location.pathname)) {
+        setIsLoading(false);
+        return;
+      }
       
       // Try to refresh token and get user profile
       try {
@@ -75,6 +98,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Always perform auth check on mount
     // This will validate refresh token and auto-login if valid
     checkAuthStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const login = async (email: string, password: string) => {

@@ -1,7 +1,6 @@
 import { AppProviders } from '@/shared/providers/AppProviders'
 import dynamic from 'next/dynamic'
 import { Outfit } from 'next/font/google'
-import Script from 'next/script'
 import './globals.css'
 
 // Lazy load Footer since it's below the fold
@@ -44,8 +43,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://scripts.simpleanalyticscdn.com" />
-        <link rel="dns-prefetch" href="https://studentperks-api.azurewebsites.net" />
         
         <link rel="icon" href="/studentperks.png" type="image/png" />
         <link rel="apple-touch-icon" href="/studentperks.png" />
@@ -68,10 +65,6 @@ export default function RootLayout({
         <AppProviders>{children}</AppProviders>
         <Footer />
       </body>
-      <Script 
-        src="https://scripts.simpleanalyticscdn.com/latest.js" 
-        strategy="lazyOnload"
-      />
     </html>
   );
 }
