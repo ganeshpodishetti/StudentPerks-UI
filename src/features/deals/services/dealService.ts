@@ -251,56 +251,22 @@ export const dealService = {
 
   searchDeals: async (searchParams: {
     query?: string;
-    category?: string;
-    store?: string;
-    university?: string;
-    isActive?: boolean;
   }): Promise<Deal[]> => {
     try {
-      const urlParams = new URLSearchParams();
-      
-      if (searchParams.query?.trim()) {
-        urlParams.append('query', searchParams.query.trim());
-      }
-      
-      if (searchParams.category) {
-        urlParams.append('category', searchParams.category);
-      }
-      
-      if (searchParams.store) {
-        urlParams.append('store', searchParams.store);
-      }
-      
-      if (searchParams.university) {
-        urlParams.append('university', searchParams.university);
-      }
-      
-      if (searchParams.isActive !== undefined) {
-        urlParams.append('isActive', searchParams.isActive.toString());
-      }
+      // Backend now only accepts a single `query` parameter.
+      const query = searchParams.query?.trim() ?? '';
 
-      // Don't make API call if no search parameters are provided
-      if (urlParams.toString() === '') {
-        return [];
-      }
+      if (!query) return [];
 
-      const url = `/api/deals/search?${urlParams.toString()}`;
-
+      const url = `/api/deals/search?query=${encodeURIComponent(query)}`;
       const response = await publicApiClient.get(url);
-      
-      // Handle 204 No Content response (no results)
-      if (response.status === 204 || !response.data) {
-        return [];
-      }
-      
-      // Ensure we always return an array
+
+      if (response.status === 204 || !response.data) return [];
+
       return Array.isArray(response.data) ? response.data : [];
     } catch (error: any) {
       console.error('DealService: Search error:', error);
-      // If it's a 404 error, return empty array instead of throwing
-      if (error.response?.status === 404) {
-        return [];
-      }
+      if (error.response?.status === 404) return [];
       throw error;
     }
   }

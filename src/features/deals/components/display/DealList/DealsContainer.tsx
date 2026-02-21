@@ -1,13 +1,14 @@
 "use client";
 import { useDealsData } from "@/features/deals/hooks/deals/useDealsData";
 import {
-    sortOptions,
-    useDealsFilter,
+  sortOptions,
+  useDealsFilter,
 } from "@/features/deals/hooks/deals/useDealsFilter";
 import { useDealsLoadMore } from "@/features/deals/hooks/deals/useDealsLoadMore";
+import { dealService } from "@/features/deals/services/dealService";
 import { Button } from "@/shared/components/ui/button";
 import { Deal } from "@/shared/types/entities/deal";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import HeroSearchSection from "../../search/HeroSearchSection/HeroSearchSection";
 import DealSkeleton from "../DealSkeleton/DealSkeleton";
 import { DealsFilters } from "./DealsFilters";
@@ -17,6 +18,7 @@ import { DealsLoadMore } from "./DealsLoadMore";
 interface DealsContainerProps {
   initialCategory?: string;
   initialStore?: string;
+  initialSearchQuery?: string;
   showHeroSection?: boolean;
   excludeUniversitySpecific?: boolean;
   showFilters?: boolean;
@@ -25,6 +27,7 @@ interface DealsContainerProps {
 export const DealsContainer: React.FC<DealsContainerProps> = ({
   initialCategory,
   initialStore,
+  initialSearchQuery = '',
   showHeroSection = true,
   excludeUniversitySpecific = false,
   showFilters = true,
@@ -32,10 +35,40 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   const { deals, loading, error, refetch, hasMore: serverHasMore, isFetchingNextPage, fetchNextPage } = useDealsData();
   const [searchResults, setSearchResults] = useState<Deal[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+  const [hasSearched, setHasSearched] = useState(!!initialSearchQuery);
+  
+  // Track previous search query to avoid unnecessary calls
+  const prevSearchQueryRef = React.useRef('');
 
   // Memoize the default filters to prevent recreating the object
   const defaultSearchFilters = React.useMemo(() => ({ isActive: true }), []);
+  
+  // Trigger search when initialSearchQuery changes (from URL params)
+  useEffect(() => {
+    // Only trigger if query actually changed and is not empty
+    if (initialSearchQuery && prevSearchQueryRef.current !== initialSearchQuery) {
+      prevSearchQueryRef.current = initialSearchQuery;
+      
+      // Direct API call instead of using React Query hook
+      setIsSearching(true);
+      dealService.searchDeals({ query: initialSearchQuery })
+        .then(results => {
+          setSearchResults(results);
+          setIsSearching(false);
+          setHasSearched(true);
+        })
+        .catch(err => {
+          console.error('Search error:', err);
+          setIsSearching(false);
+          setSearchResults([]);
+          setHasSearched(true);
+        });
+    } else if (!initialSearchQuery) {
+      // Clear search results if no query
+      setSearchResults([]);
+      setHasSearched(false);
+    }
+  }, [initialSearchQuery]);
 
   const {
     filteredDeals,

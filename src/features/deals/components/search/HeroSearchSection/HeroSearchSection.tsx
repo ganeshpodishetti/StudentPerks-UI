@@ -69,22 +69,10 @@ const HeroSearchSection: React.FC<HeroSearchSectionProps> = ({
         return;
       }
 
-      const searchParams = {
-        ...memoizedDefaultFilters,
-        query: trimmedQuery,
-        isActive: memoizedDefaultFilters.isActive ?? true, // Default to active deals only
-      };
-
-      // Remove undefined values
-      Object.keys(searchParams).forEach((key) => {
-        if (searchParams[key as keyof typeof searchParams] === undefined) {
-          delete searchParams[key as keyof typeof searchParams];
-        }
-      });
-
-      searchDeals(searchParams);
+      // Only pass the query parameter
+      searchDeals({ query: trimmedQuery });
     },
-    [searchDeals, memoizedDefaultFilters]
+    [searchDeals]
   );
 
   const handleSubmit = (e: React.FormEvent) => {

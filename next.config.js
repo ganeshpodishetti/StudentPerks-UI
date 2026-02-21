@@ -16,6 +16,11 @@ const nextConfig = {
       "@radix-ui/react-slot",
       "@radix-ui/react-toast",
       "@tanstack/react-query",
+      "lucide-react",
+      "class-variance-authority",
+      "clsx",
+      "tailwind-merge",
+      "cmdk",
     ],
   },
   images: {

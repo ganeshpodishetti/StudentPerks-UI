@@ -2,11 +2,14 @@
 import { Category, fetchCategories } from '@/features/categories/services/categoryService'
 import { DealsContainer } from '@/features/deals/components/display/DealList/DealsContainer'
 import Navigation from '@/shared/components/layout/Navigation/Navigation'
-import { Tag } from 'lucide-react'
-import Script from 'next/script'
+import { Tag, X } from 'lucide-react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function HomePage() {
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
 
@@ -62,19 +65,31 @@ export default function HomePage() {
 
             {/* Main Content */}
             <div className="flex-1 min-w-0">
+              {/* Search indicator */}
+              {searchQuery && (
+                <div className="mb-4 flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                  <span>Searching for: <strong className="text-neutral-900 dark:text-white">&quot;{searchQuery}&quot;</strong></span>
+                  <Link 
+                    href="/"
+                    className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full transition-colors"
+                  >
+                    <X className="h-3 w-3" />
+                    Clear
+                  </Link>
+                </div>
+              )}
               <DealsContainer 
                 excludeUniversitySpecific={true} 
                 initialCategory={selectedCategory}
+                initialSearchQuery={searchQuery}
                 showHeroSection={false}
                 showFilters={false}
-                key={selectedCategory}
+                key={`${selectedCategory}-${searchQuery}`}
               />
             </div>
           </div>
         </div>
       </main>
-
-      <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
     </div>
   )
 }

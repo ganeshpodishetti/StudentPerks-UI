@@ -1,6 +1,6 @@
 import { Deal } from '@/shared/types/entities/deal';
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { dealService } from '../services/dealService';
 
 interface SearchParams {
@@ -24,34 +24,32 @@ interface UseSearchDealsResult {
 export const useSearchDeals = (): UseSearchDealsResult => {
   const [searchParams, setSearchParams] = useState<SearchParams>({});
   const [hasSearched, setHasSearched] = useState(false);
-  const [shouldSearch, setShouldSearch] = useState(false);
+  
+  // Use ref to ensure queryFn always has access to latest searchParams
+  const searchParamsRef = useRef<SearchParams>(searchParams);
+  searchParamsRef.current = searchParams;
 
   const {
     data: deals = [],
     isLoading,
     error,
-    refetch
+    refetch,
+    isFetching
   } = useQuery({
     queryKey: ['deals', 'search', searchParams],
     queryFn: () => {
-      return dealService.searchDeals(searchParams);
+      // Use ref to get the latest searchParams
+      return dealService.searchDeals(searchParamsRef.current);
     },
-    enabled: false, // Only run when explicitly triggered
+    // Always enable the query, we'll control execution via hasSearched
+    enabled: true,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  // Trigger refetch when searchParams change and we should search
-  useEffect(() => {
-    if (shouldSearch && hasSearched) {
-      refetch();
-      setShouldSearch(false);
-    }
-  }, [searchParams, shouldSearch, hasSearched, refetch]);
-
   const searchDeals = useCallback((params: SearchParams) => {
+    console.log('useSearchDeals: searchDeals called with:', params);
     setSearchParams(params);
     setHasSearched(true);
-    setShouldSearch(true);
   }, []);
 
   const clearSearch = useCallback(() => {
@@ -61,11 +59,11 @@ export const useSearchDeals = (): UseSearchDealsResult => {
 
   return {
     deals,
-    isLoading,
+    isLoading: isLoading || isFetching,
     error: error as Error | null,
     searchDeals,
     clearSearch,
-    isSearching: isLoading,
+    isSearching: isLoading || isFetching,
     hasSearched
   };
 };
