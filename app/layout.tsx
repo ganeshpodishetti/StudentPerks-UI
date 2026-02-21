@@ -1,13 +1,20 @@
-import { Footer } from '@/shared/components/layout/Footer/Footer'
 import { AppProviders } from '@/shared/providers/AppProviders'
+import dynamic from 'next/dynamic'
 import { Outfit } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 
+// Lazy load Footer since it's below the fold
+const Footer = dynamic(() => import('@/shared/components/layout/Footer/Footer').then(mod => mod.Footer), {
+  ssr: true,
+})
+
 const outfit = Outfit({ 
   subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'sans-serif'],
 })
 
 export const metadata = {
@@ -33,6 +40,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Preconnect to critical third-party origins */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://scripts.simpleanalyticscdn.com" />
+        <link rel="dns-prefetch" href="https://studentperks-api.azurewebsites.net" />
+        
         <link rel="icon" href="/studentperks.png" type="image/png" />
         <link rel="apple-touch-icon" href="/studentperks.png" />
       </head>
@@ -54,7 +68,10 @@ export default function RootLayout({
         <AppProviders>{children}</AppProviders>
         <Footer />
       </body>
-      <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
+      <Script 
+        src="https://scripts.simpleanalyticscdn.com/latest.js" 
+        strategy="lazyOnload"
+      />
     </html>
   );
 }

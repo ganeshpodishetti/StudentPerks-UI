@@ -64,11 +64,10 @@ const Navigation: React.FC<NavigationProps> = () => {
   // Handle search submit
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      // Navigate to home page for searching
-      if (pathname !== '/') {
-        router.push('/');
-      }
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
+      // Navigate to home page with search query
+      router.push(`/search=${encodeURIComponent(trimmedQuery)}`);
       setSearchQuery('');
       closeMobileMenu();
     }

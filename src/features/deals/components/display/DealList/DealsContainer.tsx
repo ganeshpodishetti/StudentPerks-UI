@@ -5,9 +5,10 @@ import {
     useDealsFilter,
 } from "@/features/deals/hooks/deals/useDealsFilter";
 import { useDealsLoadMore } from "@/features/deals/hooks/deals/useDealsLoadMore";
+import { useSearchDeals } from "@/features/deals/hooks/useSearchDeals";
 import { Button } from "@/shared/components/ui/button";
 import { Deal } from "@/shared/types/entities/deal";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import HeroSearchSection from "../../search/HeroSearchSection/HeroSearchSection";
 import DealSkeleton from "../DealSkeleton/DealSkeleton";
 import { DealsFilters } from "./DealsFilters";
@@ -17,6 +18,7 @@ import { DealsLoadMore } from "./DealsLoadMore";
 interface DealsContainerProps {
   initialCategory?: string;
   initialStore?: string;
+  initialSearchQuery?: string;
   showHeroSection?: boolean;
   excludeUniversitySpecific?: boolean;
   showFilters?: boolean;
@@ -25,6 +27,7 @@ interface DealsContainerProps {
 export const DealsContainer: React.FC<DealsContainerProps> = ({
   initialCategory,
   initialStore,
+  initialSearchQuery = '',
   showHeroSection = true,
   excludeUniversitySpecific = false,
   showFilters = true,
@@ -32,10 +35,41 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   const { deals, loading, error, refetch, hasMore: serverHasMore, isFetchingNextPage, fetchNextPage } = useDealsData();
   const [searchResults, setSearchResults] = useState<Deal[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+  const [hasSearched, setHasSearched] = useState(!!initialSearchQuery);
+  
+  // Use search hook for URL-based search
+  const { searchDeals, deals: searchedDeals, isLoading: isSearchLoading, hasSearched: hookHasSearched, clearSearch } = useSearchDeals();
+  
+  // Track previous search query to avoid unnecessary calls
+  const prevSearchQueryRef = React.useRef(initialSearchQuery);
 
   // Memoize the default filters to prevent recreating the object
   const defaultSearchFilters = React.useMemo(() => ({ isActive: true }), []);
+  
+  // Trigger search when initialSearchQuery changes (from URL params)
+  useEffect(() => {
+    // Only trigger if query actually changed
+    if (prevSearchQueryRef.current !== initialSearchQuery) {
+      prevSearchQueryRef.current = initialSearchQuery;
+      
+      if (initialSearchQuery) {
+        searchDeals({ query: initialSearchQuery, isActive: true });
+        setHasSearched(true);
+      } else {
+        clearSearch();
+        setSearchResults([]);
+        setHasSearched(false);
+      }
+    }
+  }, [initialSearchQuery, searchDeals, clearSearch]);
+  
+  // Sync search results from hook to local state (only when results change)
+  useEffect(() => {
+    if (hookHasSearched && initialSearchQuery) {
+      setSearchResults(searchedDeals);
+      setIsSearching(isSearchLoading);
+    }
+  }, [hookHasSearched, searchedDeals, isSearchLoading, initialSearchQuery]);
 
   const {
     filteredDeals,

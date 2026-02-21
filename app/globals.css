@@ -1,6 +1,3 @@
-/* Import Outfit font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -50,20 +47,12 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
-}
 
-@layer base {
   * {
-    border-color: var(--border);
+    @apply border-border;
   }
+
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    font-family: 'Outfit', sans-serif;
-  }
-  
-  /* Ensure all text elements use Outfit */
-  h1, h2, h3, h4, h5, h6, p, span, div, button, input, textarea, label {
-    font-family: 'Outfit', sans-serif;
+    @apply bg-background text-foreground;
   }
 }
