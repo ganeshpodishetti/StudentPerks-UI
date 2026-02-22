@@ -5,9 +5,9 @@ import Navigation from '@/shared/components/layout/Navigation/Navigation'
 import { Tag, X } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
-export default function HomePage() {
+function HomePageContent() {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
   const [categories, setCategories] = useState<Category[]>([]);
@@ -68,7 +68,7 @@ export default function HomePage() {
               {/* Search indicator */}
               {searchQuery && (
                 <div className="mb-4 flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                  <span>Searching for: <strong className="text-neutral-900 dark:text-white">&quot;{searchQuery}&quot;</strong></span>
+                  <span>Searching for: <strong className="text-neutral-900 dark:text-white">"{searchQuery}"</strong></span>
                   <Link 
                     href="/"
                     className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full transition-colors"
@@ -91,5 +91,33 @@ export default function HomePage() {
         </div>
       </main>
     </div>
+  )
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen h-full w-full bg-background dark:bg-background flex flex-col">
+      <Navigation />
+      <main className="flex-grow py-14 md:py-16 bg-background dark:bg-background">
+        <div className="w-full max-w-7xl mx-auto px-6 md:px-8">
+          <div className="animate-pulse">
+            <div className="h-4 w-32 bg-neutral-200 dark:bg-neutral-700 rounded mb-4"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="h-48 bg-neutral-200 dark:bg-neutral-700 rounded-lg"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  )
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <HomePageContent />
+    </Suspense>
   )
 }
