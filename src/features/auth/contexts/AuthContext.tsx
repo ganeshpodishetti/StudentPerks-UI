@@ -30,19 +30,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Define public routes that don't require auth check
+  // Define public routes that don't require auth check (no need to check if user is already logged in)
   const isPublicRoute = (pathname: string): boolean => {
     const publicPaths = [
-      '/',
+      '/', // homepage
       '/categories',
       '/stores',
       '/universities',
-      '/login',
-      '/register',
-      '/forgot-password',
-      '/reset-password',
-      '/confirm-email',
-      '/resend-confirmation',
+      '/login', // login page - redirect handled in the page component
+      // NOTE: register and other auth pages may need redirect handling too
     ];
     return publicPaths.some(path => pathname === path || pathname.startsWith(path + '/'));
   };
@@ -58,32 +54,38 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return;
       }
       
-      // Try to refresh token and get user profile
+      // Check if user already exists in localStorage (e.g., after just logging in)
+      const existingUser = authService.getUser();
+      
+      // If user exists in localStorage, set them in state immediately
+      if (existingUser) {
+        setUser(existingUser);
+      }
+      
+      // Try to refresh token and verify authentication
       try {
         const isAuthenticated = await authService.checkAuthStatus();
         
         if (isAuthenticated) {
-          // If refresh token is valid, fetch user profile using public client to avoid interceptor
+          // If refresh token is valid, fetch user profile using public client
           const userProfile = await authService.getUserProfile(true);
           
           if (userProfile) {
             authService.setUser(userProfile);
             setUser(userProfile);
-          } else {
-            // If we can't get user profile, clear everything
-            setUser(null);
-            localStorage.removeItem('user');
           }
-        } else {
-          // Refresh token invalid, clear user data
+        } else if (!existingUser) {
+          // Only clear if there was no existing user
           setUser(null);
           localStorage.removeItem('user');
         }
       } catch (authError) {
-        // If auth check fails (e.g., refresh token invalid), clear user data
-        console.error('AuthContext: Auth verification failed:', authError);
-        setUser(null);
-        localStorage.removeItem('user');
+        // If auth check fails but we have an existing user, keep them logged in
+        if (!existingUser) {
+          console.error('AuthContext: Auth verification failed:', authError);
+          setUser(null);
+          localStorage.removeItem('user');
+        }
       }
     } catch (error) {
       console.error('AuthContext: Auth status check failed:', error);
@@ -104,16 +106,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const response = await authService.login({ email, password });
+      await authService.login({ email, password });
       
-      // After successful login, get user data from localStorage (set by authService)
+      // After successful login, get user data from localStorage
       const userData = authService.getUser();
       
       if (userData) {
         setUser(userData);
       } else {
-        // If still no user data, something went wrong
-        throw new Error('Failed to retrieve user data after login');
+        // If no user data in localStorage, try to fetch profile
+        try {
+          const userProfile = await authService.getUserProfile(true);
+          if (userProfile) {
+            authService.setUser(userProfile);
+            setUser(userProfile);
+          }
+        } catch (profileError) {
+          console.warn('Failed to fetch user profile after login:', profileError);
+        }
       }
       
     } catch (error) {
