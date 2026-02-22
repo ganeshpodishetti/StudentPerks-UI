@@ -58,10 +58,15 @@ export const authService = {
     const responseData = response.data;
 
     // Fetch user profile after successful login
-    const userProfile = await this.getUserProfile();
-    
-    if (userProfile) {
-      this.setUser(userProfile);
+    // Use try-catch to handle case where profile fetch might fail
+    try {
+      const userProfile = await this.getUserProfile();
+      if (userProfile) {
+        this.setUser(userProfile);
+      }
+    } catch (profileError) {
+      // Log but don't fail login if profile fetch fails
+      console.warn('Failed to fetch user profile after login:', profileError);
     }
 
     return responseData;
@@ -145,13 +150,8 @@ export const authService = {
       await this.refreshToken();
       return true;
     } catch (refreshError: any) {
-      if (
-        refreshError.message?.includes('invalid') ||
-        refreshError.message?.includes('expired') ||
-        refreshError.message?.includes('revoked')
-      ) {
-        localStorage.removeItem('user');
-      }
+      // Don't remove user data on refresh failure - user might just need to log in again
+      // The localStorage user data will be cleared on next failed attempt or on logout
       return false;
     }
   },
