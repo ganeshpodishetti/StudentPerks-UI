@@ -1,4 +1,6 @@
 'use client'
+
+import { Suspense } from 'react'
 import { Category, fetchCategories } from '@/features/categories/services/categoryService'
 import { DealsContainer } from '@/features/deals/components/display/DealList/DealsContainer'
 import Navigation from '@/shared/components/layout/Navigation/Navigation'
@@ -7,7 +9,7 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function HomePage() {
+function HomePageContent() {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
   const [categories, setCategories] = useState<Category[]>([]);
@@ -68,7 +70,7 @@ export default function HomePage() {
               {/* Search indicator */}
               {searchQuery && (
                 <div className="mb-4 flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                  <span>Searching for: <strong className="text-neutral-900 dark:text-white">&quot;{searchQuery}&quot;</strong></span>
+                  <span>Searching for: <strong className="text-neutral-900 dark:text-white">"{searchQuery}"</strong></span>
                   <Link 
                     href="/"
                     className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full transition-colors"
@@ -91,5 +93,44 @@ export default function HomePage() {
         </div>
       </main>
     </div>
+  )
+}
+
+function LoadingState() {
+  return (
+    <div className="min-h-screen h-full w-full bg-background dark:bg-background flex flex-col">
+      <Navigation />
+      <main className="flex-grow py-14 md:py-16 bg-background dark:bg-background">
+        <div className="w-full max-w-7xl mx-auto px-6 md:px-8">
+          <div className="flex flex-col md:flex-row gap-6">
+            <aside className="w-full md:w-48 shrink-0">
+              <div className="md:sticky md:top-24">
+                <div className="h-4 w-24 bg-neutral-200 dark:bg-neutral-700 rounded mb-3 animate-pulse" />
+                <div className="space-y-2">
+                  <div className="h-8 w-full bg-neutral-200 dark:bg-neutral-700 rounded animate-pulse" />
+                  <div className="h-8 w-full bg-neutral-200 dark:bg-neutral-700 rounded animate-pulse" />
+                  <div className="h-8 w-full bg-neutral-200 dark:bg-neutral-700 rounded animate-pulse" />
+                </div>
+              </div>
+            </aside>
+            <div className="flex-1 min-w-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="h-48 bg-neutral-200 dark:bg-neutral-700 rounded-lg animate-pulse" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  )
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<LoadingState />}>
+      <HomePageContent />
+    </Suspense>
   )
 }
