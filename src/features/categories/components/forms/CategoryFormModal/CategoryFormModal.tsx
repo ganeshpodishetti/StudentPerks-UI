@@ -1,15 +1,12 @@
+import { Category, CreateCategoryRequest } from '@/features/categories/services/categoryService';
+import { FormModal } from '@/shared/components/forms/FormModal';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
-import { Textarea } from '@/shared/components/ui/textarea';
-import { Category, CreateCategoryRequest } from '@/features/categories/services/categoryService';
-import { useState } from 'react';
-import { FormModal } from '@/shared/components/forms/FormModal';
 import { useToast } from '@/shared/components/ui/use-toast';
+import { useState } from 'react';
 
 interface FormData {
-  name: string;
-  description: string;
-  image?: File | null;
+  title: string;
 }
 
 interface CategoryFormModalProps {
@@ -24,24 +21,18 @@ export default function CategoryFormModal({ isOpen, onClose, onSave, category }:
   const { toast } = useToast();
 
   const initialState: FormData = {
-    name: '',
-    description: '',
-    image: null,
+    title: '',
   };
 
   const entityFormData = category ? {
-    name: category.name || '',
-    description: category.description || '',
-    image: null
+    title: category.title || '',
   } : null;
 
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
     try {
       const categoryData: CreateCategoryRequest = {
-        name: formData.name,
-        ...(formData.description && { description: formData.description }),
-        ...(formData.image && { image: formData.image }),
+        title: formData.title,
       };
       await onSave(categoryData);
       onClose();
@@ -68,46 +59,18 @@ export default function CategoryFormModal({ isOpen, onClose, onSave, category }:
       isLoading={isLoading}
       submitText={category ? 'Update Category' : 'Create Category'}
     >
-      {(formData, handleInputChange, handleFileChange) => (
+      {(formData, handleInputChange) => (
         <>
           <div className="space-y-2">
-            <Label htmlFor="name">Category Name *</Label>
+            <Label htmlFor="title">Category Title *</Label>
             <Input
-              id="name"
-              name="name"
-              value={formData.name}
+              id="title"
+              name="title"
+              value={formData.title}
               onChange={handleInputChange}
-              placeholder="Enter category name"
+              placeholder="Enter category title"
               required
             />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              placeholder="Enter category description"
-              rows={3}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="image">Category Image</Label>
-            <Input
-              id="image"
-              name="image"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-            {formData.image && (
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                Selected: {formData.image.name}
-              </p>
-            )}
           </div>
         </>
       )}

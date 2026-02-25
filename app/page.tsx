@@ -49,14 +49,14 @@ function HomePageContent() {
                   {categories.map((category) => (
                     <button
                       key={category.id}
-                      onClick={() => setSelectedCategory(category.name)}
+                      onClick={() => setSelectedCategory(category.title)}
                       className={`whitespace-nowrap text-left px-3 py-2 text-sm rounded-lg transition-colors ${
-                        selectedCategory === category.name
+                        selectedCategory === category.title
                           ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium'
                           : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
                       }`}
                     >
-                      {category.name}
+                      {category.title}
                     </button>
                   ))}
                 </nav>
