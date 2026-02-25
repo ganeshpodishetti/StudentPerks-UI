@@ -3,13 +3,14 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { useToast } from '@/shared/components/ui/use-toast';
-import { submittedDealService } from '../../../services/submittedDealService';
 import { SubmitDealRequest } from '@/shared/types/entities/submittedDeal';
 import { useEffect, useState } from 'react';
+import { submittedDealService } from '../../../services/submittedDealService';
 
 interface FormData {
-  name: string;
+  title: string;
   url: string;
+  promoCode: string;
 }
 
 interface SubmittedDealFormModalProps {
@@ -20,8 +21,9 @@ interface SubmittedDealFormModalProps {
 
 export default function SubmittedDealFormModal({ isOpen, onClose, onSuccess }: SubmittedDealFormModalProps) {
   const [formData, setFormData] = useState<FormData>({
-    name: '',
+    title: '',
     url: '',
+    promoCode: '',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -31,8 +33,9 @@ export default function SubmittedDealFormModal({ isOpen, onClose, onSuccess }: S
     if (isOpen) {
       // Reset form when modal opens
       setFormData({
-        name: '',
+        title: '',
         url: '',
+        promoCode: '',
       });
     }
   }, [isOpen]);
@@ -51,8 +54,9 @@ export default function SubmittedDealFormModal({ isOpen, onClose, onSuccess }: S
 
     try {
       const dealData: SubmitDealRequest = {
-        name: formData.name.trim(),
+        title: formData.title.trim(),
         url: formData.url.trim(),
+        ...(formData.promoCode.trim() && { promoCode: formData.promoCode.trim() }),
       };
 
       await submittedDealService.submitDeal(dealData);
@@ -64,7 +68,7 @@ export default function SubmittedDealFormModal({ isOpen, onClose, onSuccess }: S
       });
       
       // Reset form and close modal
-      setFormData({ name: '', url: '' });
+      setFormData({ title: '', url: '', promoCode: '' });
       onClose();
       
       // Call success callback if provided
@@ -97,13 +101,13 @@ export default function SubmittedDealFormModal({ isOpen, onClose, onSuccess }: S
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Deal Name *</Label>
+            <Label htmlFor="title">Deal Title *</Label>
             <Input
-              id="name"
-              name="name"
-              value={formData.name}
+              id="title"
+              name="title"
+              value={formData.title}
               onChange={handleInputChange}
-              placeholder="Enter the deal name"
+              placeholder="Enter the deal title"
               required
               maxLength={250}
             />
@@ -125,6 +129,20 @@ export default function SubmittedDealFormModal({ isOpen, onClose, onSuccess }: S
             />
             <p className="text-xs text-gray-500">
               Link to the deal page where students can access this offer
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="promoCode">Promo Code</Label>
+            <Input
+              id="promoCode"
+              name="promoCode"
+              value={formData.promoCode}
+              onChange={handleInputChange}
+              placeholder="e.g., STUDENT50"
+            />
+            <p className="text-xs text-gray-500">
+              Optional promo code for this deal
             </p>
           </div>
 

@@ -140,49 +140,25 @@ export const dealService = {
   // Admin endpoints - authentication required
   async createDeal(dealData: CreateDealRequest): Promise<Deal> {
     try {
-      // Create FormData for multipart upload
-      const formData = new FormData();
+      // Create JSON payload
+      const payload = {
+        title: dealData.title,
+        description: dealData.description,
+        discount: dealData.discount,
+        isActive: dealData.isActive,
+        redeemType: dealData.redeemType,
+        categoryName: dealData.categoryName,
+        ...(dealData.storeName && { storeName: dealData.storeName }),
+        ...(dealData.promo && { promo: dealData.promo }),
+        ...(dealData.url && { url: dealData.url }),
+        ...(dealData.startDate && { startDate: dealData.startDate }),
+        ...(dealData.endDate && { endDate: dealData.endDate }),
+        ...(dealData.howToRedeem && { howToRedeem: dealData.howToRedeem }),
+        ...(dealData.universityName && { universityName: dealData.universityName }),
+        ...(dealData.isUniversitySpecific !== undefined && { isUniversitySpecific: dealData.isUniversitySpecific }),
+      };
       
-      // Add all fields to FormData
-      formData.append('title', dealData.title);
-      formData.append('description', dealData.description);
-      formData.append('discount', dealData.discount);
-      formData.append('isActive', dealData.isActive.toString());
-      formData.append('redeemType', dealData.redeemType);
-      formData.append('categoryName', dealData.categoryName);
-      formData.append('storeName', dealData.storeName);
-      
-      // Add optional fields if they exist
-      if (dealData.image) {
-        formData.append('image', dealData.image);
-      }
-      if (dealData.promo) {
-        formData.append('promo', dealData.promo);
-      }
-      if (dealData.url) {
-        formData.append('url', dealData.url);
-      }
-      if (dealData.startDate) {
-        formData.append('startDate', dealData.startDate);
-      }
-      if (dealData.endDate) {
-        formData.append('endDate', dealData.endDate);
-      }
-      if (dealData.howToRedeem) {
-        formData.append('howToRedeem', dealData.howToRedeem);
-      }
-      if (dealData.universityName) {
-        formData.append('universityName', dealData.universityName);
-      }
-      if (dealData.isUniversitySpecific !== undefined) {
-        formData.append('isUniversitySpecific', dealData.isUniversitySpecific.toString());
-      }
-      
-      const response = await apiClient.post('/api/deals', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await apiClient.post('/api/deals', payload);
       return response.data;
     } catch (error) {
       throw error;
@@ -191,50 +167,25 @@ export const dealService = {
 
   async updateDeal(id: string, dealData: UpdateDealRequest): Promise<Deal> {
     try {
-      // Create FormData for multipart upload
-      const formData = new FormData();
+      // Create JSON payload
+      const payload = {
+        title: dealData.title,
+        description: dealData.description,
+        discount: dealData.discount,
+        isActive: dealData.isActive,
+        redeemType: dealData.redeemType,
+        categoryName: dealData.categoryName,
+        ...(dealData.storeName && { storeName: dealData.storeName }),
+        ...(dealData.promo && { promo: dealData.promo }),
+        ...(dealData.url && { url: dealData.url }),
+        ...(dealData.startDate && { startDate: dealData.startDate }),
+        ...(dealData.endDate && { endDate: dealData.endDate }),
+        ...(dealData.howToRedeem && { howToRedeem: dealData.howToRedeem }),
+        ...(dealData.universityName && { universityName: dealData.universityName }),
+        ...(dealData.isUniversitySpecific !== undefined && { isUniversitySpecific: dealData.isUniversitySpecific }),
+      };
       
-      // Add all fields to FormData
-      formData.append('title', dealData.title);
-      formData.append('description', dealData.description);
-      formData.append('discount', dealData.discount);
-      formData.append('isActive', dealData.isActive.toString());
-      formData.append('redeemType', dealData.redeemType);
-      formData.append('categoryName', dealData.categoryName);
-      formData.append('storeName', dealData.storeName);
-      
-      // Add optional fields if they exist
-      if (dealData.image) {
-        formData.append('image', dealData.image);
-      }
-      if (dealData.promo) {
-        formData.append('promo', dealData.promo);
-      }
-      if (dealData.url) {
-        formData.append('url', dealData.url);
-      }
-      if (dealData.startDate) {
-        formData.append('startDate', dealData.startDate);
-      }
-      if (dealData.endDate) {
-        formData.append('endDate', dealData.endDate);
-      }
-      if (dealData.howToRedeem) {
-        formData.append('howToRedeem', dealData.howToRedeem);
-      }
-      if (dealData.universityName) {
-        formData.append('universityName', dealData.universityName);
-      }
-      if (dealData.isUniversitySpecific !== undefined) {
-        formData.append('isUniversitySpecific', dealData.isUniversitySpecific.toString());
-      }
-      
-      
-      const response = await apiClient.put(`/api/deals/${id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await apiClient.put(`/api/deals/${id}`, payload);
       return response.data;
     } catch (error) {
       throw error;

@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils"
 import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
 import {
@@ -5,7 +6,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/shared/components/ui/popover"
-import { cn } from "@/lib/utils"
 import { Check, ChevronsUpDown, Plus } from "lucide-react"
 import * as React from "react"
 
@@ -38,11 +38,12 @@ export function Combobox({
   const [searchValue, setSearchValue] = React.useState("")
 
   // Check if current value exists in options
-  const selectedOption = options.find(option => option.value === value)
+  const validOptions = options.filter(opt => opt.label && opt.value);
+  const selectedOption = validOptions.find(option => option.value === value);
   const displayValue = selectedOption?.label || value || ""
 
   // Filter options based on search
-  const filteredOptions = options.filter(option =>
+  const filteredOptions = validOptions.filter(option =>
     option.label.toLowerCase().includes(searchValue.toLowerCase())
   )
 
@@ -55,7 +56,7 @@ export function Combobox({
 
   // Handle custom value creation
   const handleCreateCustom = () => {
-    if (searchValue.trim() && !options.some(option => 
+    if (searchValue.trim() && !validOptions.some(option => 
       option.label.toLowerCase() === searchValue.toLowerCase()
     )) {
       onValueChange(searchValue.trim())
@@ -67,7 +68,7 @@ export function Combobox({
   // Show create option when search value doesn't match any existing option
   const showCreateOption = allowCustom && 
     searchValue.trim() && 
-    !options.some(option => 
+    !validOptions.some(option => 
       option.label.toLowerCase() === searchValue.toLowerCase()
     )
 
@@ -92,7 +93,7 @@ export function Combobox({
     setOpen(newOpen)
     if (!newOpen) {
       // When closing, if there's a search value and allowCustom is true, create it
-      if (allowCustom && searchValue.trim() && !options.some(option => 
+      if (allowCustom && searchValue.trim() && !validOptions.some(option => 
         option.label.toLowerCase() === searchValue.toLowerCase()
       )) {
         onValueChange(searchValue.trim())

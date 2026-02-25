@@ -4,7 +4,7 @@ import { Card } from "@/shared/components/ui/card";
 import { Deal } from '@/shared/types';
 import { Clock, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import DealDetail from '../DealDetail/DealDetail';
 
 interface DealCardProps {
@@ -15,12 +15,7 @@ interface DealCardProps {
 }
 
 const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = false, compact = false, showCategoryAndStore = true }) => {
-  const [imageError, setImageError] = useState(false);
   const imageUrl = deal.imageUrl;
-  
-  const handleImageError = () => {
-    setImageError(true);
-  };
 
   // Calculate days remaining if end date exists
   const getDaysRemaining = () => {
@@ -59,7 +54,7 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
       <div className="flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3">
         <div className="shrink-0">
           <div className={`w-10 sm:w-12 ${compact ? 'sm:w-12' : 'sm:w-14'} h-auto flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-105 rounded-md`}>
-            {!imageError && imageUrl ? (
+            {imageUrl ? (
               <Image
                 src={imageUrl}
                 alt={deal.title}
@@ -67,19 +62,14 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
                 height={compact ? 48 : 56}
                 className="object-contain transition-all duration-300 group-hover:brightness-110 group-active:brightness-105 rounded-md"
                 style={{ width: '100%', height: 'auto' }}
-                onError={handleImageError}
                 unoptimized={imageUrl.startsWith('/')}
               />
             ) : (
-              <Image
-                src="/no-image.svg"
-                alt="No image available"
-                width={compact ? 48 : 56}
-                height={compact ? 48 : 56}
-                className="object-contain opacity-60 transition-all duration-300 group-hover:opacity-80 group-active:opacity-75 rounded-md"
-                style={{ width: '100%', height: 'auto' }}
-                unoptimized
-              />
+              <div className={`w-10 sm:w-12 ${compact ? 'sm:w-12' : 'sm:w-14'} aspect-square flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-md`}>
+                <span className="text-neutral-400 text-xs font-medium">
+                  {deal.title?.substring(0, 2).toUpperCase()}
+                </span>
+              </div>
             )}
           </div>
         </div>
