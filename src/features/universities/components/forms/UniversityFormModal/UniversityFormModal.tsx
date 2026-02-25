@@ -1,10 +1,10 @@
+import { FormModal } from '@/shared/components/forms/FormModal';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { Switch } from '@/shared/components/ui/switch';
+import { useToast } from '@/shared/components/ui/use-toast';
 import { CreateUniversityRequest, University, UpdateUniversityRequest } from '@/shared/types/entities/university';
 import { useState } from 'react';
-import { FormModal } from '@/shared/components/forms/FormModal';
-import { useToast } from '@/shared/components/ui/use-toast';
 
 interface FormData {
   name: string;
@@ -96,7 +96,7 @@ export default function UniversityFormModal({ isOpen, onClose, onSave, universit
       isLoading={isLoading}
       submitText={university ? 'Update University' : 'Create University'}
     >
-      {(formData, handleInputChange, handleFileChange, setFormData) => (
+      {(formData, handleInputChange, setFormData) => (
         <>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -159,26 +159,11 @@ export default function UniversityFormModal({ isOpen, onClose, onSave, universit
               <Switch
                 id="isActive"
                 checked={formData.isActive}
-                onCheckedChange={(checked) => setFormData(prev => ({ ...prev, isActive: checked }))}
+                onCheckedChange={(checked) => setFormData({ ...formData, isActive: checked })}
               />
               <Label htmlFor="isActive">Active University</Label>
             </div>
           )}
-          <div className="space-y-2">
-            <Label htmlFor="image">University Image</Label>
-            <Input
-              id="image"
-              name="image"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-            {formData.image && (
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                Selected: {formData.image.name}
-              </p>
-            )}
-          </div>
         </>
       )}
     </FormModal>

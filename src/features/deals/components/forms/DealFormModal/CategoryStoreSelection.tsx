@@ -1,7 +1,7 @@
-import { Combobox } from '@/shared/components/ui/combobox';
-import { Label } from '@/shared/components/ui/label';
 import { useCategoriesQuery } from '@/features/categories/hooks/useCategoriesQuery';
 import { useStoresQuery } from '@/features/stores/hooks/useStoresQuery';
+import { Combobox } from '@/shared/components/ui/combobox';
+import { Label } from '@/shared/components/ui/label';
 import { Deal } from '@/shared/types/entities/deal';
 import { FormData } from './types';
 
@@ -20,7 +20,7 @@ export default function CategoryStoreSelection({ formData, setFormData, deal }: 
       <div>
         <Label htmlFor="categoryName">Category *</Label>
         <Combobox
-          options={categories.filter(cat => cat.name).map(cat => ({ value: cat.name!, label: cat.name! }))}
+          options={categories.filter(cat => cat.title).map(cat => ({ value: cat.title!, label: cat.title! }))}
           value={formData.categoryName}
           onValueChange={(value) => setFormData(prev => ({ ...prev, categoryName: value }))}
           placeholder={deal ? "Select category" : "Select or create category"}
@@ -34,7 +34,7 @@ export default function CategoryStoreSelection({ formData, setFormData, deal }: 
       <div>
         <Label htmlFor="storeName">Store *</Label>
         <Combobox
-          options={stores.map(store => ({ value: store.name, label: store.name }))}
+          options={stores.filter(store => store.title).map(store => ({ value: store.title, label: store.title }))}
           value={formData.storeName}
           onValueChange={(value) => setFormData(prev => ({ ...prev, storeName: value }))}
           placeholder={deal ? "Select store" : "Select or create store"}

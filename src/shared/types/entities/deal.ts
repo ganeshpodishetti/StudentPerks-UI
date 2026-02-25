@@ -26,7 +26,6 @@ export interface CreateDealRequest {
   title: string;
   description: string;
   discount: string;
-  image?: File;
   promo?: string;
   isActive: boolean;
   url: string;
@@ -36,7 +35,7 @@ export interface CreateDealRequest {
   endDate?: string;
   isUniversitySpecific?: boolean;
   categoryName: string;
-  storeName: string;
+  storeName?: string;
   universityName?: string;
 }
 
@@ -44,7 +43,6 @@ export interface UpdateDealRequest {
   title: string;
   description: string;
   discount: string;
-  image?: File;
   promo?: string;
   isActive: boolean;
   url: string;
@@ -54,7 +52,7 @@ export interface UpdateDealRequest {
   endDate?: string;
   isUniversitySpecific?: boolean;
   categoryName: string;
-  storeName: string;
+  storeName?: string;
   universityName?: string;
 }
 
@@ -76,6 +74,7 @@ export interface GetDealResponse {
   categoryName: string;
   storeName: string;
   universityName?: string;
+  createdAt: string;
 }
 
 export interface GetDealsByCategoryResponse {

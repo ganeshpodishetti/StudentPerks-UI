@@ -31,23 +31,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "studentperks-api-dev.azurewebsites.net",
-      },
-      {
-        protocol: "https",
-        hostname: "studentperks-api.azurewebsites.net",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "via.placeholder.com",
-      },
-      {
-        protocol: "https",
-        hostname: "ik.imagekit.io",
+        hostname: "**",
       },
     ],
     // Add image formats for better performance
@@ -61,6 +45,12 @@ const nextConfig = {
     // Remove console.log in production
     removeConsole: process.env.NODE_ENV === "production",
   },
+  // Enable React strict mode for better development experience
+  reactStrictMode: true,
+  // Generate ETags for caching
+  generateEtags: true,
+  // Enable compression
+  compress: true,
 };
 
 module.exports = nextConfig;

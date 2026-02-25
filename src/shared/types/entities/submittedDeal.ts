@@ -2,13 +2,15 @@ export interface SubmittedDeal {
   id: string;
   name: string;
   url: string;
+  promoCode?: string;
   markedAsRead: boolean;
   sentAt: string;
 }
 
 export interface SubmitDealRequest {
-  name: string;
+  title: string;
   url: string;
+  promoCode?: string;
 }
 
 export interface MarkAsReadDealRequest {
@@ -19,6 +21,7 @@ export interface SubmittedDealResponse {
   id: string;
   name: string;
   url: string;
+  promoCode?: string;
   markedAsRead: boolean;
   sentAt: string;
 }

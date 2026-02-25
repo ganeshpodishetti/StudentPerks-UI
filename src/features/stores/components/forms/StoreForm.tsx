@@ -4,15 +4,14 @@ import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
-import { Textarea } from '@/shared/components/ui/textarea';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface FormData {
-  name: string;
-  description: string;
+  title: string;
   website: string;
+  logoUrl: string;
 }
 
 interface StoreFormProps {
@@ -29,19 +28,19 @@ export default function StoreForm({ store, onSave, title, description }: StoreFo
   const [formData, setFormData] = useState<FormData>(() => {
     if (store) {
       return {
-        name: store.name || '',
-        description: store.description || '',
+        title: store.title || '',
         website: store.website || '',
+        logoUrl: store.logoUrl || '',
       };
     }
     return {
-      name: '',
-      description: '',
+      title: '',
       website: '',
+      logoUrl: '',
     };
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -51,9 +50,9 @@ export default function StoreForm({ store, onSave, title, description }: StoreFo
     setIsLoading(true);
     try {
       const storeData: CreateStoreRequest = {
-        name: formData.name,
-        ...(formData.description && { description: formData.description }),
+        title: formData.title,
         ...(formData.website && { website: formData.website }),
+        ...(formData.logoUrl && { logoUrl: formData.logoUrl }),
       };
       await onSave(storeData);
       router.push('/admin/stores');
@@ -83,26 +82,14 @@ export default function StoreForm({ store, onSave, title, description }: StoreFo
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Store Name *</Label>
+              <Label htmlFor="title">Store Title *</Label>
               <Input
-                id="name"
-                name="name"
-                value={formData.name}
+                id="title"
+                name="title"
+                value={formData.title}
                 onChange={handleInputChange}
-                placeholder="Enter store name"
+                placeholder="Enter store title"
                 required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                placeholder="Enter store description"
-                rows={3}
               />
             </div>
 
@@ -115,6 +102,18 @@ export default function StoreForm({ store, onSave, title, description }: StoreFo
                 value={formData.website}
                 onChange={handleInputChange}
                 placeholder="https://example.com"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="logoUrl">Logo URL</Label>
+              <Input
+                id="logoUrl"
+                name="logoUrl"
+                type="url"
+                value={formData.logoUrl}
+                onChange={handleInputChange}
+                placeholder="https://example.com/logo.png"
               />
             </div>
 

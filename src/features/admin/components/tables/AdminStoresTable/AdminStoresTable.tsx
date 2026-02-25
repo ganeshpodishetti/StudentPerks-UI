@@ -10,19 +10,19 @@ interface AdminStoresTableProps {
 export default function AdminStoresTable({ stores, onEditStore, onDeleteStore }: AdminStoresTableProps) {
   const columns: ColumnDef<Store>[] = [
     {
-      key: 'name',
-      header: 'Name',
-      render: (_, store) => cellRenderers.text(store.name)
-    },
-    {
-      key: 'description',
-      header: 'Description',
-      render: (_, store) => cellRenderers.description(store.description, 'max-w-[200px]')
+      key: 'title',
+      header: 'Title',
+      render: (_, store) => cellRenderers.text(store.title)
     },
     {
       key: 'website',
       header: 'Website',
       render: (_, store) => cellRenderers.link(store.website)
+    },
+    {
+      key: 'logoUrl',
+      header: 'Logo',
+      render: (_, store) => store.logoUrl ? cellRenderers.image(store.logoUrl, 'h-8 w-8') : cellRenderers.text('-')
     }
   ];
 

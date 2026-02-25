@@ -51,7 +51,7 @@ export default function EditCategoryPage({ params }: EditCategoryPageProps) {
     <AdminLayout>
       <AdminHeader 
         title="Edit Category"
-        description={`Editing: ${category.name}`}
+        description={`Editing: ${category.title}`}
       />
 
       <CategoryForm

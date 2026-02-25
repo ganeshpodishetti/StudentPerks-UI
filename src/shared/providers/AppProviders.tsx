@@ -1,12 +1,17 @@
 'use client'
 
-import { ErrorBoundary } from '@/shared/components/feedback/ErrorBoundary'
-import { Toaster } from '@/shared/components/ui/toaster'
 import { AuthProvider } from '@/features/auth/contexts/AuthContext'
-import { ErrorProvider } from '@/shared/contexts/ErrorContext'
 import { UnreadDealsProvider } from '@/features/deals/contexts/UnreadDealsContext'
+import { ErrorBoundary } from '@/shared/components/feedback/ErrorBoundary'
+import { ErrorProvider } from '@/shared/contexts/ErrorContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import dynamic from 'next/dynamic'
 import { ReactNode, useState } from 'react'
+
+// Lazy load Toaster since it's only needed when showing toasts
+const Toaster = dynamic(() => import('@/shared/components/ui/toaster').then(mod => mod.Toaster), {
+  ssr: false,
+})
 
 interface AppProvidersProps {
   children: ReactNode

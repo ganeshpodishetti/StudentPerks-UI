@@ -6,12 +6,12 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
-    CategoryStoreSelection,
-    DateSelection,
-    DealInformation,
-    DealSettings,
-    FormData,
-    UniversityAndSwitches,
+  CategoryStoreSelection,
+  DateSelection,
+  DealInformation,
+  DealSettings,
+  FormData,
+  UniversityAndSwitches,
 } from './DealFormModal/';
 
 const formatDateForBackend = (date: string): string | null => {
@@ -48,7 +48,6 @@ export default function DealForm({ deal, onSave, title, description }: DealFormP
         title: deal.title,
         description: deal.description,
         discount: deal.discount || '',
-        image: null,
         promo: deal.promo || '',
         isActive: deal.isActive,
         url: deal.url || '',
@@ -66,7 +65,6 @@ export default function DealForm({ deal, onSave, title, description }: DealFormP
       title: '',
       description: '',
       discount: '',
-      image: null,
       promo: '',
       isActive: true,
       url: '',
@@ -91,11 +89,6 @@ export default function DealForm({ deal, onSave, title, description }: DealFormP
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setFormData(prev => ({ ...prev, image: file }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -109,10 +102,9 @@ export default function DealForm({ deal, onSave, title, description }: DealFormP
         redeemType: formData.redeemType,
         isUniversitySpecific: formData.isUniversitySpecific || false,
         categoryName: formData.categoryName,
-        storeName: formData.storeName,
+        ...(formData.storeName && { storeName: formData.storeName }),
       };
 
-      if (formData.image) dealData.image = formData.image;
       if (formData.promo?.trim()) dealData.promo = formData.promo.trim();
       if (formData.howToRedeem?.trim()) dealData.howToRedeem = formData.howToRedeem.trim();
       if (formData.universityName?.trim()) dealData.universityName = formData.universityName.trim();
@@ -158,7 +150,6 @@ export default function DealForm({ deal, onSave, title, description }: DealFormP
             <DealSettings 
               formData={formData} 
               handleInputChange={handleInputChange} 
-              handleFileChange={handleFileChange} 
               setFormData={setFormData} 
             />
             <DateSelection formData={formData} handleInputChange={handleInputChange} />

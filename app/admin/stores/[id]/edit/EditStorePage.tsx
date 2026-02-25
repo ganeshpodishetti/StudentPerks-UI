@@ -51,7 +51,7 @@ export default function EditStorePage({ params }: EditStorePageProps) {
     <AdminLayout>
       <AdminHeader 
         title="Edit Store"
-        description={`Editing: ${store.name}`}
+        description={`Editing: ${store.title}`}
       />
 
       <StoreForm

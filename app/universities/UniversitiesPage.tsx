@@ -104,7 +104,7 @@ const UniversitiesPage: React.FC = () => {
                   {university.imageUrl ? (
                     <Image
                       src={university.imageUrl}
-                      alt={university.name}
+                      alt={university.name || 'University logo'}
                       width={40}
                       height={40}
                       className="object-contain rounded-md"
