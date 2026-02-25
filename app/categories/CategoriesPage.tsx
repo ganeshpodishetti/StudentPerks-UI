@@ -1,9 +1,9 @@
 // Migrated from src/components/pages/CategoriesPage.tsx
 'use client'
+import { Category, fetchCategories } from '@/features/categories/services/categoryService';
 import DealList from '@/features/deals/components/display/DealList';
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { useToast } from "@/shared/components/ui/use-toast";
-import { Category, fetchCategories } from '@/features/categories/services/categoryService';
 import React, { useEffect, useState } from 'react';
 
 const CategoriesPage: React.FC = () => {
@@ -102,10 +102,10 @@ if (loading) {
               {categories.map((category) => (
                 <button
                   key={category.id}
-                  onClick={() => handleCategorySelect(category.name || '')}
+                  onClick={() => handleCategorySelect(category.title || '')}
                   className="py-2 px-4 rounded-full bg-neutral-900 dark:bg-neutral-800/90 hover:bg-neutral-700 dark:hover:bg-neutral-700 hover:scale-105 hover:shadow-lg transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-primary/40 text-white font-medium text-sm shadow-sm border border-neutral-700/40 group"
                 >
-                  <span className="group-hover:text-white transition-colors duration-200">{category.name}</span>
+                  <span className="group-hover:text-white transition-colors duration-200">{category.title}</span>
                 </button>
               ))}
             </div>

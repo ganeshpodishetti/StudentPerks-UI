@@ -4,26 +4,19 @@ import apiClient, { publicApiClient } from '@/shared/services/api/apiClient';
 // Define response types
 export interface Category {
   id: string;
-  name?: string;
-  description?: string;
-  imageUrl?: string;
+  title?: string;
 }
 
 export interface CreateCategoryRequest {
-  name: string;
-  description?: string;
-  image?: File;
+  title: string;
 }
 
 export interface UpdateCategoryRequest {
-  name: string;
-  description?: string;
-  image?: File;
+  title: string;
 }
 
 export interface CreateCategoryResponse {
   id: string;
-  imageUrl?: string;
 }
 
 export const categoryService = {
@@ -58,15 +51,7 @@ export const categoryService = {
   async createCategory(categoryData: CreateCategoryRequest): Promise<CreateCategoryResponse> {
     try {
       const formData = new FormData();
-      formData.append('name', categoryData.name);
-      
-      if (categoryData.description) {
-        formData.append('description', categoryData.description);
-      }
-      
-      if (categoryData.image) {
-        formData.append('image', categoryData.image);
-      }
+      formData.append('title', categoryData.title);
       
       const response = await apiClient.post('/api/categories', formData, {
         headers: {
@@ -82,15 +67,7 @@ export const categoryService = {
   async updateCategory(id: string, categoryData: UpdateCategoryRequest): Promise<Category> {
     try {
       const formData = new FormData();
-      formData.append('name', categoryData.name);
-      
-      if (categoryData.description) {
-        formData.append('description', categoryData.description);
-      }
-      
-      if (categoryData.image) {
-        formData.append('image', categoryData.image);
-      }
+      formData.append('title', categoryData.title);
       
       const response = await apiClient.put(`/api/categories/${id}`, formData, {
         headers: {
