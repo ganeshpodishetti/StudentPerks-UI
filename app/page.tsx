@@ -1,11 +1,17 @@
 'use client'
 import { Category, fetchCategories } from '@/features/categories/services/categoryService'
 import { DealsContainer } from '@/features/deals/components/display/DealList/DealsContainer'
-import Navigation from '@/shared/components/layout/Navigation/Navigation'
 import { Tag, X } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
+
+// Dynamically import Navigation to reduce initial bundle size
+// It's loaded with SSR but the JavaScript for interactivity is deferred
+const Navigation = dynamic(() => import('@/shared/components/layout/Navigation/Navigation'), {
+  ssr: true,
+})
 
 function HomePageContent() {
   const searchParams = useSearchParams();

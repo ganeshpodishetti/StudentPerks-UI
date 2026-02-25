@@ -45,6 +45,12 @@ const nextConfig = {
     // Remove console.log in production
     removeConsole: process.env.NODE_ENV === "production",
   },
+  // Enable React strict mode for better development experience
+  reactStrictMode: true,
+  // Generate ETags for caching
+  generateEtags: true,
+  // Enable compression
+  compress: true,
 };
 
 module.exports = nextConfig;
