@@ -31,23 +31,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "studentperks-api-dev.azurewebsites.net",
-      },
-      {
-        protocol: "https",
-        hostname: "studentperks-api.azurewebsites.net",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "via.placeholder.com",
-      },
-      {
-        protocol: "https",
-        hostname: "ik.imagekit.io",
+        hostname: "**",
       },
     ],
     // Add image formats for better performance
