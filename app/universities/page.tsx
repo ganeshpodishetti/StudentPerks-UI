@@ -1,5 +1,10 @@
-import Navigation from '@/shared/components/layout/Navigation/Navigation'
+import dynamic from 'next/dynamic'
 import UniversitiesPage from './UniversitiesPage'
+
+// Dynamically import Navigation to reduce initial bundle size
+const Navigation = dynamic(() => import('@/shared/components/layout/Navigation/Navigation'), {
+  ssr: true,
+})
 
 export const metadata = {
   title: 'Universities - StudentPerks',
