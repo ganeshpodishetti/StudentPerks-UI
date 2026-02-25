@@ -1,21 +1,28 @@
 // Service for fetching stores
 import apiClient, { publicApiClient } from '@/shared/services/api/apiClient';
 
-// Define response types
+// Define response types based on backend DTOs
+// UpdateStoreRequest(string Title, string? Website, string? LogoUrl)
+// CreateStoreRequest(string Title, string? Website, string? LogoUrl)
+// StoreResponse(Guid Id, string? Title, string? Website, string? LogoUrl)
 export interface Store {
   id: string;
-  name: string;
-  description?: string;
+  title: string;
   website?: string;
+  logoUrl?: string;
 }
 
 export interface CreateStoreRequest {
-  name: string;
-  description?: string;
+  title: string;
   website?: string;
+  logoUrl?: string;
 }
 
-export interface UpdateStoreRequest extends CreateStoreRequest {}
+export interface UpdateStoreRequest {
+  title: string;
+  website?: string;
+  logoUrl?: string;
+}
 
 export const storeService = {
   // Public endpoints - no authentication required

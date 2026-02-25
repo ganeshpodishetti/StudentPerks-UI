@@ -4,6 +4,7 @@ import { Store as StoreType, fetchStores } from '@/features/stores/services/stor
 import { Card } from "@/shared/components/ui/card";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { useToast } from "@/shared/components/ui/use-toast";
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -99,23 +100,33 @@ const StoresPage: React.FC = () => {
           {stores.map((store) => (
             <Card
               key={store.id}
-              onClick={() => handleStoreSelect(store.name)}
+              onClick={() => handleStoreSelect(store.title)}
               className="group hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-xl p-3 sm:p-4 cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700"
             >
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center overflow-hidden rounded-md bg-neutral-100 dark:bg-neutral-800 shrink-0">
-                  <span className="text-neutral-500 font-semibold text-xs sm:text-sm">
-                    {store.name.substring(0, 2).toUpperCase()}
-                  </span>
+                  {store.logoUrl ? (
+                    <Image
+                      src={store.logoUrl}
+                      alt={store.title}
+                      width={40}
+                      height={40}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <span className="text-neutral-500 font-semibold text-xs sm:text-sm">
+                      {store.title.substring(0, 2).toUpperCase()}
+                    </span>
+                  )}
                 </div>
                 
                 <div className="flex-1 min-w-0">
                   <h3 className="text-xs sm:text-sm font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 truncate">
-                    {store.name}
+                    {store.title}
                   </h3>
-                  {store.description && (
+                  {store.website && (
                     <p className="text-[10px] sm:text-xs text-neutral-400 mt-0.5 truncate hidden sm:block">
-                      {store.description}
+                      {store.website}
                     </p>
                   )}
                 </div>

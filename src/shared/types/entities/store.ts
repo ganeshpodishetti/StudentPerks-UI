@@ -1,24 +1,22 @@
-// Store entity types extracted from storeService.ts
+// Store entity types based on backend DTOs
+// UpdateStoreRequest(string Title, string? Website, string? LogoUrl)
+// CreateStoreRequest(string Title, string? Website, string? LogoUrl)
+// StoreResponse(Guid Id, string? Title, string? Website, string? LogoUrl)
 export interface Store {
   id: string;
-  name: string;
-  description?: string;
-  imageUrl?: string;
-  websiteUrl?: string;
-  isActive?: boolean;
+  title: string;
+  website?: string;
+  logoUrl?: string;
 }
 
 export interface CreateStoreRequest {
-  name: string;
-  description?: string;
-  websiteUrl?: string;
-  image?: File;
+  title: string;
+  website?: string;
+  logoUrl?: string;
 }
 
 export interface UpdateStoreRequest {
-  name: string;
-  description?: string;
-  websiteUrl?: string;
-  isActive: boolean;
-  image?: File;
+  title: string;
+  website?: string;
+  logoUrl?: string;
 }

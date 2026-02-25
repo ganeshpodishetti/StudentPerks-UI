@@ -1,15 +1,14 @@
+import { CreateStoreRequest, Store } from '@/features/stores/services/storeService';
+import { FormModal } from '@/shared/components/forms/FormModal';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
-import { Textarea } from '@/shared/components/ui/textarea';
-import { CreateStoreRequest, Store } from '@/features/stores/services/storeService';
-import { useState } from 'react';
-import { FormModal } from '@/shared/components/forms/FormModal';
 import { useToast } from '@/shared/components/ui/use-toast';
+import { useState } from 'react';
 
 interface FormData {
-  name: string;
-  description: string;
+  title: string;
   website: string;
+  logoUrl: string;
 }
 
 interface StoreFormModalProps {
@@ -24,24 +23,24 @@ export default function StoreFormModal({ isOpen, onClose, onSave, store }: Store
   const { toast } = useToast();
 
   const initialState: FormData = {
-    name: '',
-    description: '',
+    title: '',
     website: '',
+    logoUrl: '',
   };
 
   const entityFormData = store ? {
-    name: store.name || '',
-    description: store.description || '',
+    title: store.title || '',
     website: store.website || '',
+    logoUrl: store.logoUrl || '',
   } : null;
 
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
     try {
       const storeData: CreateStoreRequest = {
-        name: formData.name,
-        ...(formData.description && { description: formData.description }),
+        title: formData.title,
         ...(formData.website && { website: formData.website }),
+        ...(formData.logoUrl && { logoUrl: formData.logoUrl }),
       };
       await onSave(storeData);
       onClose();
@@ -71,26 +70,14 @@ export default function StoreFormModal({ isOpen, onClose, onSave, store }: Store
       {(formData, handleInputChange) => (
         <>
           <div className="space-y-2">
-            <Label htmlFor="name">Store Name *</Label>
+            <Label htmlFor="title">Store Title *</Label>
             <Input
-              id="name"
-              name="name"
-              value={formData.name}
+              id="title"
+              name="title"
+              value={formData.title}
               onChange={handleInputChange}
-              placeholder="Enter store name"
+              placeholder="Enter store title"
               required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              placeholder="Enter store description"
-              rows={3}
             />
           </div>
 
@@ -103,6 +90,18 @@ export default function StoreFormModal({ isOpen, onClose, onSave, store }: Store
               value={formData.website}
               onChange={handleInputChange}
               placeholder="https://example.com"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="logoUrl">Logo URL</Label>
+            <Input
+              id="logoUrl"
+              name="logoUrl"
+              type="url"
+              value={formData.logoUrl}
+              onChange={handleInputChange}
+              placeholder="https://example.com/logo.png"
             />
           </div>
         </>
