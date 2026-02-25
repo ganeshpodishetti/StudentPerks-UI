@@ -1,7 +1,7 @@
-import { CreateDealRequest, Deal } from '@/shared/types/entities/deal';
-import { useState } from 'react';
 import { FormModal } from '@/shared/components/forms/FormModal';
 import { useToast } from '@/shared/components/ui/use-toast';
+import { CreateDealRequest, Deal } from '@/shared/types/entities/deal';
+import { useState } from 'react';
 import {
   CategoryStoreSelection,
   DateSelection,
@@ -43,7 +43,6 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
     title: '',
     description: '',
     discount: '',
-    image: null,
     promo: '',
     isActive: true,
     url: '',
@@ -61,7 +60,6 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
     title: deal.title,
     description: deal.description,
     discount: deal.discount || '',
-    image: null,
     promo: deal.promo || '',
     isActive: deal.isActive,
     url: deal.url || '',
@@ -87,10 +85,9 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
         redeemType: formData.redeemType,
         isUniversitySpecific: formData.isUniversitySpecific || false,
         categoryName: formData.categoryName,
-        storeName: formData.storeName,
+        ...(formData.storeName && { storeName: formData.storeName }),
       };
 
-      if (formData.image) dealData.image = formData.image;
       if (formData.promo?.trim()) dealData.promo = formData.promo.trim();
       if (formData.howToRedeem?.trim()) dealData.howToRedeem = formData.howToRedeem.trim();
       if (formData.universityName?.trim()) dealData.universityName = formData.universityName.trim();
@@ -129,14 +126,13 @@ export default function DealFormModal({ isOpen, onClose, onSave, deal }: DealFor
       isLoading={isLoading}
       submitText={deal ? 'Update Deal' : 'Create Deal'}
     >
-      {(formData, handleInputChange, handleFileChange, setFormData) => (
+      {(formData, handleInputChange, setFormData) => (
         <>
           <DealInformation formData={formData} handleInputChange={handleInputChange} />
           <CategoryStoreSelection formData={formData} setFormData={setFormData} deal={deal} />
           <DealSettings 
             formData={formData} 
             handleInputChange={handleInputChange} 
-            handleFileChange={handleFileChange} 
             setFormData={setFormData} 
           />
           <DateSelection formData={formData} handleInputChange={handleInputChange} />

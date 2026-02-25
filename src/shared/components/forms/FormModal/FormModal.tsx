@@ -1,6 +1,6 @@
 import { Button } from '@/shared/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 export interface FormModalProps<T> {
   isOpen: boolean;
@@ -9,7 +9,11 @@ export interface FormModalProps<T> {
   entity?: T | null;
   title: string;
   description: string;
-  children: (formData: T, handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void, setFormData: React.Dispatch<React.SetStateAction<T>>) => ReactNode;
+  children: (
+    formData: T, 
+    handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, 
+    setFormData: React.Dispatch<React.SetStateAction<T>>
+  ) => ReactNode;
   initialState: T;
   isLoading: boolean;
   submitText?: string;
@@ -47,14 +51,8 @@ export function FormModal<T>({
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files.length > 0) {
-      setFormData(prev => ({
-        ...prev,
-        [name]: files[0]
-      }));
-    }
+  const handleFileChange = (_e: React.ChangeEvent<HTMLInputElement>) => {
+    // File handling removed - no longer needed in this version
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,7 +68,7 @@ export function FormModal<T>({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {children(formData, handleInputChange, handleFileChange, setFormData)}
+          {children(formData, handleInputChange, setFormData)}
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel

@@ -34,7 +34,7 @@ export default function CategoryStoreSelection({ formData, setFormData, deal }: 
       <div>
         <Label htmlFor="storeName">Store *</Label>
         <Combobox
-          options={stores.map(store => ({ value: store.title, label: store.title }))}
+          options={stores.filter(store => store.title).map(store => ({ value: store.title, label: store.title }))}
           value={formData.storeName}
           onValueChange={(value) => setFormData(prev => ({ ...prev, storeName: value }))}
           placeholder={deal ? "Select store" : "Select or create store"}

@@ -7,7 +7,7 @@ import { FormData } from './types';
 interface DealSettingsProps {
   formData: FormData;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
 }
 
@@ -16,21 +16,10 @@ export default function DealSettings({ formData, handleInputChange, handleFileCh
     <>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="image">Image (PNG/SVG)</Label>
-          <Input 
-            id="image" 
-            name="image" 
-            type="file" 
-            accept=".png,.svg,image/png,image/svg+xml" 
-            onChange={handleFileChange} 
-            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-neutral-50 file:text-neutral-700 hover:file:bg-neutral-100" 
-          />
-          <p className="text-xs text-gray-500 mt-1">Upload a PNG or SVG image (max 5MB)</p>
-        </div>
-        <div>
           <Label htmlFor="url">Deal URL</Label>
           <Input id="url" name="url" value={formData.url || ''} onChange={handleInputChange} placeholder="https://example.com/deal" />
         </div>
+        <div></div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
