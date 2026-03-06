@@ -1,16 +1,17 @@
 // Migrated from src/components/pages/RegisterPage.tsx
 'use client'
+import { useAuth } from '@/features/auth/contexts/AuthContext';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Input } from '@/shared/components/ui/input';
 import { useToast } from '@/shared/components/ui/use-toast';
-import { useAuth } from '@/features/auth/contexts/AuthContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
     password: ''
   });
@@ -56,7 +57,7 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      await register(formData.email, formData.password);
+      await register(formData.email, formData.password, formData.username);
       toast({
         title: "Success",
         description: "Account created successfully! Please check your email to confirm your account.",
@@ -67,6 +68,7 @@ export default function RegisterPage() {
       console.error('Registration error:', error);
       const errorMessage = error.response?.data?.message ||
                           error.response?.data?.title ||
+                          error.response?.data?.error ||
                           error.message ||
                           'Failed to create account. Please try again.';
       toast({
@@ -106,6 +108,23 @@ export default function RegisterPage() {
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <label htmlFor="username" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  Username
+                </label>
+                <Input
+                  id="username"
+                  name="username"
+                  type="text"
+                  autoComplete="username"
+                  required
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  placeholder="Choose a username"
+                  className="w-full"
+                />
+              </div>
+
               <div className="space-y-2">
                 <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
                   Email address

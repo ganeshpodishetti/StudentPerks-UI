@@ -9,10 +9,10 @@ import {
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
 import { useToast } from "@/shared/components/ui/use-toast";
+import { Deal } from '@/shared/types';
 import { Calendar, Copy, ExternalLink, Info, Image as LucideImage, MapPin, School, Tag } from 'lucide-react';
 import NextImage from 'next/image';
 import React, { useState } from 'react';
-import { Deal } from '@/shared/types';
 
 interface DealDetailProps {
   deal: Deal;
@@ -212,7 +212,7 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger }) => {
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2"
             >
-              Get This Deal
+              Official Deal Link
               <ExternalLink className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
             </a>
           </Button>

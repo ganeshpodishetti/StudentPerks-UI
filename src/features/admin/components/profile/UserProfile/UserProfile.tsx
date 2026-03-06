@@ -1,7 +1,7 @@
 import { Badge } from '@/shared/components/ui/badge';
 import { Card, CardContent } from '@/shared/components/ui/card';
 import { User } from '@/shared/types/entities/user';
-import { AtSign, CheckCircle, Mail, Shield, User as UserIcon, XCircle } from 'lucide-react';
+import { AtSign, CheckCircle, Mail, Shield, XCircle } from 'lucide-react';
 
 interface UserProfileProps {
   user: User | null;
@@ -31,28 +31,6 @@ export default function UserProfile({ user }: UserProfileProps) {
             </div>
           </div>
         )}
-
-        {/* First Name Section */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">First Name</label>
-          <div className="flex items-center gap-2">
-            <UserIcon className="h-4 w-4 text-muted-foreground" />
-            <p className="text-base font-medium">
-              {user.firstName || <span className="text-muted-foreground italic">Not provided</span>}
-            </p>
-          </div>
-        </div>
-
-        {/* Last Name Section */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">Last Name</label>
-          <div className="flex items-center gap-2">
-            <UserIcon className="h-4 w-4 text-muted-foreground" />
-            <p className="text-base font-medium">
-              {user.lastName || <span className="text-muted-foreground italic">Not provided</span>}
-            </p>
-          </div>
-        </div>
 
         {/* Email Section */}
         <div className="space-y-2">

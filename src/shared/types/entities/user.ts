@@ -1,23 +1,19 @@
 // User entity types
 export interface User {
-  firstName: string;
-  lastName: string;
+  username: string;
   email: string;
   emailConfirmed: boolean;
   roles: string[];
-  username?: string;
 }
 
 export interface CreateUserRequest {
+  username: string;
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
 }
 
 export interface UpdateUserRequest {
-  firstName?: string;
-  lastName?: string;
+  username?: string;
   email?: string;
 }
 

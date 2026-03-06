@@ -3,7 +3,6 @@ import { Badge } from "@/shared/components/ui/badge";
 import { Card } from "@/shared/components/ui/card";
 import { Deal } from '@/shared/types';
 import { Clock, ExternalLink } from 'lucide-react';
-import Image from 'next/image';
 import React, { memo } from 'react';
 import DealDetail from '../DealDetail/DealDetail';
 
@@ -15,7 +14,6 @@ interface DealCardProps {
 }
 
 const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = false, compact = false, showCategoryAndStore = true }) => {
-  const imageUrl = deal.imageUrl;
 
   // Calculate days remaining if end date exists
   const getDaysRemaining = () => {
@@ -50,30 +48,8 @@ const DealCard: React.FC<DealCardProps> = memo(({ deal, showUniversityInfo = fal
 
   const cardContent = (
     <Card className={`relative overflow-hidden flex flex-col group hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] active:shadow-md transition-all duration-300 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl p-3 sm:p-4 ${compact ? 'sm:p-4' : 'sm:p-5'} ${isExpired ? 'opacity-70' : ''} h-full cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700 touch-manipulation`}>
-      {/* Header with Icon and Title */}
+      {/* Header with Title */}
       <div className="flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3">
-        <div className="shrink-0">
-          <div className={`w-10 sm:w-12 ${compact ? 'sm:w-12' : 'sm:w-14'} h-auto flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:scale-110 group-active:scale-105 rounded-md`}>
-            {imageUrl ? (
-              <Image
-                src={imageUrl}
-                alt={deal.title}
-                width={compact ? 48 : 56}
-                height={compact ? 48 : 56}
-                className="object-contain transition-all duration-300 group-hover:brightness-110 group-active:brightness-105 rounded-md"
-                style={{ width: '100%', height: 'auto' }}
-                unoptimized={imageUrl.startsWith('/')}
-              />
-            ) : (
-              <div className={`w-10 sm:w-12 ${compact ? 'sm:w-12' : 'sm:w-14'} aspect-square flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 rounded-md`}>
-                <span className="text-neutral-400 text-xs font-medium">
-                  {deal.title?.substring(0, 2).toUpperCase()}
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-        
         {/* Deal Title and Discount */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
           <h3 className={`text-sm ${compact ? 'sm:text-sm' : 'sm:text-base'} font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors duration-300 line-clamp-2`}>
