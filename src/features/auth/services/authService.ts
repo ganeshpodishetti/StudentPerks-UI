@@ -15,6 +15,7 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
+  username: string;
   email: string;
   password: string;
 }
@@ -26,8 +27,7 @@ export interface LoginResponse {
 }
 
 export interface UserProfile {
-  firstName: string;
-  lastName: string;
+  username: string;
   email: string;
   emailConfirmed: boolean;
   roles: string[];
