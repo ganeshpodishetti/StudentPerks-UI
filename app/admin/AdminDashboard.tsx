@@ -26,7 +26,7 @@ export default function AdminDashboard() {
     <AdminLayout>
       <AdminHeader
         title="Dashboard"
-        description={`Welcome back, ${user?.firstName}! Here's an overview of your content.`}
+        description={`Welcome back, ${user?.username}! Here's an overview of your content.`}
       />
 
       <div className="space-y-6">
