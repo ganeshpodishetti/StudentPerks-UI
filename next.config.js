@@ -80,9 +80,7 @@ const nextConfig = {
   // Build optimizations
   compiler: {
     // Remove all console methods in production (log, error, warn, info, debug, etc.)
-    removeConsole: process.env.NODE_ENV === "production" ? {
-      exclude: ['error'], // Keep console.error for critical errors
-    } : false,
+    removeConsole: process.env.NODE_ENV === "production",
   },
   // Enable React strict mode for better development experience
   reactStrictMode: true,
