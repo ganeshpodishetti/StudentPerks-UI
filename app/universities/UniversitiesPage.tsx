@@ -110,8 +110,7 @@ const UniversitiesPage: React.FC = () => {
                       height={40}
                       loading="lazy"
                       sizes="(max-width: 640px) 32px, 40px"
-                      className="object-contain rounded-md"
-                      style={{ width: 'auto', height: 'auto' }}
+                      className="w-full h-full object-contain p-0.5 rounded-md"
                       // Bypass Next.js optimization for external images to prevent 502 errors
                       // External CDNs like ImageKit already handle optimization
                       unoptimized={!university.imageUrl.startsWith('/')}

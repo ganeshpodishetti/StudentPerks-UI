@@ -117,8 +117,7 @@ const StoresPage: React.FC = () => {
                       height={40}
                       loading="lazy"
                       sizes="(max-width: 640px) 32px, 40px"
-                      className="w-full h-full object-contain"
-                      style={{ width: 'auto', height: 'auto' }}
+                      className="w-full h-full object-contain p-0.5"
                       // Bypass Next.js optimization for external images to prevent 502 errors
                       // External CDNs like ImageKit already handle optimization
                       unoptimized={!store.logoUrl.startsWith('/')}
