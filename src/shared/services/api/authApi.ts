@@ -57,7 +57,7 @@ export const authApi = {
     apiClient
       .get<CurrentUserResponse>(
         '/api/auth/me',
-        { skipAuthRedirect: true, skipAuthRefresh: true } as any,
+        { skipAuthRedirect: true } as any,
       )
       .then((r) => r.data),
 

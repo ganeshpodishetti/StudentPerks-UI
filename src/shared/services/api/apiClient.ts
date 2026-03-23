@@ -16,6 +16,10 @@ if (process.env.NODE_ENV !== 'production' && !getApiBaseUrl()) {
 
 let isRefreshing = false;
 let refreshDisabled = false;
+export const resetRefreshDisabled = () => {
+  refreshDisabled = false;
+};
+
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;
   reject: (error: unknown) => void;
