@@ -2,46 +2,29 @@ export const isBrowser = typeof window !== 'undefined';
 export const isBrowserProduction = isBrowser && process.env.NODE_ENV === 'production';
 
 /**
- * Suppress CORS and network errors from being logged to console in production browser.
- * This prevents Lighthouse from reporting console errors for expected network failures.
+ * Suppress all console logs, uncaught errors, and network errors in production browser.
+ * This prevents potential exposure of sensitive information (like API endpoints, tokens 
+ * in URLs, or details about backend structures) and keeps the console completely clean.
  */
-export const suppressNetworkErrors = () => {
+export const suppressProductionLogsAndErrors = () => {
   if (!isBrowserProduction || typeof window === 'undefined') return;
 
-  const originalError = console.error;
-  console.error = (...args: unknown[]) => {
-    const errorStr = String(args[0] ?? '');
-    
-    // Suppress known network/CORS errors
-    const isCorsError = errorStr.includes('CORS') || errorStr.includes('Access-Control-Allow-Origin');
-    const isNetworkError = errorStr.includes('net::ERR') || errorStr.includes('Failed to fetch');
-    const isXhrError = errorStr.includes('XMLHttpRequest') || errorStr.includes('Failed to load resource');
-    // Suppress 401 unauthorized errors from API calls (e.g., /api/auth/me)
-    const isUnauthorizedError = errorStr.includes('401') || errorStr.includes('Unauthorized');
-    // Suppress 404 not found errors
-    const isNotFoundError = errorStr.includes('404') || errorStr.includes('Not Found');
-    
-    // Log other errors normally
-    if (!isCorsError && !isNetworkError && !isXhrError && !isUnauthorizedError && !isNotFoundError) {
-      originalError(...args);
-    }
-  };
+  const noop = () => {};
+  console.log = noop;
+  console.info = noop;
+  console.warn = noop;
+  console.error = noop;
+  console.debug = noop;
 
-  // Also handle uncaught network errors from event listeners
+  // Handle all uncaught errors
   window.addEventListener('error', (event) => {
-    const message = event.message || String(event.error);
-    const isCorsError = message.includes('CORS') || message.includes('Access-Control-Allow-Origin');
-    const isNetworkError = message.includes('net::ERR') || message.includes('Failed to fetch');
-    // Suppress 401 unauthorized errors
-    const isUnauthorizedError = message.includes('401') || message.includes('Unauthorized');
-    // Suppress 404 not found errors
-    const isNotFoundError = message.includes('404') || message.includes('Not Found');
-    
-    // Prevent default logging for these errors
-    if (isCorsError || isNetworkError || isUnauthorizedError || isNotFoundError) {
-      event.preventDefault();
-    }
+    event.preventDefault();
   }, true);
+
+  // Handle all unhandled promise rejections (often Axios network/API errors)
+  window.addEventListener('unhandledrejection', (event) => {
+    event.preventDefault();
+  });
 };
 
 type ConsoleMethod = 'debug' | 'error' | 'info' | 'log' | 'warn';

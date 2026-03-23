@@ -1,6 +1,6 @@
 'use client';
 
-import { suppressNetworkErrors } from '@/shared/utils/runtimeSafety';
+import { suppressProductionLogsAndErrors } from '@/shared/utils/runtimeSafety';
 import { useEffect } from 'react';
 
 /**
@@ -76,7 +76,7 @@ function registerServiceWorker() {
 export function RootClientInitializer() {
   useEffect(() => {
     registerServiceWorker();
-    suppressNetworkErrors();
+    suppressProductionLogsAndErrors();
   }, []);
 
   return null;
