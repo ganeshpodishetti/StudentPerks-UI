@@ -91,7 +91,7 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger, onView, onClick,
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg p-4 mx-0.5 sm:mx-auto max-h-[85vh] overflow-y-auto rounded-3xl [&>button]:hidden">
+      <DialogContent aria-describedby={undefined} className="w-[calc(100%-2rem)] sm:w-full p-4 sm:p-6 max-h-[85vh] sm:max-h-[90vh] overflow-y-auto rounded-2xl sm:rounded-3xl [&>button]:hidden">
         <DialogHeader className="pb-2">
           <div className="flex items-start justify-between gap-2 mb-2">
             <div className="flex items-center gap-1.5 flex-wrap flex-1">

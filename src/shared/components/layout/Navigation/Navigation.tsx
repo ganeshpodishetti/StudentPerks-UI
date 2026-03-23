@@ -152,6 +152,13 @@ const Navigation: React.FC<NavigationProps> = () => {
               />
             </form>
 
+            <Link
+              href="/register"
+              className="flex items-center px-4 py-1.5 text-sm font-medium text-white bg-black dark:bg-white dark:text-black rounded-full hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
+            >
+              Join
+            </Link>
+
             <ThemeToggle />
             <AuthButtons />
           </div>
@@ -231,7 +238,14 @@ const Navigation: React.FC<NavigationProps> = () => {
                 Universities
               </Link>
               
-
+              {/* Join Button */}
+              <Link
+                href="/register"
+                onClick={closeMobileMenu}
+                className="flex items-center justify-center w-full px-3 py-2 mt-2 rounded-md text-base font-medium text-white bg-black dark:bg-white dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
+              >
+                Join
+              </Link>
               
               {/* Mobile Auth Links */}
               <AuthButtonsMobile />
