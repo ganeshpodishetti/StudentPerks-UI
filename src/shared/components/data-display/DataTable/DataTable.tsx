@@ -165,8 +165,7 @@ export const cellRenderers = {
           height={40}
           loading="lazy"
           sizes="(max-width: 640px) 32px, 40px"
-          className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-cover"
-          style={{ width: 'auto', height: 'auto' }}
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-md object-contain p-0.5 bg-white dark:bg-neutral-800"
           // Bypass Next.js optimization for external images to prevent 502 errors
           // External CDNs like ImageKit already handle optimization
           unoptimized={!imageUrl.startsWith('/')}
