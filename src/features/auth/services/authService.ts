@@ -4,7 +4,7 @@
  * Delegates HTTP calls to authApi / usersApi; keeps session state cookie-based
  * and the changePassword endpoint that was previously missing.
  */
-import { setRefreshTokenFn } from '@/shared/services/api/apiClient';
+import { setRefreshTokenFn, resetRefreshDisabled } from '@/shared/services/api/apiClient';
 import { authApi } from '@/shared/services/api/authApi';
 import { usersApi } from '@/shared/services/api/usersApi';
 import type {
@@ -53,7 +53,9 @@ export const authService = {
   // ── Auth operations ────────────────────────────────────────────────────────
 
   async login(loginData: LoginRequest): Promise<LoginResponse> {
-    return authApi.login(loginData);
+    const response = await authApi.login(loginData);
+    resetRefreshDisabled();
+    return response;
   },
 
   async register(registerData: RegisterRequest): Promise<RegisterResponse> {
@@ -65,6 +67,7 @@ export const authService = {
       await authApi.logout();
     } finally {
       this.clearUser();
+      resetRefreshDisabled();
     }
   },
 
