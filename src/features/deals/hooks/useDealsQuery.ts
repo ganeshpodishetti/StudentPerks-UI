@@ -4,7 +4,7 @@ import type { CursorPaginatedDealsResponse, DealResponse, FeedType } from '@/sha
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Query keys for caching
-export const dealKeys = {
+const dealKeys = {
   all: ['deals'] as const,
   lists: () => [...dealKeys.all, 'list'] as const,
   list: (filters: string) => [...dealKeys.lists(), { filters }] as const,
@@ -94,25 +94,6 @@ export const useHomeFeedQuery = ({ enabled = true }: { enabled?: boolean } = {})
   });
 };
 
-export const useLatestFeedQuery = ({ enabled = true }: { enabled?: boolean } = {}) => {
-  const { handleApiError } = useErrorHandler();
-  return useQuery(feedQueryOptions('latest', () => dealService.getSingleFeedWithFallback('latest'), handleApiError, enabled));
-};
-
-export const useFeaturedFeedQuery = ({ enabled = true }: { enabled?: boolean } = {}) => {
-  const { handleApiError } = useErrorHandler();
-  return useQuery(feedQueryOptions('featured', () => dealService.getSingleFeedWithFallback('featured'), handleApiError, enabled));
-};
-
-export const usePopularFeedQuery = ({ enabled = true }: { enabled?: boolean } = {}) => {
-  const { handleApiError } = useErrorHandler();
-  return useQuery(feedQueryOptions('popular', () => dealService.getSingleFeedWithFallback('popular'), handleApiError, enabled));
-};
-
-export const useTrendingFeedQuery = ({ enabled = true }: { enabled?: boolean } = {}) => {
-  const { handleApiError } = useErrorHandler();
-  return useQuery(feedQueryOptions('trending', () => dealService.getSingleFeedWithFallback('trending'), handleApiError, enabled));
-};
 
 export const useSingleFeedQuery = (feedType?: FeedType, { enabled = true }: { enabled?: boolean } = {}) => {
   const { handleApiError } = useErrorHandler();
@@ -140,45 +121,6 @@ export const useSingleFeedQuery = (feedType?: FeedType, { enabled = true }: { en
   });
 };
 
-// Legacy hook for backward compatibility (fetches first page only)
-export const useDealsQuery = () => {
-  const { handleApiError } = useErrorHandler();
-  
-  return useQuery({
-    queryKey: dealKeys.lists(),
-    queryFn: async () => {
-      const response = await dealService.getDeals();
-      return response.items as DealResponse[];
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes (previously cacheTime)
-    retry: (failureCount, error: any) => {
-      // Don't retry on 4xx errors
-      if (error?.response?.status >= 400 && error?.response?.status < 500) {
-        return false;
-      }
-      return failureCount < 3;
-    },
-    meta: {
-      onError: handleApiError,
-    },
-  });
-};
-
-// Fetch deals by category
-export const useDealsByCategoryQuery = (categoryName: string) => {
-  const { handleApiError } = useErrorHandler();
-  
-  return useQuery({
-    queryKey: dealKeys.byCategory(categoryName),
-    queryFn: () => dealService.getDealsByCategory(categoryName),
-    enabled: !!categoryName && categoryName !== 'All',
-    staleTime: 5 * 60 * 1000,
-    meta: {
-      onError: handleApiError,
-    },
-  });
-};
 
 // Fetch deals by store
 export const useDealsByStoreQuery = (storeName: string) => {

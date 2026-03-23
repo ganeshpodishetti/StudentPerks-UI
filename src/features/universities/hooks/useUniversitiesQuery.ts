@@ -3,7 +3,7 @@ import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import { CreateUniversityRequest, UpdateUniversityRequest } from '@/shared/types/entities/university';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export const UNIVERSITIES_QUERY_KEY = 'universities';
+const UNIVERSITIES_QUERY_KEY = 'universities';
 
 // Get all universities
 export const useUniversitiesQuery = () => {

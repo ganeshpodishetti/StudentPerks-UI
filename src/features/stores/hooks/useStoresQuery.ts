@@ -4,16 +4,13 @@ import type { CreateStoreRequest, UpdateStoreRequest } from '@/shared/types/api/
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Query keys factory for better cache management
-export const storeKeys = {
+const storeKeys = {
   all: ['stores'] as const,
   lists: () => [...storeKeys.all, 'list'] as const,
   list: (filters?: string) => [...storeKeys.lists(), { filters }] as const,
   details: () => [...storeKeys.all, 'detail'] as const,
   detail: (id: string) => [...storeKeys.details(), id] as const,
 };
-
-// Legacy export for backward compatibility
-export const STORES_QUERY_KEY = storeKeys.all[0];
 
 // Get all stores
 export const useStoresQuery = () => {

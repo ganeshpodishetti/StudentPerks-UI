@@ -7,7 +7,7 @@ import React, { createContext, ReactNode, useCallback, useMemo } from 'react';
 import { submittedDealService } from '../services/submittedDealService';
 
 // Query keys for unread deals
-export const unreadDealsKeys = {
+const unreadDealsKeys = {
   all: ['unreadDeals'] as const,
   count: () => [...unreadDealsKeys.all, 'count'] as const,
 };

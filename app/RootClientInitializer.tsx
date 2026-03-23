@@ -17,6 +17,17 @@ function registerServiceWorker() {
     return;
   }
 
+  // In development, unregister any active service workers to prevent Turbopack/HMR caching issues and infinite loops
+  if (process.env.NODE_ENV !== 'production') {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister();
+        console.log('[SW] Unregistered Service Worker in development');
+      }
+    });
+    return;
+  }
+
   // Register the service worker
   navigator.serviceWorker.register('/sw.js', {
     scope: '/',
