@@ -3,11 +3,20 @@
 import { Category, fetchCategories } from '@/features/categories/services/categoryService'
 import { DealsContainer } from '@/features/deals/components/display/DealList/DealsContainer'
 import Navigation from '@/shared/components/layout/Navigation/Navigation'
+import { useToast } from '@/shared/components/ui/use-toast'
 import type { FeedType } from '@/shared/types/api/responses'
-import { Tag, X } from 'lucide-react'
+import { Plus, Tag, X } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+const SubmittedDealFormModal = dynamic(
+  () => import('@/features/deals/components/forms/SubmittedDealFormModal/SubmittedDealFormModal'),
+  {
+    ssr: false,
+  },
+)
 
 
 interface HomePageClientProps {
@@ -27,6 +36,8 @@ export function HomePageClient({ sectionedFeeds = false }: HomePageClientProps) 
   const clearSearchHref = sectionedFeeds ? '/' : '/deals'
   const [categories, setCategories] = useState<Category[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
+  const [isSubmitDealModalOpen, setIsSubmitDealModalOpen] = useState(false)
+  const { toast } = useToast()
 
   useEffect(() => {
     if (sectionedFeeds) {
@@ -150,7 +161,38 @@ export function HomePageClient({ sectionedFeeds = false }: HomePageClientProps) 
             </div>
           </div>
         </div>
+
+        <div className="w-full max-w-7xl mx-auto px-6 md:px-8 mt-12 mb-8">
+          <section className="text-center bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-8 md:p-12 border border-neutral-200 dark:border-neutral-800 flex flex-col items-center justify-center shadow-sm">
+            <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white mb-4">
+              Know a great deal?
+            </h2>
+            <p className="text-neutral-600 dark:text-neutral-400 mb-6 max-w-xl mx-auto text-base">
+              Help our community save by sharing the best deals, discounts, and perks you've found.
+            </p>
+            <button
+              onClick={() => setIsSubmitDealModalOpen(true)}
+              className="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-black dark:bg-white dark:text-black rounded-full hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors shadow-sm"
+            >
+              <Plus className="mr-2 h-5 w-5" />
+              Submit a Deal
+            </button>
+          </section>
+        </div>
       </main>
+
+      {isSubmitDealModalOpen && (
+        <SubmittedDealFormModal
+          isOpen={isSubmitDealModalOpen}
+          onClose={() => setIsSubmitDealModalOpen(false)}
+          onSuccess={() => {
+            toast({
+              title: "Deal Submitted!",
+              description: "Thanks for sharing! We'll review your deal and add it to the platform soon.",
+            })
+          }}
+        />
+      )}
     </div>
   )
 }

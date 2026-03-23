@@ -1,6 +1,6 @@
 'use client'
 import { useToast } from '@/shared/components/ui/use-toast';
-import { GraduationCap, Menu, Plus, Search, Tag, X } from 'lucide-react';
+import { GraduationCap, Menu, Search, Tag, X } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,12 +12,7 @@ const ThemeToggle = dynamic(() => import('../ThemeToggle/ThemeToggle'), {
   loading: () => <div aria-hidden className="h-9 w-9 rounded-md" />,
 });
 
-const SubmittedDealFormModal = dynamic(
-  () => import('@/features/deals/components/forms/SubmittedDealFormModal/SubmittedDealFormModal'),
-  {
-    ssr: false,
-  },
-);
+
 
 interface NavigationProps {
   // Props removed as admin/user functionality is hidden
@@ -37,7 +32,7 @@ const AuthButtonsMobile: React.FC = () => {
 
 const Navigation: React.FC<NavigationProps> = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSubmitDealModalOpen, setIsSubmitDealModalOpen] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const pathname = usePathname();
@@ -156,13 +151,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                 className="pl-8 pr-3 py-1.5 w-40 lg:w-48 text-sm bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-500 text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder:text-neutral-500"
               />
             </form>
-            <button
-              onClick={() => setIsSubmitDealModalOpen(true)}
-              className="flex items-center px-3 py-2 text-sm font-medium text-white bg-black dark:bg-white dark:text-black rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
-            >
-              <Plus className="mr-1.5 h-3.5 w-3.5" />
-              Submit Deal
-            </button>
+
             <ThemeToggle />
             <AuthButtons />
           </div>
@@ -242,17 +231,7 @@ const Navigation: React.FC<NavigationProps> = () => {
                 Universities
               </Link>
               
-              {/* Submit Deal Button */}
-              <button
-                onClick={() => {
-                  setIsSubmitDealModalOpen(true);
-                  closeMobileMenu();
-                }}
-                className="flex items-center w-full px-3 py-2 rounded-md text-base font-medium text-white bg-black dark:bg-white dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Submit Deal
-              </button>
+
               
               {/* Mobile Auth Links */}
               <AuthButtonsMobile />
@@ -261,19 +240,7 @@ const Navigation: React.FC<NavigationProps> = () => {
         )}
       </div>
       
-      {/* Submit Deal Modal */}
-      {isSubmitDealModalOpen ? (
-        <SubmittedDealFormModal
-          isOpen={isSubmitDealModalOpen}
-          onClose={() => setIsSubmitDealModalOpen(false)}
-          onSuccess={() => {
-            toast({
-              title: "Deal Submitted!",
-              description: "Thanks for sharing! We'll review your deal and add it to the platform soon.",
-            });
-          }}
-        />
-      ) : null}
+
     </header>
   );
 };
