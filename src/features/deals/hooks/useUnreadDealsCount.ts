@@ -19,10 +19,4 @@ export const useUnreadDealsCount = (): UnreadDealsContextType => {
 };
 
 // Re-export provider for convenience
-// Re-export the provider for convenience
-export { UnreadDealsProvider } from '@/features/deals/contexts/UnreadDealsContext';
 
-// Legacy support - can be removed once all components are updated
-export const updateUnreadCount = (_newCount: number) => {
-  // Deprecated: Use the context updateCount method instead.
-};

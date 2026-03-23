@@ -4,5 +4,3 @@ export interface Category {
   title: string;
 }
 
-export type { CreateCategoryRequest, UpdateCategoryRequest } from '@/shared/types/api/requests';
-export type { CategoryResponse, CreateCategoryResponse } from '@/shared/types/api/responses';

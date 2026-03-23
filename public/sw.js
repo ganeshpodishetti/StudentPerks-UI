@@ -21,7 +21,7 @@ const SKIP_CACHE_PATTERNS = [
   /^https?:\/\/api\./,
   /\?.*$/,
   /\/api\//,
-  /^https?:\/\/ik\.imagekit\.io\/,
+  /^https?:\/\/ik\.imagekit\.io\//,
 ];
 
 /**
@@ -102,6 +102,17 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = request.url;
 
+  // Bypass Next.js internal and HMR requests to prevent infinite reloads in development
+  if (
+    url.includes('/_next/') || 
+    url.includes('/__nextjs') || 
+    url.includes('webpack-hmr') ||
+    url.includes('localhost') ||
+    url.includes('127.0.0.1')
+  ) {
+    return;
+  }
+
   // Skip non-GET requests
   if (request.method !== 'GET') {
     return;
@@ -164,7 +175,7 @@ self.addEventListener('fetch', (event) => {
             });
           }
           return response;
-        }).catch(() => {
+        }).catch((error) => {
           // Return a placeholder for failed resources
           if (request.destination === 'image') {
             return new Response(

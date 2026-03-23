@@ -179,4 +179,3 @@ export const dealService = {
   },
 };
 
-export const fetchDeals = dealService.getDeals.bind(dealService);
