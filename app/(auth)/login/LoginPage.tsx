@@ -252,6 +252,14 @@ const LoginPage: React.FC = () => {
                 Continue with Google
               </Button>
             </form>
+            <div className="mt-4 text-center">
+              <p className="text-[10px] text-muted-foreground leading-relaxed">
+                By continuing, you agree to PerksCrowd&apos;s{' '}
+                <Link href="/terms" className="underline hover:text-primary">Terms of Use</Link>
+                {' '}and{' '}
+                <Link href="/privacy" className="underline hover:text-primary">Privacy Policy</Link>.
+              </p>
+            </div>
           </CardContent>
           <CardFooter>
             <div className="text-center w-full space-y-2">
