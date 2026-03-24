@@ -52,7 +52,24 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-medium text-neutral-900 dark:text-white">5. Changes</h2>
+          <h2 className="text-lg font-medium text-neutral-900 dark:text-white">5. Limitation of Liability</h2>
+          <p className="mt-2">
+            PerksCrowd is provided "as is" without any warranties. We are not responsible for the accuracy of 
+            deals submitted by users or for any issues that may arise from using third-party websites linked 
+            from our platform.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-medium text-neutral-900 dark:text-white">6. Termination</h2>
+          <p className="mt-2">
+            We reserve the right to suspend or terminate your account at any time for violations of these terms 
+            or for any other reason at our discretion.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-medium text-neutral-900 dark:text-white">7. Changes</h2>
           <p className="mt-2">
             We may update these terms at any time. Continued use of PerksCrowd after updates means you accept the revised
             terms.

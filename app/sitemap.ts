@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/universities',
     '/brand-use',
     '/terms',
+    '/privacy',
   ]
 
   return routes.map((route) => ({
