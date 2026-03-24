@@ -83,6 +83,7 @@ export default function RegisterPage() {
   };
 
   const handleGoogleLogin = () => {
+    setIsLoading(true);
     fetch(getGoogleAuthUrl(), {
       method: 'GET',
       credentials: 'include',
@@ -100,7 +101,9 @@ export default function RegisterPage() {
             description: errorMsg,
             variant: 'destructive',
           });
-        } else if (response.status === 302 || response.status === 301) {
+          setIsLoading(false);
+        } else if (response.status === 0 || response.status === 302 || response.status === 301) {
+          // status 0 indicates an 'opaqueredirect', which means the server returned a 3xx
           window.location.href = getGoogleAuthUrl();
         } else {
           toast({
@@ -108,14 +111,12 @@ export default function RegisterPage() {
             description: 'Unexpected response from server. Please try again.',
             variant: 'destructive',
           });
+          setIsLoading(false);
         }
       })
       .catch(() => {
-        toast({
-          title: 'Error',
-          description: 'Network error. Please try again.',
-          variant: 'destructive',
-        });
+        // Fallback to direct redirect if fetch fails for any reason
+        window.location.href = getGoogleAuthUrl();
       });
   };
 

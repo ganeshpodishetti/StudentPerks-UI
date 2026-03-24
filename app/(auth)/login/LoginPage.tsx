@@ -65,7 +65,8 @@ const LoginPage: React.FC = () => {
             variant: 'destructive',
           });
           setIsGoogleRedirecting(false);
-        } else if (response.status === 302 || response.status === 301) {
+        } else if (response.status === 0 || response.status === 302 || response.status === 301) {
+          // status 0 indicates an 'opaqueredirect', which means the server returned a 3xx
           // Not rate-limited, proceed with redirect
           window.location.href = getGoogleAuthUrl();
         } else {
