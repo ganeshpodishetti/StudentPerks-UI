@@ -63,6 +63,9 @@ export const metadata: Metadata = {
     'perkscrowd',
   ],
   applicationName: brandName,
+  verification: {
+    google: 'googlea095eca4b4659483',
+  },
   manifest: '/site.webmanifest',
   robots: {
     index: true,
