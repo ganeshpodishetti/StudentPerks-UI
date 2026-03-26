@@ -49,7 +49,9 @@ export const useDealsData = ({
     if (isSingleFeedMode) return singleFeedQuery.data ?? [];
     if (useFeedApis) return homeFeedData ?? [];
     if (!data?.pages) return [];
-    return data.pages.flatMap(page => page.items);
+    const allDeals = data.pages.flatMap(page => page.items);
+    // Deduplicate by id in case cursor pagination returns overlapping items
+    return Array.from(new Map(allDeals.map(d => [d.id, d])).values());
   }, [data?.pages, homeFeedData, isSingleFeedMode, singleFeedQuery.data, useFeedApis]);
 
   const activeLoading = isSingleFeedMode

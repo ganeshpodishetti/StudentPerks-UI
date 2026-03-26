@@ -8,10 +8,21 @@ import { useToast } from '@/shared/components/ui/use-toast';
 import { getGoogleAuthUrl } from '@/shared/config/env';
 import { browserConsole } from '@/shared/utils/runtimeSafety';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 
-export default function RegisterPage() {
+const OAUTH_ERROR_MESSAGES: Record<string, string> = {
+  oauth_failed: 'Google sign-in failed. Please try again.',
+  oauth_missing_claims: 'Google account is missing required info (email).',
+  oauth_auth_failed: 'Could not complete Google registration. Please try again.',
+  rate_limited: 'Too many sign-in attempts. Please wait a moment and try again.',
+};
+
+const OAUTH_ERROR_TITLES: Record<string, string> = {
+  rate_limited: 'Too Many Requests',
+};
+
+function RegisterPageInner() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -19,9 +30,30 @@ export default function RegisterPage() {
   });
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const { toast } = useToast();
   const { register } = useAuth();
+
+  useEffect(() => {
+    const errorCode = searchParams.get('error');
+    if (!errorCode) return;
+
+    const description = OAUTH_ERROR_MESSAGES[errorCode];
+    if (!description) return;
+
+    toast({
+      title: OAUTH_ERROR_TITLES[errorCode] ?? 'Error',
+      description,
+      variant: 'destructive',
+    });
+
+    const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.delete('error');
+    const nextUrl = nextParams.toString() ? `${pathname}?${nextParams.toString()}` : pathname;
+    router.replace(nextUrl);
+  }, [pathname, router, searchParams, toast]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -250,4 +282,11 @@ export default function RegisterPage() {
     </div>
   );
 }
-// ...original code will be placed here...
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterPageInner />
+    </Suspense>
+  );
+}

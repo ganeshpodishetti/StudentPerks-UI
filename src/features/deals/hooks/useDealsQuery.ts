@@ -14,7 +14,7 @@ const dealKeys = {
   byStore: (store: string) => [...dealKeys.all, 'store', store] as const,
   byUniversity: (university: string) => [...dealKeys.all, 'university', university] as const,
   userDeals: () => [...dealKeys.all, 'user'] as const,
-  infinite: () => [...dealKeys.all, 'infinite'] as const,
+  infinite: () => [...dealKeys.all, 'infinite-v2'] as const,
   homeFeed: () => [...dealKeys.all, 'home-feed'] as const,
   feed: (feedType: FeedType) => [...dealKeys.all, 'feed', feedType] as const,
 };
@@ -57,7 +57,7 @@ export const useDealsInfiniteQuery = ({ enabled = true }: { enabled?: boolean } 
       }
       return undefined;
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 0, // always fetch fresh cursor state
     gcTime: 10 * 60 * 1000, // 10 minutes
     retry: (failureCount, error: any) => {
       // Don't retry on 4xx errors
