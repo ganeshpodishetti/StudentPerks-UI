@@ -15,6 +15,11 @@ const OAUTH_ERROR_MESSAGES: Record<string, string> = {
   oauth_failed: 'Google sign-in failed. Please try again.',
   oauth_missing_claims: 'Google account is missing required info (email).',
   oauth_auth_failed: 'Could not complete Google login. Please try again.',
+  rate_limited: 'Too many sign-in attempts. Please wait a moment and try again.',
+};
+
+const OAUTH_ERROR_TITLES: Record<string, string> = {
+  rate_limited: 'Too Many Requests',
 };
 
 const LoginPage: React.FC = () => {
@@ -166,7 +171,7 @@ const LoginPage: React.FC = () => {
     }
 
     toast({
-      title: 'Error',
+      title: OAUTH_ERROR_TITLES[errorCode] ?? 'Error',
       description,
       variant: 'destructive',
     });
