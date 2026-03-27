@@ -1,4 +1,11 @@
-const normalizeEnv = (value: string | undefined): string => value?.trim().replace(/\/$/, '') ?? '';
+const normalizeEnv = (value: string | undefined): string => {
+  let val = value?.trim().replace(/\/$/, '') ?? '';
+  // Force HTTPS for production API to avoid extra redirects/logs
+  if (val.includes('api.perkscrowd.com') && !val.startsWith('https://')) {
+    val = val.replace(/^http:\/\//, 'https://');
+  }
+  return val;
+};
 
 // Prefer the new variable but keep NEXT_PUBLIC_API_URL as a fallback.
 export const API_BASE_URL =
