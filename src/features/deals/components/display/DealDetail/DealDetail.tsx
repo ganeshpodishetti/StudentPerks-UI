@@ -97,14 +97,14 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger, onView, onClick,
             <div className="flex items-center gap-1.5 flex-wrap flex-1">
               <Badge 
                 variant="secondary" 
-                className="text-xs bg-neutral-100 hover:bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 rounded-full"
+                className="text-xs bg-brand-100/50 hover:bg-brand-100 transition-colors text-brand-700 dark:bg-brand-900 dark:text-brand-100 rounded-full"
               >
                 <Tag className="h-3 w-3 mr-1" />
                 {deal.categoryName}
               </Badge>
-              <span className="text-xs text-neutral-500 dark:text-neutral-400">{deal.storeName}</span>
+              <span className="text-xs font-medium text-brand-700 dark:text-brand-300">{deal.storeName}</span>
             </div>
-            <Badge variant="default" className="bg-black hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-100 dark:text-black text-xs flex-shrink-0 rounded-full">
+            <Badge variant="default" className="bg-brand-900 hover:bg-brand-700 text-brand-100 dark:bg-brand-100 dark:hover:bg-brand-300 dark:text-brand-900 text-xs flex-shrink-0 rounded-full">
               {deal.discount}
             </Badge>
           </div>
@@ -121,8 +121,8 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger, onView, onClick,
               testIdPrefix="deal-detail-logo"
             />
             <div className="flex-1 min-w-0">
-              <DialogTitle className="text-sm font-semibold leading-tight text-neutral-800 dark:text-neutral-200 mb-1.5">{deal.title}</DialogTitle>
-              <div className="flex flex-col gap-1 text-xs text-neutral-500 dark:text-neutral-400">
+              <DialogTitle className="text-base font-bold leading-tight text-brand-900 dark:text-brand-100 mb-1.5">{deal.title}</DialogTitle>
+              <div className="flex flex-col gap-1 text-xs font-medium text-brand-700 dark:text-brand-300">
                 <div className="flex items-start flex-wrap gap-1">
                   <div className="flex items-center">
                     <Calendar className="h-3 w-3 mr-1 flex-shrink-0" />
@@ -145,15 +145,15 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger, onView, onClick,
           <div className="bg-neutral-100/70 dark:bg-neutral-900/70 p-3 rounded-xl border border-neutral-200 dark:border-neutral-800">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0 flex-1">
-                <span className="text-xs uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-medium">Promo Code</span>
-                <div className="font-mono font-semibold text-sm text-neutral-800 dark:text-neutral-200 truncate mt-0.5">{deal.promo || 'No code required'}</div>
+                <span className="text-xs uppercase tracking-wider text-brand-700 dark:text-brand-300 font-medium">Promo Code</span>
+                <div className="font-mono font-semibold text-sm text-brand-900 dark:text-brand-100 truncate mt-0.5">{deal.promo || 'No code required'}</div>
               </div>
               {deal.promo && (
                 <Button 
                   variant="outline"
                   size="sm"
                   onClick={handleCopyPromo}
-                  className="text-xs flex items-center gap-1 flex-shrink-0 rounded-full border-neutral-300 dark:border-neutral-600 hover:bg-neutral-50 dark:hover:bg-neutral-800"
+                  className="text-xs flex items-center gap-1 flex-shrink-0 rounded-full border-brand-300 dark:border-brand-700 text-brand-700 dark:text-brand-300 hover:bg-brand-100 hover:text-brand-900 dark:hover:bg-brand-900"
                 >
                   <Copy className="h-3 w-3" />
                   <span className="hidden sm:inline">Copy</span>
@@ -194,7 +194,7 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger, onView, onClick,
         {dealUrl ? (
           <DialogFooter className="pt-4">
             <Button
-              className="w-full bg-black hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 group text-sm font-medium py-2.5 rounded-xl"
+              className="w-full text-brand-100 bg-brand-900 hover:bg-brand-700 dark:bg-brand-100 dark:text-brand-900 dark:hover:bg-brand-300 group text-sm font-medium py-2.5 rounded-xl"
               asChild
             >
               <a

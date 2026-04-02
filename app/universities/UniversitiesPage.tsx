@@ -84,55 +84,66 @@ const UniversitiesPage: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="py-8 bg-background dark:bg-background transition-colors">
+      <section className="max-w-4xl mx-auto text-center mb-16 md:mb-20 px-4">
+        <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-brand-500 dark:text-brand-300 mb-4 opacity-80">
+          YOUR CAMPUS. YOUR PERKS.
+        </p>
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-brand-900 dark:text-brand-100 leading-[1.1] tracking-tight mb-6">
+          Find Your <span className="text-brand-500">University.</span>
+        </h1>
+        <p className="text-sm md:text-lg text-brand-700 dark:text-brand-300 max-w-2xl mx-auto leading-relaxed">
+          Access exclusive deals and community perks specifically verified for your campus. 
+          Smart saving starts where you study.
+        </p>
+      </section>
+
       {universities.length === 0 ? (
-        <div className="text-center py-8">
-          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No Universities Found</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">
+        <div className="text-center py-12">
+          <h2 className="text-xl font-semibold text-brand-900 dark:text-brand-300 mb-2">No Universities Found</h2>
+          <p className="text-brand-700 dark:text-brand-500 text-sm">
             Check back soon!
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {universities.map((university) => (
             <Card
               key={university.id}
               onClick={() => handleUniversitySelect(university.id)}
-              className="group hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-200 border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-xl p-3 sm:p-4 cursor-pointer hover:border-neutral-200 dark:hover:border-neutral-700"
+              className="group hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] transition-all duration-300 border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 rounded-2xl p-4 sm:p-5 cursor-pointer hover:border-brand-300 dark:hover:border-brand-700 shadow-sm"
             >
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center overflow-hidden rounded-md bg-neutral-100 dark:bg-neutral-800 shrink-0">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center overflow-hidden rounded-xl bg-brand-100/50 dark:bg-brand-900/50 shrink-0 border border-brand-100 dark:border-brand-900">
                   {university.imageUrl ? (
                     <Image
                       src={university.imageUrl}
                       alt={university.name || 'University logo'}
-                      width={40}
-                      height={40}
+                      width={48}
+                      height={48}
                       loading="lazy"
-                      sizes="(max-width: 640px) 32px, 40px"
-                      className="w-full h-full object-contain p-0.5 rounded-md"
-                      // Bypass Next.js optimization for external images to prevent 502 errors
-                      // External CDNs like ImageKit already handle optimization
+                      sizes="(max-width: 640px) 40px, 48px"
+                      className="w-full h-full object-contain p-1 rounded-lg"
                       unoptimized={!university.imageUrl.startsWith('/')}
                     />
                   ) : (
-                    <span className="text-neutral-500 font-semibold text-xs sm:text-sm">
+                    <span className="text-brand-700 dark:text-brand-300 font-bold text-xs sm:text-sm">
                       {university.code || university.name.substring(0, 2).toUpperCase()}
                     </span>
                   )}
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-xs sm:text-sm font-medium text-neutral-800 dark:text-neutral-300 leading-tight group-hover:text-neutral-600 dark:group-hover:text-neutral-400 truncate">
+                  <h3 className="text-sm sm:text-base font-bold text-brand-900 dark:text-brand-300 leading-tight group-hover:text-brand-500 transition-colors truncate">
                     {university.name}
                   </h3>
-                  <div className="flex items-center gap-1 sm:gap-2 mt-0.5 sm:mt-1">
-                    <span className="text-[10px] sm:text-xs font-medium px-1 sm:px-1.5 py-0.5 bg-neutral-800 text-white dark:bg-neutral-200 dark:text-neutral-800 rounded">
+                  <div className="flex items-center gap-2 mt-1.5">
+                    <span className="text-[10px] sm:text-xs font-bold px-2 py-0.5 bg-brand-900 text-brand-100 dark:bg-brand-100 dark:text-brand-900 rounded-full uppercase tracking-wider">
                       {university.code}
                     </span>
                     {getLocation(university) && (
-                      <span className="text-[10px] sm:text-xs text-neutral-400 truncate hidden sm:inline">
-                        {getLocation(university)}
+                      <span className="text-[10px] sm:text-xs font-medium text-brand-300 dark:text-brand-700 truncate hidden sm:inline">
+                        • {getLocation(university)}
                       </span>
                     )}
                   </div>
