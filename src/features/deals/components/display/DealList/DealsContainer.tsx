@@ -1,16 +1,14 @@
-"use client";
+import { useDealsSearch } from "@/features/deals/hooks/deals/useDealsSearch";
+import { generateEmptyDealsMessage } from "@/features/deals/utils/dealFormatting";
 import { useDealsData } from "@/features/deals/hooks/deals/useDealsData";
 import {
     sortOptions,
     useDealsFilter
 } from "@/features/deals/hooks/deals/useDealsFilter";
 import { useDealsLoadMore } from "@/features/deals/hooks/deals/useDealsLoadMore";
-import { dealService } from "@/features/deals/services/dealService";
 import { Button } from "@/shared/components/ui/button";
-import { errorReportingService } from '@/shared/services/errorReportingService';
 import type { FeedType } from '@/shared/types/api/responses';
-import { Deal } from "@/shared/types/entities/deal";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import HeroSearchSection from "../../search/HeroSearchSection/HeroSearchSection";
 import DealSkeleton from "../DealSkeleton/DealSkeleton";
 import { DealsFilters } from "./DealsFilters";
@@ -43,43 +41,13 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
   showStatusHeader = true,
 }) => {
   const { deals, loading, error, refetch, hasMore: serverHasMore, isFetchingNextPage, fetchNextPage } = useDealsData({ useFeedApis, feedType });
-  const [searchResults, setSearchResults] = useState<Deal[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [hasSearched, setHasSearched] = useState(!!initialSearchQuery);
   
-  // Track previous search query to avoid unnecessary calls
-  const prevSearchQueryRef = React.useRef('');
-  
-  // Trigger search when initialSearchQuery changes (from URL params)
-  useEffect(() => {
-    // Only trigger if query actually changed and is not empty
-    if (initialSearchQuery && prevSearchQueryRef.current !== initialSearchQuery) {
-      prevSearchQueryRef.current = initialSearchQuery;
-      
-      // Direct API call instead of using React Query hook
-      setIsSearching(true);
-      dealService.searchDeals({ query: initialSearchQuery })
-        .then(results => {
-          setSearchResults(results);
-          setIsSearching(false);
-          setHasSearched(true);
-        })
-        .catch(err => {
-          errorReportingService.reportNetworkError(err, {
-            feature: 'deals',
-            action: 'searchDeals',
-            query: initialSearchQuery,
-          });
-          setIsSearching(false);
-          setSearchResults([]);
-          setHasSearched(true);
-        });
-    } else if (!initialSearchQuery) {
-      // Clear search results if no query
-      setSearchResults([]);
-      setHasSearched(false);
-    }
-  }, [initialSearchQuery]);
+  const { 
+    searchResults, 
+    isSearching, 
+    hasSearched, 
+    handleSearchResults 
+  } = useDealsSearch({ initialSearchQuery });
 
   const {
     filteredDeals,
@@ -107,38 +75,13 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
     }
   );
 
-  // Handle search results
-  const handleSearchResults = useCallback(
-    (searchDeals: Deal[], loading: boolean, searched: boolean) => {
-      setSearchResults(searchDeals);
-      setIsSearching(loading);
-      setHasSearched(searched);
-    },
-    []
+  const emptyMessage = generateEmptyDealsMessage(
+    hasSearched,
+    searchResults.length,
+    searchTerm,
+    selectedCategory,
+    selectedStore
   );
-
-  const generateEmptyMessage = () => {
-    if (hasSearched) {
-      return searchResults.length === 0
-        ? "No deals found matching your search criteria."
-        : "";
-    }
-
-    if (
-      searchTerm ||
-      (selectedCategory && selectedCategory !== "All") ||
-      (selectedStore && selectedStore !== "All")
-    ) {
-      return `No deals found${
-        selectedCategory && selectedCategory !== "All"
-          ? ` in ${selectedCategory}`
-          : ""
-      }${
-        selectedStore && selectedStore !== "All" ? ` from ${selectedStore}` : ""
-      }${searchTerm ? ` matching "${searchTerm}"` : ""}`;
-    }
-    return "No deals available";
-  };
 
   if (loading) {
     return (
@@ -237,7 +180,7 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
       <DealsGrid
         deals={displayedDeals}
         loading={isSearching}
-        emptyMessage={generateEmptyMessage()}
+        emptyMessage={emptyMessage}
       />
 
       {/* Load More - only show if not using search */}

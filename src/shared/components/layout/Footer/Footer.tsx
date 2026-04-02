@@ -77,18 +77,18 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-brand-100 dark:border-brand-900 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">
-            <span className="text-[10px] font-black text-brand-900 dark:text-brand-100 tracking-widest">
-              &copy; {new Date().getFullYear()} PerksCrowd
+            <span className="text-xs font-bold text-brand-900 dark:text-brand-100 tracking-wider">
+              &copy; {new Date().getFullYear()} PerksCrowd.
             </span>
-            <div className="hidden md:block h-3 w-px bg-brand-100 dark:bg-brand-900"></div>
-            <p className="text-[10px] font-bold text-brand-300 dark:text-brand-700 tracking-widest leading-relaxed text-center md:text-left">
+            <div className="hidden md:block h-3 w-px bg-brand-100 dark:bg-brand-800"></div>
+            <p className="text-xs font-medium text-brand-600 dark:text-brand-400 tracking-normal leading-relaxed text-center md:text-left">
               All trademarks belong to their respective owners. Smart savers use PerksCrowd.
             </p>
           </div>
           
           <div className="flex items-center gap-4">
-             <div className="flex items-center gap-1.5 px-3 py-1 bg-brand-900 text-brand-100 dark:bg-brand-100 dark:text-brand-900 rounded-full text-[10px] font-black uppercase tracking-[0.1em]">
-              <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+             <div className="flex items-center gap-2 px-4 py-1.5 bg-brand-900 text-brand-100 dark:bg-brand-100 dark:text-brand-900 rounded-full text-xs font-bold uppercase tracking-wider">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span>
               Live Status
             </div>
           </div>

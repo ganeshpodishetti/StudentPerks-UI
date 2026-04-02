@@ -10,9 +10,15 @@ import {
     DialogTrigger
 } from "@/shared/components/ui/dialog";
 import { useToast } from "@/shared/components/ui/use-toast";
+import { 
+    formatDate, 
+    formatRedeemType, 
+    getDaysRemaining 
+} from "@/features/deals/utils/dealFormatting";
 import { Deal } from '@/shared/types';
 import { Calendar, Copy, ExternalLink, Info, MapPin, School, Tag } from 'lucide-react';
 import React from 'react';
+import DealInfoBox from './DealInfoBox';
 
 interface DealDetailProps {
   deal: Deal;
@@ -26,49 +32,8 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger, onView, onClick,
   const { toast } = useToast();
   const dealUrl = deal.url?.trim();
 
-  // Format date
-  const formatDate = (dateString?: string | null) => {
-    if (!dateString) return 'No date specified';
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-    } catch (error) {
-      return 'Invalid date';
-    }
-  };
-
-  // Calculate days remaining
-  const getDaysRemaining = () => {
-    if (!deal.endDate || deal.endDate === 'No date specified' || deal.endDate.trim() === '') return null;
-    try {
-      const endDate = new Date(deal.endDate);
-      if (isNaN(endDate.getTime())) return null;
-      const now = new Date();
-      const diffTime = endDate.getTime() - now.getTime();
-      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    } catch (error) {
-      return null;
-    }
-  };
-
-  const daysRemaining = getDaysRemaining();
+  const daysRemaining = getDaysRemaining(deal.endDate);
   
-  // Helper function to format redeem type for display
-  const formatRedeemType = (redeemType: string): string => {
-    switch (redeemType) {
-      case 'Online':
-        return 'Online only';
-      case 'InStore':
-        return 'In-store only';
-      case 'Both':
-        return 'Online & In-store';
-      case 'Unknown':
-        return 'Contact store';
-      default:
-        return redeemType;
-    }
-  };
-
   // Handle copy promo code
   const handleCopyPromo = () => {
     if (deal.promo) {
@@ -146,17 +111,17 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger, onView, onClick,
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0 flex-1">
                 <span className="text-xs uppercase tracking-wider text-brand-700 dark:text-brand-300 font-medium">Promo Code</span>
-                <div className="font-mono font-semibold text-sm text-brand-900 dark:text-brand-100 truncate mt-0.5">{deal.promo || 'No code required'}</div>
+                <div className="font-mono font-semibold text-sm text-brand-900 dark:text-brand-100 break-all mt-0.5">{deal.promo || 'No code required'}</div>
               </div>
               {deal.promo && (
                 <Button 
                   variant="outline"
                   size="sm"
                   onClick={handleCopyPromo}
-                  className="text-xs flex items-center gap-1 flex-shrink-0 rounded-full border-brand-300 dark:border-brand-700 text-brand-700 dark:text-brand-300 hover:bg-brand-100 hover:text-brand-900 dark:hover:bg-brand-900"
+                  className="text-xs flex items-center gap-1.5 px-3 py-1.5 flex-shrink-0 rounded-full border-brand-300 dark:border-brand-700 text-brand-700 dark:text-brand-300 hover:bg-brand-100 hover:text-brand-900 dark:hover:bg-brand-900 shadow-sm"
                 >
                   <Copy className="h-3 w-3" />
-                  <span className="hidden sm:inline">Copy</span>
+                  <span className="font-bold">Copy</span>
                 </Button>
               )}
             </div>
@@ -164,30 +129,22 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger, onView, onClick,
           
           {/* How to Redeem Instructions */}
           {'howToRedeem' in deal && (deal as any).howToRedeem && (
-            <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-xl border border-blue-200 dark:border-blue-800">
-              <div className="flex items-start gap-2">
-                <Info className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-                <div className="min-w-0">
-                  <h4 className="text-xs font-medium text-blue-900 dark:text-blue-200 mb-0.5">How to Redeem</h4>
-                  <p className="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">{(deal as any).howToRedeem}</p>
-                </div>
-              </div>
-            </div>
+            <DealInfoBox
+              title="How to Redeem"
+              description={(deal as any).howToRedeem}
+              icon={Info}
+              variant="blue"
+            />
           )}
 
           {/* University Specific Info */}
           {'isUniversitySpecific' in deal && (deal as any).isUniversitySpecific && (
-            <div className="bg-purple-50 dark:bg-purple-950/20 p-3 rounded-xl border border-purple-200 dark:border-purple-800">
-              <div className="flex items-start gap-2">
-                <School className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400 mt-0.5 flex-shrink-0" />
-                <div className="min-w-0">
-                  <h4 className="text-xs font-medium text-purple-900 dark:text-purple-200 mb-0.5">University Exclusive</h4>
-                  <p className="text-xs text-purple-700 dark:text-purple-300 leading-relaxed">
-                    This deal is exclusive to {'universityName' in deal && (deal as any).universityName ? (deal as any).universityName : 'specific universities'}.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <DealInfoBox
+              title="University Exclusive"
+              description={`This deal is exclusive to ${('universityName' in deal && (deal as any).universityName ? (deal as any).universityName : 'specific universities')}.`}
+              icon={School}
+              variant="purple"
+            />
           )}
         </div>
         
