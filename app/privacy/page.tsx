@@ -22,7 +22,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-lg font-medium text-neutral-900 dark:text-white">1. Introduction</h2>
           <p className="mt-2">
-            PerksCrowd ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how
+            PerksCrowd (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how
             we collect, use, and share information about you when you use our website and services.
           </p>
         </section>
@@ -83,7 +83,7 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-medium text-neutral-900 dark:text-white">6. Changes to This Policy</h2>
           <p className="mt-2">
             We may update this Privacy Policy from time to time. We will notify you of any material changes by 
-            posting the new Privacy Policy on this page and updating the "Last updated" date.
+            posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date.
           </p>
         </section>
 

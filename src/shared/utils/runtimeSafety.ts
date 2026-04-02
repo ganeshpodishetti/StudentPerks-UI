@@ -16,15 +16,9 @@ export const suppressProductionLogsAndErrors = () => {
   console.error = noop;
   console.debug = noop;
 
-  // Handle all uncaught errors
-  window.addEventListener('error', (event) => {
-    event.preventDefault();
-  }, true);
-
-  // Handle all unhandled promise rejections (often Axios network/API errors)
-  window.addEventListener('unhandledrejection', (event) => {
-    event.preventDefault();
-  });
+  // Do NOT suppress error/unhandledrejection events in production.
+  // Error boundaries, error reporting service, and browser defaults
+  // must remain active to catch and report real failures.
 };
 
 type ConsoleMethod = 'debug' | 'error' | 'info' | 'log' | 'warn';
@@ -54,7 +48,7 @@ export const ensureClientContext = <T>(
     return value;
   }
 
-  if (!isBrowserProduction) {
+  if (process.env.NODE_ENV !== 'production') {
     throw new Error(message);
   }
 

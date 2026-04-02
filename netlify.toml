@@ -33,3 +33,5 @@
   to = "https://api.perkscrowd.com/api/:splat"
   status = 200
   force = true
+  [redirects.headers]
+    X-Forwarded-Host = "perkscrowd.com"

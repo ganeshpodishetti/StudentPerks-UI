@@ -7,7 +7,7 @@ import React, { useCallback, useRef, useState } from "react";
 
 interface HeroSearchSectionProps {
   onSearchResults?: (
-    deals: any[],
+    deals: import('@/shared/types/api/responses').DealResponse[],
     isLoading: boolean,
     hasSearched: boolean
   ) => void;

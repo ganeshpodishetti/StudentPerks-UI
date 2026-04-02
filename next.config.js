@@ -1,38 +1,4 @@
 /** @type {import('next').NextConfig} */
-const configuredImageHosts = (process.env.NEXT_PUBLIC_IMAGE_HOSTS || '')
-  .split(',')
-  .map((host) => host.trim())
-  .filter(Boolean);
-
-const imageHostsAllowList = Array.from(
-  new Set([
-    'localhost',
-    'api.perkscrowd.com',
-    'perkscrowd.com',
-    'grapheine.com',
-    ...configuredImageHosts,
-  ])
-);
-
-const getRemoteImagePatterns = () => {
-  const httpsPatterns = imageHostsAllowList.map((hostname) => ({
-    protocol: 'https',
-    hostname,
-  }));
-
-  if (process.env.NODE_ENV === 'production') {
-    return httpsPatterns;
-  }
-
-  return [
-    ...httpsPatterns,
-    {
-      protocol: 'http',
-      hostname: 'localhost',
-    },
-  ];
-};
-
 const nextConfig = {
   // Use standard Next.js build for Netlify (not static export)
   // This supports dynamic routes and server-side features
@@ -61,10 +27,22 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      // Allow all HTTPS images - unoptimized to prevent 502 errors from CDN optimization
+      // Allowlisted image hosts only - no wildcard patterns
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'api.perkscrowd.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ik.imagekit.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'perkscrowd.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
       },
       // Keep localhost for dev
       ...(process.env.NODE_ENV !== 'production' ? [{

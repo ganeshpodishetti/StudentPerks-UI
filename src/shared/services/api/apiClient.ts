@@ -27,7 +27,11 @@ let failedQueue: Array<{
 
 const processQueue = (error: unknown = null) => {
   failedQueue.forEach(({ resolve, reject }) => {
-    error ? reject(error) : resolve();
+    if (error) {
+      reject(error);
+    } else {
+      resolve();
+    }
   });
   failedQueue = [];
 };

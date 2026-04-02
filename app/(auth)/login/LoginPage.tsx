@@ -3,7 +3,6 @@
 import { useAuth } from '@/features/auth/contexts/AuthContext';
 import { useAuthRedirect } from '@/features/auth/hooks/useAuthRedirect';
 import { Button } from '@/shared/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Input } from '@/shared/components/ui/input';
 import { useToast } from "@/shared/components/ui/use-toast";
 import { getGoogleAuthUrl } from '@/shared/config/env';
@@ -63,7 +62,9 @@ const LoginPage: React.FC = () => {
           try {
             const data = await response.json();
             errorMsg = data.detail || errorMsg;
-          } catch {}
+          } catch {
+            // Ignore parse errors, use default message
+          }
           toast({
             title: 'Too Many Requests',
             description: errorMsg,
@@ -112,15 +113,16 @@ const LoginPage: React.FC = () => {
         description: "Logged in successfully!",
       });
       router.replace('/dashboard');
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.detail ||
-                          error.response?.data?.message ||
-                          error.response?.data?.title ||
-                          error.message ||
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { detail?: string; message?: string; title?: string }; status?: number }; message?: string };
+      const errorMessage = err.response?.data?.detail ||
+                          err.response?.data?.message ||
+                          err.response?.data?.title ||
+                          err.message ||
                           "An error occurred during login";
       
-      const statusCode = error.response?.status;
-      const errorDetail = error.response?.data?.detail || '';
+      const statusCode = err.response?.status;
+      const errorDetail = err.response?.data?.detail || '';
       
       // Check if error is related to email confirmation
       // Only redirect to email verification if the message specifically mentions confirmation/verification

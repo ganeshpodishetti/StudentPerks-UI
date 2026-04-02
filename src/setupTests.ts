@@ -60,7 +60,7 @@ Object.defineProperty(window, 'matchMedia', {
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
-  constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+  constructor() {
     // Mock implementation
   }
   observe() {
@@ -72,11 +72,11 @@ global.IntersectionObserver = class IntersectionObserver {
   unobserve() {
     return null;
   }
-} as any;
+} as unknown as typeof IntersectionObserver;
 
 // Mock ResizeObserver
 global.ResizeObserver = class ResizeObserver {
-  constructor(callback: ResizeObserverCallback) {
+  constructor() {
     // Mock implementation
   }
   observe() {
@@ -88,12 +88,12 @@ global.ResizeObserver = class ResizeObserver {
   unobserve() {
     return null;
   }
-} as any;
+} as unknown as typeof ResizeObserver;
 
 // Suppress console errors during tests unless explicitly testing them
 const originalError = console.error;
 beforeAll(() => {
-  console.error = (...args: any[]) => {
+  console.error = (...args: unknown[]) => {
     if (
       typeof args[0] === 'string' &&
       args[0].includes('Warning: ReactDOM.render is no longer supported')

@@ -149,7 +149,7 @@ const UniversityDealsPage: React.FC = () => {
                 No active deals yet
               </h3>
               <p className="text-brand-700 dark:text-brand-300 max-w-md mx-auto text-sm md:text-base px-6">
-                We're curating exclusive student deals for {university.name}. 
+                We&apos;re curating exclusive student deals for {university.name}. 
                 Stay tuned as we rapidly expand our verified perks.
               </p>
             </div>

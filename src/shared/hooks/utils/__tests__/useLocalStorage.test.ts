@@ -91,7 +91,7 @@ describe('useLocalStorage', () => {
   it('handles SSR (no window)', () => {
     // Mock window as undefined for SSR simulation
     const originalWindow = global.window;
-    // @ts-ignore
+    // @ts-expect-error - Simulating SSR environment where window is undefined - Simulating SSR environment where window is undefined
     global.window = undefined;
     
     // The hook should handle the case where window is undefined

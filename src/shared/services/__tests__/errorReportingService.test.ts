@@ -255,12 +255,6 @@ describe('ErrorReportingService', () => {
 
     it('should handle unhandled promise rejections', async () => {
       // Mock PromiseRejectionEvent since it's not available in test environment
-      const mockRejectionEvent = {
-        type: 'unhandledrejection',
-        promise: Promise.resolve(), // Use resolved promise to avoid unhandled rejection
-        reason: new Error('Unhandled rejection'),
-        preventDefault: jest.fn(),
-      };
 
       // Simulate dispatching the event
       const originalDispatchEvent = window.dispatchEvent;

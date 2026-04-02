@@ -1,6 +1,7 @@
 import { dealService } from '@/features/deals/services/dealService';
 import { useErrorHandler } from '@/shared/contexts/ErrorContext';
 import type { CursorPaginatedDealsResponse, DealResponse, FeedType } from '@/shared/types/api/responses';
+import type { UpdateDealRequest } from '@/shared/types/api/requests';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Query keys for caching
@@ -19,7 +20,7 @@ const dealKeys = {
   feed: (feedType: FeedType) => [...dealKeys.all, 'feed', feedType] as const,
 };
 
-const feedQueryOptions = (
+export const feedQueryOptions = (
   feedType: FeedType,
   fetchFn: () => Promise<DealResponse[]>,
   handleApiError: (error: unknown) => void,
@@ -30,8 +31,10 @@ const feedQueryOptions = (
   enabled,
   staleTime: 5 * 60 * 1000,
   gcTime: 10 * 60 * 1000,
-  retry: (failureCount: number, error: any) => {
-    if (error?.response?.status >= 400 && error?.response?.status < 500) {
+  retry: (failureCount: number, error: unknown) => {
+    const err = error as { response?: { status?: number } };
+    const status = err?.response?.status;
+    if (status !== undefined && status >= 400 && status < 500) {
       return false;
     }
     return failureCount < 3;
@@ -57,11 +60,12 @@ export const useDealsInfiniteQuery = ({ enabled = true }: { enabled?: boolean } 
       }
       return undefined;
     },
-    staleTime: 0, // always fetch fresh cursor state
-    gcTime: 10 * 60 * 1000, // 10 minutes
-    retry: (failureCount, error: any) => {
-      // Don't retry on 4xx errors
-      if (error?.response?.status >= 400 && error?.response?.status < 500) {
+    staleTime: 0,
+    gcTime: 10 * 60 * 1000,
+    retry: (failureCount, error: unknown) => {
+      const err = error as { response?: { status?: number } };
+      const status = err?.response?.status;
+      if (status !== undefined && status >= 400 && status < 500) {
         return false;
       }
       return failureCount < 3;
@@ -82,8 +86,10 @@ export const useHomeFeedQuery = ({ enabled = true }: { enabled?: boolean } = {})
     enabled,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
-    retry: (failureCount, error: any) => {
-      if (error?.response?.status >= 400 && error?.response?.status < 500) {
+    retry: (failureCount, error: unknown) => {
+      const err = error as { response?: { status?: number } };
+      const status = err?.response?.status;
+      if (status !== undefined && status >= 400 && status < 500) {
         return false;
       }
       return failureCount < 3;
@@ -93,7 +99,6 @@ export const useHomeFeedQuery = ({ enabled = true }: { enabled?: boolean } = {})
     },
   });
 };
-
 
 export const useSingleFeedQuery = (feedType?: FeedType, { enabled = true }: { enabled?: boolean } = {}) => {
   const { handleApiError } = useErrorHandler();
@@ -109,8 +114,10 @@ export const useSingleFeedQuery = (feedType?: FeedType, { enabled = true }: { en
     enabled: Boolean(feedType) && enabled,
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
-    retry: (failureCount, error: any) => {
-      if (error?.response?.status >= 400 && error?.response?.status < 500) {
+    retry: (failureCount, error: unknown) => {
+      const err = error as { response?: { status?: number } };
+      const status = err?.response?.status;
+      if (status !== undefined && status >= 400 && status < 500) {
         return false;
       }
       return failureCount < 3;
@@ -120,7 +127,6 @@ export const useSingleFeedQuery = (feedType?: FeedType, { enabled = true }: { en
     },
   });
 };
-
 
 // Fetch deals by store
 export const useDealsByStoreQuery = (storeName: string) => {
@@ -174,11 +180,12 @@ export const useUserDealsQuery = () => {
   return useQuery({
     queryKey: dealKeys.userDeals(),
     queryFn: () => dealService.getUserDeals(),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
-    retry: (failureCount, error: any) => {
-      // Don't retry on 4xx errors
-      if (error?.response?.status >= 400 && error?.response?.status < 500) {
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    retry: (failureCount, error: unknown) => {
+      const err = error as { response?: { status?: number } };
+      const status = err?.response?.status;
+      if (status !== undefined && status >= 400 && status < 500) {
         return false;
       }
       return failureCount < 3;
@@ -200,7 +207,7 @@ export const useCreateDealMutation = () => {
       queryClient.invalidateQueries({ queryKey: dealKeys.all });
       showSuccess('Deal created successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });
@@ -212,13 +219,13 @@ export const useUpdateDealMutation = () => {
   const { showSuccess, handleApiError } = useErrorHandler();
   
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: any }) =>
+    mutationFn: ({ id, data }: { id: string; data: UpdateDealRequest }) =>
       dealService.updateDeal(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: dealKeys.all });
       showSuccess('Deal updated successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });
@@ -235,7 +242,7 @@ export const useDeleteDealMutation = () => {
       queryClient.invalidateQueries({ queryKey: dealKeys.all });
       showSuccess('Deal deleted successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });

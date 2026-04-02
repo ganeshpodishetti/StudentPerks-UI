@@ -1,5 +1,4 @@
 'use client'
-import { useToast } from '@/shared/components/ui/use-toast';
 import { GraduationCap, Menu, Search, Tag, X } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -12,9 +11,7 @@ const ThemeToggle = dynamic(() => import('../ThemeToggle/ThemeToggle'), {
   loading: () => <div aria-hidden className="h-9 w-9 rounded-md" />,
 });
 
-interface NavigationProps {
-  // Props removed as admin/user functionality is hidden
-}
+type NavigationProps = Record<string, never>;
 
 // Auth buttons component
 const AuthButtons: React.FC = () => {
@@ -36,7 +33,6 @@ const Navigation: React.FC<NavigationProps> = () => {
   
   const pathname = usePathname();
   const router = useRouter();
-  const { toast } = useToast();
 
   const isUniversityDealsRoute = /^\/universities\/[^/]+\/deals\/?$/.test(pathname || '');
 

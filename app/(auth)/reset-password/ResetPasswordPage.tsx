@@ -38,10 +38,11 @@ export default function ResetPasswordPage() {
       try {
         await authService.validateResetToken(tokenParam);
         setIsTokenValid(true);
-      } catch (error: any) {
-        const errorMessage = error.response?.data?.message || 
-                            error.response?.data?.title ||
-                            error.message || 
+      } catch (error: unknown) {
+        const err = error as { response?: { data?: { message?: string; title?: string }; status?: number }; message?: string };
+        const errorMessage = err.response?.data?.message || 
+                            err.response?.data?.title ||
+                            err.message || 
                             'Invalid or expired reset token. Please request a new password reset link.';
         setValidationError(errorMessage);
         setIsTokenValid(false);
@@ -74,10 +75,20 @@ export default function ResetPasswordPage() {
       return;
     }
 
-    if (newPassword.length < 6) {
+    if (newPassword.length < 8) {
       toast({
         title: "Error",
-        description: "Password must be at least 6 characters long.",
+        description: "Password must be at least 8 characters long.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+    if (!passwordRegex.test(newPassword)) {
+      toast({
+        title: "Error",
+        description: "Password must include uppercase, lowercase, and a number.",
         variant: "destructive",
       });
       return;
@@ -101,10 +112,11 @@ export default function ResetPasswordPage() {
         title: "Success",
         description: response.message || "Your password has been reset successfully!",
       });
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 
-                          error.response?.data?.title ||
-                          error.message || 
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string; title?: string }; status?: number }; message?: string };
+      const errorMessage = err.response?.data?.message || 
+                          err.response?.data?.title ||
+                          err.message || 
                           'Failed to reset password. Please try again or request a new reset link.';
       toast({
         title: "Error",

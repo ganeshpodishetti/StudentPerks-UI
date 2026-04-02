@@ -48,7 +48,7 @@ export default function CategoryForm({ category, onSave, title, description }: C
       };
       await onSave(categoryData);
       router.push('/dashboard/categories');
-    } catch (error) {
+    } catch {
       // Error handling is done by the parent component
     } finally {
       setIsLoading(false);

@@ -17,7 +17,13 @@ export function useLocalStorage<T>(
 
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      if (!item) return initialValue;
+      const parsed = JSON.parse(item);
+      // Validate parsed value is safe object, not a prototype-polluted object
+      if (parsed && typeof parsed === 'object' && parsed.constructor !== Object && !Array.isArray(parsed)) {
+        return initialValue;
+      }
+      return parsed;
     } catch (error) {
       browserConsole.warn(`Error reading localStorage key "${key}":`, error);
       return initialValue;
@@ -64,7 +70,11 @@ export function useLocalStorage<T>(
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === key && e.newValue !== null) {
         try {
-          setStoredValue(JSON.parse(e.newValue));
+          const parsed = JSON.parse(e.newValue);
+          if (parsed && typeof parsed === 'object' && parsed.constructor !== Object && !Array.isArray(parsed)) {
+            return;
+          }
+          setStoredValue(parsed);
         } catch (error) {
           browserConsole.warn(`Error parsing localStorage change for key "${key}":`, error);
         }

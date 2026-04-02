@@ -127,7 +127,7 @@ export default function DealForm({ deal, onSave, title, description }: DealFormP
 
       await onSave(dealData);
       router.push('/dashboard/deals');
-    } catch (error) {
+    } catch {
       // Error handling is done by the parent component
     } finally {
       setIsLoading(false);

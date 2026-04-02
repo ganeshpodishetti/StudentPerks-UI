@@ -36,7 +36,7 @@ export default function CategoryFormModal({ isOpen, onClose, onSave, category }:
       };
       await onSave(categoryData);
       onClose();
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Failed to save category. Please try again.",

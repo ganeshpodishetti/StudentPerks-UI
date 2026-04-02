@@ -54,7 +54,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-lg font-medium text-neutral-900 dark:text-white">5. Limitation of Liability</h2>
           <p className="mt-2">
-            PerksCrowd is provided "as is" without any warranties. We are not responsible for the accuracy of 
+            PerksCrowd is provided &quot;as is&quot; without any warranties. We are not responsible for the accuracy of 
             deals submitted by users or for any issues that may arise from using third-party websites linked 
             from our platform.
           </p>

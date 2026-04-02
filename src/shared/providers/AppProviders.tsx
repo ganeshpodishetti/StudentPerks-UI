@@ -22,23 +22,24 @@ export const AppProviders: React.FC<AppProvidersProps> = ({ children }) => {
       new QueryClient({
         defaultOptions: {
           queries: {
-            retry: (failureCount, error: any) => {
-              // Don't retry on 4xx errors
-              if (error?.response?.status >= 400 && error?.response?.status < 500) {
+            retry: (failureCount, error: unknown) => {
+              const err = error as { response?: { status?: number } };
+              const status = err?.response?.status;
+              if (status !== undefined && status >= 400 && status < 500) {
                 return false
               }
               return failureCount < 3
             },
-            staleTime: 5 * 60 * 1000, // 5 minutes
-            gcTime: 10 * 60 * 1000, // 10 minutes
-            refetchOnWindowFocus: false, // Prevent unnecessary refetches
-            refetchOnReconnect: true, // Refetch when connection is restored
-            networkMode: 'online', // Only run queries when online
+            staleTime: 5 * 60 * 1000,
+            gcTime: 10 * 60 * 1000,
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: true,
+            networkMode: 'online',
           },
           mutations: {
-            retry: (failureCount, error: any) => {
-              // Retry mutations on network errors only
-              if (error?.code === 'NETWORK_ERROR' || error?.message?.includes('Network Error')) {
+            retry: (failureCount, error: unknown) => {
+              const err = error as { code?: string; message?: string };
+              if (err.code === 'NETWORK_ERROR' || (err.message as string)?.includes('Network Error')) {
                 return failureCount < 2
               }
               return false

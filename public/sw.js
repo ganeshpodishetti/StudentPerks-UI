@@ -128,12 +128,17 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          // Cache successful navigation responses
+          // Only cache successful navigation responses that are safe to cache.
+          // Avoid caching authenticated/user-specific pages.
           if (response.status === 200) {
-            const cache_copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, cache_copy);
-            });
+            const url = new URL(request.url);
+            const safePaths = ['/', '/deals', '/categories', '/stores', '/universities', '/terms', '/privacy', '/brand-use'];
+            if (safePaths.includes(url.pathname)) {
+              const cache_copy = response.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(request, cache_copy);
+              });
+            }
           }
           return response;
         })

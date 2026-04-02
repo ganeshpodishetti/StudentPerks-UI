@@ -36,7 +36,7 @@ const DealCard: React.FC<DealCardProps> = memo((props) => {
       const now = new Date();
       const diffTime = endDate.getTime() - now.getTime();
       return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    } catch (error) {
+    } catch {
       return null;
     }
   };

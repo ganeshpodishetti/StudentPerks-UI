@@ -57,7 +57,7 @@ export const authApi = {
     apiClient
       .get<CurrentUserResponse>(
         '/api/auth/me',
-        { skipAuthRedirect: true } as any,
+        { skipAuthRedirect: true } as import('axios').AxiosRequestConfig,
       )
       .then((r) => r.data),
 

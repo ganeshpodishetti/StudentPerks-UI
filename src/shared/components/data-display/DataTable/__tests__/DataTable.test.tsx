@@ -23,7 +23,7 @@ const mockColumns = [
   {
     key: 'status',
     header: 'Status',
-    render: (value: any, item: typeof mockData[0]) => (
+    render: (value: unknown, item: typeof mockData[0]) => (
       <span className={item.status === 'active' ? 'text-green-600' : 'text-red-600'}>
         {item.status}
       </span>
@@ -107,7 +107,7 @@ describe('DataTable', () => {
   });
 
   it('hides actions column when no actions provided', () => {
-    const { actions, ...propsWithoutActions } = defaultProps;
+    const propsWithoutActions = { data: defaultProps.data, columns: defaultProps.columns };
     render(<DataTable {...propsWithoutActions} />);
     
     expect(screen.queryByText('Actions')).not.toBeInTheDocument();

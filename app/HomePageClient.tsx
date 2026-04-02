@@ -170,7 +170,7 @@ export function HomePageClient({ sectionedFeeds = false }: HomePageClientProps) 
                 Know a great deal?
               </h2>
               <p className="text-brand-700 dark:text-brand-300 mb-6 max-w-xl mx-auto text-base">
-                Help our community save by sharing the best deals, discounts, and perks you've found.
+                Help our community save by sharing the best deals, discounts, and perks you&apos;ve found.
               </p>
               <button
                 onClick={() => setIsSubmitDealModalOpen(true)}

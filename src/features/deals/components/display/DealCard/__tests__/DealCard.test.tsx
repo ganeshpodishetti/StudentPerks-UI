@@ -7,7 +7,7 @@ import DealCard from '../DealCard';
 
 jest.mock('../../DealDetail/DealDetail', () => ({
   __esModule: true,
-  default: ({ trigger }: { trigger: any }) => <>{trigger}</>,
+  default: ({ trigger }: { trigger: React.ReactElement }) => <>{trigger}</>,
 }));
 
 jest.mock('next/image', () => ({

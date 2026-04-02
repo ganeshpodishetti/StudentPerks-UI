@@ -10,7 +10,7 @@ interface ErrorReport {
   sessionId: string;
   errorType: 'javascript' | 'api' | 'network' | 'validation' | 'boundary';
   severity: 'low' | 'medium' | 'high' | 'critical';
-  context?: Record<string, any>;
+  context?: Record<string, unknown>;
 }
 
 interface ErrorReportingConfig {
@@ -35,7 +35,7 @@ class ErrorReportingService {
     this.config = {
       enabled: process.env.NODE_ENV === 'production',
       maxReports: 50,
-      throttleMs: 1000, // 1 second throttle
+      throttleMs: 1000,
       enableConsoleLogging: process.env.NEXT_PUBLIC_ENABLE_ERROR_CONSOLE === 'true',
       ...config,
     };
@@ -59,7 +59,6 @@ class ErrorReportingService {
       return `${timestamp}-${randomHex}`;
     }
 
-    // Non-random fallback keeps IDs unique in test/legacy environments without insecure PRNG usage.
     ErrorReportingService.fallbackSessionCounter += 1;
     return `${timestamp}-fallback-${ErrorReportingService.fallbackSessionCounter}`;
   }
@@ -67,7 +66,6 @@ class ErrorReportingService {
   private setupGlobalErrorHandlers(): void {
     if (typeof window === 'undefined') return;
 
-    // Handle unhandled JavaScript errors
     window.addEventListener('error', (event) => {
       this.reportError({
         message: event.message,
@@ -82,11 +80,11 @@ class ErrorReportingService {
       });
     });
 
-    // Handle unhandled promise rejections
     window.addEventListener('unhandledrejection', (event) => {
+      const reason = event.reason as Error | undefined;
       this.reportError({
-        message: event.reason?.message || 'Unhandled Promise Rejection',
-        stack: event.reason?.stack,
+        message: reason?.message || 'Unhandled Promise Rejection',
+        stack: reason?.stack,
         errorType: 'javascript',
         severity: 'high',
         context: {
@@ -96,15 +94,12 @@ class ErrorReportingService {
     });
   }
 
-  /**
-   * Report an error with context
-   */
   reportError(error: {
     message: string;
     stack?: string;
     errorType: ErrorReport['errorType'];
     severity: ErrorReport['severity'];
-    context?: Record<string, any>;
+    context?: Record<string, unknown>;
     userId?: string;
   }): void {
     if (!this.config.enabled) {
@@ -114,7 +109,6 @@ class ErrorReportingService {
       return;
     }
 
-    // Throttle error reports
     const now = Date.now();
     if (now - this.lastReportTime < this.config.throttleMs) {
       return;
@@ -142,47 +136,41 @@ class ErrorReportingService {
     }
   }
 
-  /**
-   * Report API errors with additional context
-   */
-  reportApiError(error: any, context: {
+  reportApiError(error: unknown, context: {
     endpoint: string;
     method: string;
     status?: number;
-    requestData?: any;
+    requestData?: unknown;
   }): void {
+    const sanitizedContext = {
+      endpoint: context.endpoint,
+      method: context.method,
+      status: context.status,
+    };
     this.reportError({
-      message: error.message || 'API Error',
-      stack: error.stack,
+      message: (error as Error)?.message || 'API Error',
+      stack: (error as Error)?.stack,
       errorType: 'api',
       severity: this.getApiErrorSeverity(context.status),
-      context: {
-        endpoint: context.endpoint,
-        method: context.method,
-        status: context.status,
-        requestData: context.requestData,
-        responseData: error.response?.data,
-      },
+      context: sanitizedContext,
     });
   }
 
-  /**
-   * Report network errors
-   */
-  reportNetworkError(error: any, context?: Record<string, any>): void {
+  reportNetworkError(error: unknown, context?: Record<string, unknown>): void {
+    const sanitizedContext = context ? {
+      url: typeof context.url === 'string' ? context.url : undefined,
+      method: typeof context.method === 'string' ? context.method : undefined,
+    } : undefined;
     this.reportError({
-      message: error.message || 'Network Error',
-      stack: error.stack,
+      message: (error as Error)?.message || 'Network Error',
+      stack: (error as Error)?.stack,
       errorType: 'network',
       severity: 'medium',
-      context,
+      context: sanitizedContext,
     });
   }
 
-  /**
-   * Report validation errors
-   */
-  reportValidationError(message: string, context?: Record<string, any>): void {
+  reportValidationError(message: string, context?: Record<string, unknown>): void {
     this.reportError({
       message,
       errorType: 'validation',
@@ -191,10 +179,7 @@ class ErrorReportingService {
     });
   }
 
-  /**
-   * Report React error boundary errors
-   */
-  reportBoundaryError(error: Error, errorInfo: string, context?: Record<string, any>): void {
+  reportBoundaryError(error: Error, errorInfo: string, context?: Record<string, unknown>): void {
     this.reportError({
       message: error.message,
       stack: error.stack,
@@ -217,7 +202,6 @@ class ErrorReportingService {
   private addToQueue(report: ErrorReport): void {
     this.reportQueue.push(report);
     
-    // Keep queue size manageable
     if (this.reportQueue.length > this.config.maxReports) {
       this.reportQueue = this.reportQueue.slice(-this.config.maxReports);
     }
@@ -239,16 +223,12 @@ class ErrorReportingService {
         },
         body: JSON.stringify({ reports: reportsToSend }),
       });
-    } catch (error) {
-      // If sending fails, put reports back in queue (but don't report this error to avoid loops)
+    } catch (error: unknown) {
       this.reportQueue.unshift(...reportsToSend);
       browserConsole.warn('Failed to send error reports:', error);
     }
   }
 
-  /**
-   * Get current error statistics
-   */
   getErrorStats(): {
     queueSize: number;
     sessionId: string;
@@ -257,27 +237,19 @@ class ErrorReportingService {
     return {
       queueSize: this.reportQueue.length,
       sessionId: this.sessionId,
-      totalReported: 0, // Could be tracked if needed
+      totalReported: 0,
     };
   }
 
-  /**
-   * Clear the error queue
-   */
   clearQueue(): void {
     this.reportQueue = [];
   }
 
-  /**
-   * Update configuration
-   */
   updateConfig(newConfig: Partial<ErrorReportingConfig>): void {
     this.config = { ...this.config, ...newConfig };
   }
 }
 
-// Create singleton instance
 export const errorReportingService = new ErrorReportingService();
 
-// Export types for use in other files
 export type { ErrorReport, ErrorReportingConfig };

@@ -128,20 +128,30 @@ const DealDetail: React.FC<DealDetailProps> = ({ deal, trigger, onView, onClick,
           </div>
           
           {/* How to Redeem Instructions */}
-          {'howToRedeem' in deal && (deal as any).howToRedeem && (
+          {'howToRedeem' in deal && typeof deal.howToRedeem === 'string' && deal.howToRedeem && (
             <DealInfoBox
               title="How to Redeem"
-              description={(deal as any).howToRedeem}
+              description={deal.howToRedeem}
               icon={Info}
               variant="blue"
             />
           )}
 
           {/* University Specific Info */}
-          {'isUniversitySpecific' in deal && (deal as any).isUniversitySpecific && (
+          {'isUniversitySpecific' in deal && deal.isUniversitySpecific === true && (
             <DealInfoBox
               title="University Exclusive"
-              description={`This deal is exclusive to ${('universityName' in deal && (deal as any).universityName ? (deal as any).universityName : 'specific universities')}.`}
+              description={`This deal is exclusive to ${('universityName' in deal && typeof deal.universityName === 'string' ? deal.universityName : 'specific universities')}.`}
+              icon={School}
+              variant="purple"
+            />
+          )}
+
+          {/* University Specific Info */}
+          {'isUniversitySpecific' in deal && deal.isUniversitySpecific === true && (
+            <DealInfoBox
+              title="University Exclusive"
+              description={`This deal is exclusive to ${('universityName' in deal && typeof deal.universityName === 'string' ? deal.universityName : 'specific universities')}.`}
               icon={School}
               variant="purple"
             />

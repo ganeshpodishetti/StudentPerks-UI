@@ -80,8 +80,8 @@ export const ErrorProvider: React.FC<ErrorProviderProps> = ({ children }) => {
       errorReportingService.reportApiError(error, {
         endpoint: context?.endpoint ?? '',
         method: context?.method ?? '',
-        status: (error as any)?.response?.status,
-        requestData: (error as any)?.config?.data,
+        status: (error as { response?: { status?: number } })?.response?.status,
+        requestData: (error as { config?: { data?: unknown } })?.config?.data,
       });
 
       const { status, message, fieldErrors } = normalizeApiError(error);
@@ -117,7 +117,7 @@ export const ErrorProvider: React.FC<ErrorProviderProps> = ({ children }) => {
 
   const handleNetworkError = useCallback(
     (error: unknown, context?: Record<string, unknown>) => {
-      errorReportingService.reportNetworkError(error, context as Record<string, any>);
+      errorReportingService.reportNetworkError(error, context);
       showError('Please check your internet connection and try again.', 'Connection Error');
     },
     [showError],
@@ -125,7 +125,7 @@ export const ErrorProvider: React.FC<ErrorProviderProps> = ({ children }) => {
 
   const handleValidationError = useCallback(
     (message: string, context?: Record<string, unknown>) => {
-      errorReportingService.reportValidationError(message, context as Record<string, any>);
+      errorReportingService.reportValidationError(message, context);
       showError(message, 'Validation Error');
     },
     [showError],
@@ -133,7 +133,7 @@ export const ErrorProvider: React.FC<ErrorProviderProps> = ({ children }) => {
 
   const handleBoundaryError = useCallback(
     (error: Error, errorInfo: string, context?: Record<string, unknown>) => {
-      errorReportingService.reportBoundaryError(error, errorInfo, context as Record<string, any>);
+      errorReportingService.reportBoundaryError(error, errorInfo, context);
       showError('An unexpected error occurred. The page will be refreshed.', 'Application Error');
     },
     [showError],

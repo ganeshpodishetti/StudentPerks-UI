@@ -43,7 +43,7 @@ export function normalizeApiError(error: unknown): NormalizedError {
     return { message: 'An unexpected error occurred. Please try again.' };
   }
 
-  const err = error as Record<string, any>;
+  const err = error as { response?: { status?: number; data?: unknown }; message?: string };
 
   // Network / CORS / offline – no response object
   if (!err.response) {
@@ -54,7 +54,7 @@ export function normalizeApiError(error: unknown): NormalizedError {
     return { message: msg };
   }
 
-  const status: number = err.response.status;
+  const status: number = err.response.status as number;
   const data: unknown = err.response.data;
 
   // ── 5xx – never leak server internals ──────────────────────────────────────
@@ -76,10 +76,10 @@ export function normalizeApiError(error: unknown): NormalizedError {
     return { status, message: genericMessage(status) };
   }
 
-  const body = data as Record<string, any>;
+  const body = data as { errorCode?: unknown; code?: unknown; errors?: unknown; detail?: unknown; message?: unknown; error?: unknown; title?: unknown };
 
   // ── Optional machine-readable code ─────────────────────────────────────────
-  const code: string | undefined = body.errorCode ?? body.code ?? undefined;
+  const code: string | undefined = typeof body.errorCode === 'string' ? body.errorCode : typeof body.code === 'string' ? body.code : undefined;
 
   // ── Build fieldErrors from ValidationProblem / ProblemDetails.errors ───────
   let fieldErrors: Record<string, string[]> | undefined;
@@ -101,10 +101,10 @@ export function normalizeApiError(error: unknown): NormalizedError {
 
   // ── Build display message (priority order matches backend conventions) ──────
   let message: string =
-    body.detail ??   // ProblemDetails.detail – most specific
-    body.message ??  // custom { message }
-    body.error ??    // custom { error }
-    body.title ??    // ProblemDetails.title – fallback
+    (typeof body.detail === 'string' ? body.detail : '') ||
+    (typeof body.message === 'string' ? body.message : '') ||
+    (typeof body.error === 'string' ? body.error : '') ||
+    (typeof body.title === 'string' ? body.title : '') ||
     '';
 
   // Summarise field errors when there is no top-level message

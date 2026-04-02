@@ -34,11 +34,12 @@ export default function ConfirmEmailPage() {
           title: "Success",
           description: "Email confirmed successfully! You can now log in.",
         });
-      } catch (error: any) {
+      } catch (error: unknown) {
         setStatus('error');
-        const errorMessage = error.response?.data?.message || 
-                           error.response?.data?.title ||
-                           error.message || 
+        const err = error as { response?: { data?: { message?: string; title?: string }; status?: number }; message?: string };
+        const errorMessage = err.response?.data?.message || 
+                           err.response?.data?.title ||
+                           err.message || 
                            'Failed to confirm email. The link may be invalid or expired.';
         setMessage(errorMessage);
         toast({
