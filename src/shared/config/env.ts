@@ -1,8 +1,15 @@
 const normalizeEnv = (value: string | undefined): string => {
   let val = value?.trim().replace(/\/$/, '') ?? '';
   // Force HTTPS for production API to avoid extra redirects/logs
-  if (val.includes('api.perkscrowd.com') && !val.startsWith('https://')) {
-    val = val.replace(/^http:\/\//, 'https://');
+  if (val && !val.startsWith('https://')) {
+    try {
+      const url = new URL(val.startsWith('http://') ? val : `http://${val}`);
+      if (url.hostname === 'api.perkscrowd.com') {
+        val = val.replace(/^http:\/\//, 'https://');
+      }
+    } catch {
+      // Invalid URL, leave as-is
+    }
   }
   return val;
 };
