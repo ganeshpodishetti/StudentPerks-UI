@@ -202,12 +202,12 @@ const LoginPage: React.FC = () => {
           <Link href="/" className="inline-block mb-12">
             <span className="text-2xl font-bold text-brand-100 tracking-tighter">PerksCrowd</span>
           </Link>
-          <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] text-brand-500 mb-6">
+          <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] text-brand-300 mb-6">
             ESTABLISHED PERKS. VERIFIED SAVINGS.
           </p>
           <h1 className="text-5xl lg:text-7xl font-black text-brand-100 leading-[0.95] tracking-tighter mb-8 uppercase">
             Welcome <br />
-            <span className="text-brand-500">Back.</span>
+            <span className="text-brand-300">Back.</span>
           </h1>
           <p className="text-lg text-brand-300/80 max-w-md leading-relaxed font-medium">
             Sign in to access your curated dashboard of everyday student savings and verified campus offers.
@@ -215,7 +215,7 @@ const LoginPage: React.FC = () => {
         </div>
         
         <div className="absolute bottom-12 left-12 lg:left-24">
-          <p className="text-[10px] font-bold text-brand-700 tracking-widest uppercase">© 2026 PerksCrowd Ltd.</p>
+          <p className="text-[10px] font-bold text-brand-100/50 tracking-widest uppercase">© 2026 PerksCrowd Ltd.</p>
         </div>
       </div>
 
@@ -227,7 +227,7 @@ const LoginPage: React.FC = () => {
             <span className="text-xl font-bold text-brand-900 dark:text-brand-100 tracking-tighter">PerksCrowd</span>
           </Link>
           <h1 className="text-4xl font-black text-brand-900 dark:text-brand-100 tracking-tight mb-2 uppercase">
-            WELCOME <span className="text-brand-500">BACK.</span>
+            WELCOME <span className="text-brand-700 dark:text-brand-400">BACK.</span>
           </h1>
           <p className="text-brand-700 dark:text-brand-300 text-sm font-medium">
             Access your verified perks dashboard.
