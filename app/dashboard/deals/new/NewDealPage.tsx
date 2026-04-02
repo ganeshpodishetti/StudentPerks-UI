@@ -1,26 +1,16 @@
 'use client'
-import AdminLoadingSpinner from '@/features/admin/components/dashboard/AdminLoadingSpinner/AdminLoadingSpinner';
 import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHeader';
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
-import { useAuth } from '@/features/auth/contexts/AuthContext';
 import DealForm from '@/features/deals/components/forms/DealForm';
 import { useCreateDealMutation } from '@/features/deals/hooks/useDealsQuery';
+import type { CreateDealRequest } from '@/shared/types/api/requests';
 
 export default function NewDealPage() {
-  const { isLoading: authLoading } = useAuth();
   const createDealMutation = useCreateDealMutation();
 
-  const handleSave = async (dealData: any) => {
+  const handleSave = async (dealData: CreateDealRequest) => {
     await createDealMutation.mutateAsync(dealData);
   };
-
-  if (authLoading) {
-    return (
-      <AdminLayout>
-        <AdminLoadingSpinner />
-      </AdminLayout>
-    );
-  }
 
   return (
     <AdminLayout>

@@ -27,8 +27,8 @@ const Probe = () => {
           try {
             await login('student@example.com', 'Password123')
             setError('')
-          } catch (err: any) {
-            setError(err?.message ?? 'unknown')
+          } catch (err: unknown) {
+            setError((err as Error)?.message ?? 'unknown')
           }
         }}
       >

@@ -42,6 +42,7 @@ export const authService = {
     return null;
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setUser(_user: UserProfile): void {
     // Session lives in HttpOnly cookies; user profile is kept in memory only.
   },

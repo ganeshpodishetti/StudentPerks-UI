@@ -4,6 +4,7 @@ import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHea
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
 import DealForm from '@/features/deals/components/forms/DealForm';
 import { useDealQuery, useUpdateDealMutation } from '@/features/deals/hooks/useDealsQuery';
+import type { CreateDealRequest } from '@/shared/types/api/requests';
 import { useParams } from 'next/navigation';
 
 export default function EditDealPage() {
@@ -13,7 +14,7 @@ export default function EditDealPage() {
   const { data: deal, isLoading } = useDealQuery(dealId);
   const updateDealMutation = useUpdateDealMutation();
 
-  const handleSave = async (dealData: any) => {
+  const handleSave = async (dealData: CreateDealRequest) => {
     await updateDealMutation.mutateAsync({
       id: dealId,
       data: dealData

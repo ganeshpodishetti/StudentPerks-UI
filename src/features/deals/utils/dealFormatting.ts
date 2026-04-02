@@ -1,5 +1,3 @@
-import { Deal } from "@/shared/types/entities/deal";
-
 /**
  * Formats a date string for display.
  */
@@ -9,7 +7,7 @@ export const formatDate = (dateString?: string | null): string => {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return 'Invalid date';
     return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-  } catch (error) {
+  } catch {
     return 'Invalid date';
   }
 };
@@ -25,7 +23,7 @@ export const getDaysRemaining = (endDateStr?: string | null): number | null => {
     const now = new Date();
     const diffTime = endDate.getTime() - now.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  } catch (error) {
+  } catch {
     return null;
   }
 };

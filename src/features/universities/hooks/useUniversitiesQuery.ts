@@ -51,7 +51,7 @@ export const useCreateUniversityMutation = () => {
       queryClient.invalidateQueries({ queryKey: [UNIVERSITIES_QUERY_KEY] });
       showSuccess('University created successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });
@@ -69,7 +69,7 @@ export const useUpdateUniversityMutation = () => {
       queryClient.invalidateQueries({ queryKey: [UNIVERSITIES_QUERY_KEY] });
       showSuccess('University updated successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });
@@ -86,7 +86,7 @@ export const useDeleteUniversityMutation = () => {
       queryClient.invalidateQueries({ queryKey: [UNIVERSITIES_QUERY_KEY] });
       showSuccess('University deleted successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });

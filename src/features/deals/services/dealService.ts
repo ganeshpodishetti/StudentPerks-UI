@@ -20,7 +20,7 @@ import type { CursorPaginatedDealsResponse, DealResponse, FeedType } from '@/sha
 export type { DealResponse as Deal };
 export type { CreateDealRequest, UpdateDealRequest };
 
-export interface GetDealsParams extends CursorPaginationRequest {}
+export type GetDealsParams = CursorPaginationRequest;
 
 export const dealService = {
   async getDeals(params?: GetDealsParams): Promise<CursorPaginatedDealsResponse> {
@@ -34,8 +34,9 @@ export const dealService = {
   async getDealsByCategory(name: string): Promise<DealResponse[]> {
     try {
       return await dealsApi.getByCategory(name);
-    } catch (err: any) {
-      if (err?.response?.status === 404) return [];
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { status?: number } };
+      if (axiosErr?.response?.status === 404) return [];
       return Promise.reject(err);
     }
   },
@@ -43,8 +44,9 @@ export const dealService = {
   async getDealsByStore(name: string): Promise<DealResponse[]> {
     try {
       return await dealsApi.getByStore(name);
-    } catch (err: any) {
-      if (err?.response?.status === 404) return [];
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { status?: number } };
+      if (axiosErr?.response?.status === 404) return [];
       return Promise.reject(err);
     }
   },
@@ -52,8 +54,9 @@ export const dealService = {
   async getDealsByUniversity(name: string): Promise<DealResponse[]> {
     try {
       return await dealsApi.getByUniversity(name);
-    } catch (err: any) {
-      if (err?.response?.status === 404) return [];
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { status?: number } };
+      if (axiosErr?.response?.status === 404) return [];
       return Promise.reject(err);
     }
   },

@@ -5,7 +5,6 @@ import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHea
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
 import AdminStoresList from '@/features/admin/components/tables/AdminStoresList/AdminStoresList';
 import { useAdminStores } from '@/features/admin/hooks/useAdminStores';
-import { useAuth } from '@/features/auth/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
 export default function AdminStoresPage() {
@@ -17,8 +16,6 @@ export default function AdminStoresPage() {
     handleDeleteStore,
   } = useAdminStores();
 
-  const { } = useAuth();
-  
   const isSuperAdmin = user?.roles?.includes('SuperAdmin') ?? false;
 
   const handleCreateStore = () => {

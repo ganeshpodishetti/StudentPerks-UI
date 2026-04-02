@@ -100,11 +100,12 @@ export default function UserProfile({ user }: UserProfileProps) {
       setTimeout(async () => {
         await logout();
       }, 2000);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string; title?: string }; status?: number }; message?: string };
       const msg =
-        error.response?.data?.message ||
-        error.response?.data?.title ||
-        error.message ||
+        err.response?.data?.message ||
+        err.response?.data?.title ||
+        err.message ||
         'Failed to change password. Please check your current password and try again.';
       setChangePasswordError(msg);
     } finally {
@@ -122,14 +123,15 @@ export default function UserProfile({ user }: UserProfileProps) {
       setIsDeleteDialogOpen(false);
       // Redirect to login page after successful deletion
       router.push('/login');
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { title?: string }; status?: number }; message?: string };
       browserConsole.error('Failed to delete account:', error);
-      if (error.response?.status === 403) {
+      if (err.response?.status === 403) {
         setDeleteError('You are not authorized to delete your account. Contact an administrator.');
-      } else if (error.response?.status === 401) {
+      } else if (err.response?.status === 401) {
         setDeleteError('Your session has expired. Please log in again.');
       } else {
-        setDeleteError(error.response?.data?.title || 'Failed to delete account. Please try again.');
+        setDeleteError(err.response?.data?.title || 'Failed to delete account. Please try again.');
       }
     } finally {
       setIsDeleting(false);
@@ -140,8 +142,6 @@ export default function UserProfile({ user }: UserProfileProps) {
   // Handle cases where roles might be undefined or not an array
   const isSuperAdmin = Array.isArray(user.roles) && 
     user.roles.some(role => role.toLowerCase() === 'superadmin');
-
-  browserConsole.log('User roles:', user.roles, 'isSuperAdmin:', isSuperAdmin);
 
   const handleConfirmDelete = () => {
     // If user is a SuperAdmin, show error since they cannot delete their own account

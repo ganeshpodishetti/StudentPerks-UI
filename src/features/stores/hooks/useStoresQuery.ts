@@ -53,7 +53,7 @@ export const useCreateStoreMutation = () => {
       queryClient.invalidateQueries({ queryKey: storeKeys.all });
       showSuccess('Brand created successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });
@@ -71,7 +71,7 @@ export const useUpdateStoreMutation = () => {
       queryClient.invalidateQueries({ queryKey: storeKeys.all });
       showSuccess('Brand updated successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });
@@ -88,7 +88,7 @@ export const useDeleteStoreMutation = () => {
       queryClient.invalidateQueries({ queryKey: storeKeys.all });
       showSuccess('Brand deleted successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });

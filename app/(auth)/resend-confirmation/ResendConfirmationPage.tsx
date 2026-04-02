@@ -45,10 +45,11 @@ export default function ResendConfirmationPage() {
         title: "Success",
         description: response.message || "Confirmation email sent! Please check your inbox.",
       });
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 
-                          error.response?.data?.title ||
-                          error.message || 
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string; title?: string }; status?: number }; message?: string };
+      const errorMessage = err.response?.data?.message || 
+                          err.response?.data?.title ||
+                          err.message || 
                           'Failed to send confirmation email. Please try again.';
       toast({
         title: "Error",

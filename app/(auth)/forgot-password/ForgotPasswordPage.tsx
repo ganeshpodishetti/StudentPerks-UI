@@ -35,10 +35,11 @@ export default function ForgotPasswordPage() {
         title: "Success",
         description: response.message || "If the email is registered and confirmed, a reset link has been sent.",
       });
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 
-                          error.response?.data?.title ||
-                          error.message || 
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string; title?: string }; status?: number }; message?: string };
+      const errorMessage = err.response?.data?.message || 
+                          err.response?.data?.title ||
+                          err.message || 
                           'Failed to send password reset email. Please try again.';
       toast({
         title: "Error",

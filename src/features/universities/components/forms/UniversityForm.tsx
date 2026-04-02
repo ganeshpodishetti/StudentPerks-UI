@@ -90,7 +90,7 @@ export default function UniversityForm({ university, onSave, title, description 
       }
       await onSave(universityData);
       router.push('/dashboard/universities');
-    } catch (error) {
+    } catch {
       // Error handling is done by the parent component
     } finally {
       setIsLoading(false);

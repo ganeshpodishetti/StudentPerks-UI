@@ -56,7 +56,7 @@ export default function StoreForm({ store, onSave, title, description }: StoreFo
       };
       await onSave(storeData);
       router.push('/dashboard/stores');
-    } catch (error) {
+    } catch {
       // Error handling is done by the parent component
     } finally {
       setIsLoading(false);

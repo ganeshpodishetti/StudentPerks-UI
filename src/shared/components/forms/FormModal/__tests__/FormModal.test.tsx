@@ -30,7 +30,7 @@ describe('FormModal', () => {
     description: 'Test modal description',
     initialState,
     isLoading: false,
-    children: (formData: TestFormData, handleInputChange: any) => (
+    children: (formData: TestFormData, handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void) => (
       <div>
         <input
           name="name"

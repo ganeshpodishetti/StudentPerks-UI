@@ -53,7 +53,7 @@ export const useCreateCategoryMutation = () => {
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
       showSuccess('Category created successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });
@@ -71,7 +71,7 @@ export const useUpdateCategoryMutation = () => {
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
       showSuccess('Category updated successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });
@@ -88,7 +88,7 @@ export const useDeleteCategoryMutation = () => {
       queryClient.invalidateQueries({ queryKey: categoryKeys.all });
       showSuccess('Category deleted successfully');
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       handleApiError(error);
     },
   });

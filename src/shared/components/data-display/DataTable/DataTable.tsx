@@ -7,7 +7,7 @@ export interface ColumnDef<T> {
   key: string;
   header: string;
   accessor?: keyof T | ((item: T) => React.ReactNode);
-  render?: (value: any, item: T) => React.ReactNode;
+  render?: (value: unknown, item: T) => React.ReactNode;
   className?: string;
 }
 

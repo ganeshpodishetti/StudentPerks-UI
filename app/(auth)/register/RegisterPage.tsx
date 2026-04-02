@@ -2,9 +2,8 @@
 'use client'
 import { useAuth } from '@/features/auth/contexts/AuthContext';
 import { Button } from '@/shared/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { Input } from '@/shared/components/ui/input';
 import { useToast } from '@/shared/components/ui/use-toast';
+import { Input } from '@/shared/components/ui/input';
 import { getGoogleAuthUrl } from '@/shared/config/env';
 import { browserConsole } from '@/shared/utils/runtimeSafety';
 import Link from 'next/link';
@@ -79,10 +78,20 @@ function RegisterPageInner() {
       return;
     }
 
-    if (formData.password.length < 6) {
+    if (formData.password.length < 8) {
       toast({
         title: "Error",
-        description: "Password must be at least 6 characters long.",
+        description: "Password must be at least 8 characters long.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+    if (!passwordRegex.test(formData.password)) {
+      toast({
+        title: "Error",
+        description: "Password must include uppercase, lowercase, and a number.",
         variant: "destructive",
       });
       return;
@@ -97,12 +106,13 @@ function RegisterPageInner() {
         description: "Account created successfully! Please check your email to confirm your account.",
       });
       router.push('/login'); // Redirect to login page
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string; title?: string; error?: string }; status?: number }; message?: string };
       browserConsole.error('Registration error:', error);
-      const errorMessage = error.response?.data?.message ||
-                          error.response?.data?.title ||
-                          error.response?.data?.error ||
-                          error.message ||
+      const errorMessage = err.response?.data?.message ||
+                          err.response?.data?.title ||
+                          err.response?.data?.error ||
+                          err.message ||
                           'Failed to create account. Please try again.';
       toast({
         title: "Error",
@@ -127,7 +137,9 @@ function RegisterPageInner() {
           try {
             const data = await response.json();
             errorMsg = data.detail || errorMsg;
-          } catch {}
+          } catch {
+            // JSON parsing failed, use default error message
+          }
           toast({
             title: 'Too Many Requests',
             description: errorMsg,

@@ -5,7 +5,6 @@ import AdminHeader from '@/features/admin/components/layout/AdminHeader/AdminHea
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
 import AdminCategoriesList from '@/features/admin/components/tables/AdminCategoriesList/AdminCategoriesList';
 import { useAdminCategories } from '@/features/admin/hooks/useAdminCategories';
-import { useAuth } from '@/features/auth/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
 export default function AdminCategoriesPage() {
@@ -17,8 +16,6 @@ export default function AdminCategoriesPage() {
     handleDeleteCategory,
   } = useAdminCategories();
 
-  const { } = useAuth();
-  
   const isSuperAdmin = user?.roles?.includes('SuperAdmin') ?? false;
 
   const handleCreateCategory = () => {
