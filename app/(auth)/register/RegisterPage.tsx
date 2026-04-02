@@ -164,12 +164,12 @@ function RegisterPageInner() {
           <Link href="/" className="inline-block mb-12">
             <span className="text-2xl font-bold text-brand-100 tracking-tighter">PerksCrowd</span>
           </Link>
-          <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] text-brand-500 mb-6">
+          <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] text-brand-300 mb-6">
             UNLOCK YOUR CAMPUS. UNLOCK YOUR SAVINGS.
           </p>
           <h1 className="text-5xl lg:text-7xl font-black text-brand-100 leading-[0.95] tracking-tighter mb-8 uppercase">
             Join <br />
-            <span className="text-brand-500">the Crowd.</span>
+            <span className="text-brand-300">the Crowd.</span>
           </h1>
           <p className="text-lg text-brand-300/80 max-w-md leading-relaxed font-medium">
             Join thousands of students discovering verified deals and everyday savings from the brands you already love.
@@ -177,7 +177,7 @@ function RegisterPageInner() {
         </div>
         
         <div className="absolute bottom-12 left-12 lg:left-24">
-          <p className="text-[10px] font-bold text-brand-700 tracking-widest uppercase">© 2026 PerksCrowd Ltd.</p>
+          <p className="text-[10px] font-bold text-brand-100/50 tracking-widest uppercase">© 2026 PerksCrowd Ltd.</p>
         </div>
       </div>
 
@@ -189,7 +189,7 @@ function RegisterPageInner() {
             <span className="text-xl font-bold text-brand-900 dark:text-brand-100 tracking-tighter">PerksCrowd</span>
           </Link>
           <h1 className="text-4xl font-black text-brand-900 dark:text-brand-100 tracking-tight mb-2 uppercase">
-            JOIN <span className="text-brand-500">THE CROWD.</span>
+            JOIN <span className="text-brand-700 dark:text-brand-400">THE CROWD.</span>
           </h1>
         </div>
 
