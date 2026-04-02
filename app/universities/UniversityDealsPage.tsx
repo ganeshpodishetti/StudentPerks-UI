@@ -80,93 +80,92 @@ const UniversityDealsPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full min-h-screen bg-background dark:bg-background transition-colors">
-      <div className="container mx-auto p-4" style={{ maxWidth: '80%'}}>
-      {/* Back button */}
-      <Button
-        variant="outline"
-        onClick={() => router.push('/universities')}
-        className="mb-6"
-      >
-        <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Universities
-      </Button>
+    <div className="w-full min-h-screen bg-background dark:bg-background transition-colors pb-20">
+      <div className="container mx-auto px-6 md:px-8 max-w-7xl">
+        {/* Navigation */}
+        <div className="py-8 md:py-12">
+          <Button
+            variant="ghost"
+            onClick={() => router.push('/universities')}
+            className="group px-0 hover:bg-transparent text-brand-700 dark:text-brand-300 hover:text-brand-900 dark:hover:text-brand-100 transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
+            <span className="text-sm font-bold tracking-tight">BACK TO UNIVERSITIES</span>
+          </Button>
+        </div>
 
-      {/* University header */}
-      <div className="mb-8">
-        <div className="flex items-center space-x-6 mb-4">
-          <div className="flex-shrink-0">
-            {university.imageUrl ? (
-              <Image
-                src={university.imageUrl}
-                alt={university.name}
-                width={80}
-                height={80}
-                sizes="80px"
-                className="w-20 h-20 rounded-lg object-contain p-1 bg-white dark:bg-neutral-800"
-                // Bypass Next.js optimization for external images to prevent 502 errors
-                // External CDNs like ImageKit already handle optimization
-                unoptimized={!university.imageUrl.startsWith('/')}
-              />
-            ) : (
-              <div className="w-20 h-20 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <span className="text-white font-bold text-xl">
-                  {university.code || ''}
-                </span>
+        {/* University Header Section */}
+        <div className="mb-16 md:mb-24">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+            <div className="relative shrink-0">
+              <div className="absolute inset-0 bg-brand-500/10 blur-2xl rounded-full -z-10 animate-pulse" />
+              {university.imageUrl ? (
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl md:rounded-3xl bg-white dark:bg-neutral-900 p-2 md:p-3 border border-brand-100 dark:border-brand-900 shadow-sm overflow-hidden">
+                  <Image
+                    src={university.imageUrl}
+                    alt={university.name}
+                    width={112}
+                    height={112}
+                    sizes="(max-width: 768px) 96px, 128px"
+                    className="w-full h-full object-contain"
+                    unoptimized={!university.imageUrl.startsWith('/')}
+                  />
+                </div>
+              ) : (
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl md:rounded-3xl bg-brand-900 flex items-center justify-center text-brand-100 border border-brand-700">
+                  <span className="text-2xl md:text-4xl font-black">{university.code || 'UN'}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="text-center md:text-left">
+              <div className="inline-block px-3 py-1 bg-brand-100/50 dark:bg-brand-900/50 text-brand-900 dark:text-brand-300 text-[10px] md:text-xs font-bold rounded-full mb-4 tracking-[0.1em] uppercase">
+                {university.code} • UNIVERSITY PERKS
               </div>
-            )}
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-              {university.name}
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 font-mono mb-1">
-              {university.code}
-            </p>
-            {[university.city, university.state, university.country].filter(Boolean).length > 0 && (
-              <p className="text-gray-500 dark:text-gray-400">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-brand-900 dark:text-brand-100 leading-tight mb-4">
+                {university.name}
+              </h1>
+              <p className="text-sm md:text-lg text-brand-700 dark:text-brand-300 max-w-xl font-medium">
                 {[university.city, university.state, university.country].filter(Boolean).join(', ')}
               </p>
-            )}
+            </div>
           </div>
         </div>
-        <p className="text-gray-600 dark:text-gray-400">
-          Exclusive student deals and offers for {university.name} students
-        </p>
-      </div>
 
-      {/* Deals section */}
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-          Available Deals ({deals.length})
-        </h2>
+        {/* Deals Section */}
+        <div>
+          <div className="flex items-center justify-between mb-8 md:mb-12 border-b border-brand-100 dark:border-brand-900 pb-6">
+            <h2 className="text-xl md:text-2xl font-black text-brand-900 dark:text-brand-100 uppercase tracking-tight font-sans">
+              Exclusive campus offers <span className="text-brand-500 ml-2">({deals.length})</span>
+            </h2>
+          </div>
 
-        {deals.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🎓</span>
+          {deals.length === 0 ? (
+            <div className="text-center py-20 md:py-32 bg-brand-50/30 dark:bg-brand-900/10 rounded-3xl border border-dashed border-brand-300 dark:border-brand-800">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-brand-100 dark:bg-brand-900 mb-6">
+                <span className="text-3xl">🎓</span>
+              </div>
+              <h3 className="text-xl md:text-2xl font-black text-brand-900 dark:text-brand-100 mb-3 uppercase tracking-tight">
+                No active deals yet
+              </h3>
+              <p className="text-brand-700 dark:text-brand-300 max-w-md mx-auto text-sm md:text-base px-6">
+                We're curating exclusive student deals for {university.name}. 
+                Stay tuned as we rapidly expand our verified perks.
+              </p>
             </div>
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              No Deals Available Yet
-            </h3>
-            <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-              We&apos;re working on adding exclusive deals for {university.name} students. 
-              Check back soon for exciting offers!
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {deals.map((deal) => (
-              <DealCard
-                key={deal.id}
-                deal={deal}
-                showUniversityInfo={false}
-                showCategoryAndStore={true}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+              {deals.map((deal) => (
+                <DealCard
+                  key={deal.id}
+                  deal={deal}
+                  showUniversityInfo={false}
+                  showCategoryAndStore={true}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

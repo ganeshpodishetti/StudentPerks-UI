@@ -12,8 +12,6 @@ const ThemeToggle = dynamic(() => import('../ThemeToggle/ThemeToggle'), {
   loading: () => <div aria-hidden className="h-9 w-9 rounded-md" />,
 });
 
-
-
 interface NavigationProps {
   // Props removed as admin/user functionality is hidden
 }
@@ -87,174 +85,175 @@ const Navigation: React.FC<NavigationProps> = () => {
   }
 
   return (
-    <header className="bg-white dark:bg-neutral-950 py-4 sticky top-0 z-50 w-full">
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-8">
-        <div className="flex justify-between items-center h-12">
+    <header className="bg-white dark:bg-neutral-950 sticky top-0 z-50 w-full border-b border-neutral-100 dark:border-neutral-900 shadow-sm transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <div className="flex items-center">
             <Link 
               href="/" 
-              className="flex items-center gap-2 text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-white hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors"
+              className="flex items-center gap-2.5 group outline-none"
               onClick={closeMobileMenu}
             >
-              <Image
-                src="/perkscrowd-logo-dark.svg"
-                alt="PerksCrowd logo"
-                width={40}
-                height={40}
-                className="h-7 w-7 sm:h-9 sm:w-9 dark:hidden"
-              />
-              <Image
-                src="/perkscrowd-logo-light.svg"
-                alt="PerksCrowd logo"
-                width={40}
-                height={40}
-                className="hidden h-7 w-7 sm:h-9 sm:w-9 dark:block"
-              />
-              PerksCrowd
+              <div className="relative group-hover:scale-110 transition-transform duration-300">
+                <Image
+                  src="/perkscrowd-logo-dark.svg"
+                  alt="PerksCrowd logo"
+                  width={36}
+                  height={36}
+                  className="h-8 w-8 dark:hidden"
+                />
+                <Image
+                  src="/perkscrowd-logo-light.svg"
+                  alt="PerksCrowd logo"
+                  width={36}
+                  height={36}
+                  className="hidden h-8 w-8 dark:block"
+                />
+              </div>
+              <span className="text-xl font-bold text-brand-900 dark:text-brand-100 tracking-tighter">
+                Perks<span className="text-brand-500">Crowd</span>
+              </span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <nav className="hidden md:flex items-center gap-8 translate-x-4">
             <Link 
               href="/deals"
-              className={`flex items-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white font-medium text-sm transition-colors focus:outline-none ${
-                pathname === '/deals' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
+              className={`text-sm font-semibold transition-all hover:text-brand-900 dark:hover:text-brand-100 ${
+                pathname === '/deals' 
+                  ? 'text-brand-900 dark:text-brand-100 border-b-2 border-brand-500/50 pb-1' 
+                  : 'text-brand-500'
               }`}
             >
-              <Tag className="mr-1.5 h-3.5 w-3.5" />
               Deals
             </Link>
             
             <Link 
               href="/universities" 
-              className={`flex items-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white font-medium text-sm transition-colors focus:outline-none ${
-                pathname === '/universities' ? 'text-black dark:text-white border-b-2 border-black dark:border-white pb-1' : ''
+              className={`text-sm font-semibold transition-all hover:text-brand-900 dark:hover:text-brand-100 ${
+                pathname === '/universities' 
+                  ? 'text-brand-900 dark:text-brand-100 border-b-2 border-brand-500/50 pb-1' 
+                  : 'text-brand-500'
               }`}
             >
-              <GraduationCap className="mr-1.5 h-3.5 w-3.5" />
               Universities
             </Link>
           </nav>
 
-          {/* Desktop Theme Toggle and Auth */}
-          <div className="hidden md:flex items-center space-x-3">
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center gap-4 lg:gap-6">
             {/* Search Bar */}
-            <form onSubmit={handleSearch} className="relative">
-              <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-neutral-400 h-3.5 w-3.5" />
+            <form onSubmit={handleSearch} className="relative group">
+              <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-brand-300 group-focus-within:text-brand-500 h-3.5 w-3.5 transition-colors" />
               <input
                 type="text"
                 placeholder="Search deals..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1.5 w-40 lg:w-48 text-sm bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-500 text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder:text-neutral-500"
+                className="pl-10 pr-4 py-2 w-48 lg:w-56 text-[11px] font-bold uppercase tracking-widest bg-neutral-50/50 dark:bg-neutral-900/50 border border-neutral-100 dark:border-neutral-800 rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-500/50 focus:border-brand-500 dark:focus:border-brand-500 text-brand-900 dark:text-brand-100 placeholder-brand-300 transition-all"
               />
             </form>
 
-            <Link
-              href="/register"
-              className="flex items-center px-4 py-1.5 text-sm font-medium text-white bg-black dark:bg-white dark:text-black rounded-full hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
-            >
-              Join
-            </Link>
-
-            <ThemeToggle />
-            <AuthButtons />
+            <div className="flex items-center gap-3">
+              <Link
+                href="/register"
+                className="px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-brand-100 dark:text-brand-900 bg-brand-900 dark:bg-brand-100 rounded-xl hover:bg-brand-700 dark:hover:bg-brand-300 transition-all shadow-md active:scale-95"
+              >
+                Join
+              </Link>
+              <div className="h-4 w-px bg-neutral-100 dark:bg-neutral-800" />
+              <ThemeToggle />
+              <AuthButtons />
+            </div>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-2">
-            {/* Mobile Search Icon Toggle */}
+          <div className="md:hidden flex items-center gap-2">
             <button
               type="button"
               onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
-              className="p-2 rounded-full text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neutral-500 transition-colors"
+              className="p-2.5 rounded-xl text-brand-700 dark:text-brand-300 bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800"
               aria-label="Search"
             >
               <Search className="h-5 w-5" />
             </button>
-            {/* Mobile Search Input - expands when icon clicked */}
-            {isMobileSearchOpen && (
-              <form onSubmit={handleSearch} className="relative">
-                <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-neutral-400 h-3.5 w-3.5" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-8 pr-2 py-1.5 w-28 text-sm bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-full focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-500 text-neutral-800 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder:text-neutral-500"
-                  autoFocus
-                />
-              </form>
-            )}
             <ThemeToggle />
             <button
               type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neutral-500 transition-colors"
-              aria-controls="mobile-menu"
-              aria-expanded={isMobileMenuOpen}
+              className="p-2.5 rounded-xl text-brand-900 dark:text-brand-100 bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800"
               onClick={toggleMobileMenu}
             >
-              <span className="sr-only">Open main menu</span>
               {isMobileMenuOpen ? (
-                <X className="h-5 w-5" aria-hidden="true" />
+                <X className="h-5 w-5" />
               ) : (
-                <Menu className="h-5 w-5" aria-hidden="true" />
+                <Menu className="h-5 w-5" />
               )}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Search Overlay */}
+        {isMobileSearchOpen && (
+          <div className="md:hidden pb-4 px-1">
+             <form onSubmit={handleSearch} className="relative">
+              <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-brand-300 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="SEARCH DEALS..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-11 pr-4 py-3 w-full text-xs font-bold bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-500 text-brand-900 dark:text-brand-100"
+                autoFocus
+              />
+            </form>
+          </div>
+        )}
+
+        {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-neutral-50 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
-              
-              
+          <div className="md:hidden py-6 space-y-4 animate-in fade-in slide-in-from-top-4 duration-300">
+            <div className="px-2 space-y-2">
               <Link 
                 href="/deals"
-                className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                className={`flex items-center px-4 py-4 rounded-xl text-sm font-bold transition-all border ${
                   pathname === '/deals'
-                    ? 'bg-neutral-200 dark:bg-neutral-800 text-black dark:text-white' 
-                    : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white'
+                    ? 'bg-brand-900 text-brand-100' 
+                    : 'bg-neutral-50 dark:bg-neutral-900 text-brand-500 border-neutral-100 dark:border-neutral-800'
                 }`}
                 onClick={closeMobileMenu}
               >
-                <Tag className="mr-2 h-4 w-4" />
+                <Tag className="mr-3 h-4 w-4" />
                 Deals
               </Link>
               
               <Link 
                 href="/universities" 
-                className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                className={`flex items-center px-4 py-4 rounded-xl text-sm font-bold transition-all border ${
                   pathname === '/universities' 
-                    ? 'bg-neutral-200 dark:bg-neutral-800 text-black dark:text-white' 
-                    : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white'
+                    ? 'bg-brand-900 text-brand-100' 
+                    : 'bg-neutral-50 dark:bg-neutral-900 text-brand-500 border-neutral-100 dark:border-neutral-800'
                 }`}
                 onClick={closeMobileMenu}
               >
-                <GraduationCap className="mr-2 h-4 w-4" />
+                <GraduationCap className="mr-3 h-4 w-4" />
                 Universities
               </Link>
               
-              {/* Join Button */}
               <Link
                 href="/register"
                 onClick={closeMobileMenu}
-                className="flex items-center justify-center w-full px-3 py-2 mt-2 rounded-md text-base font-medium text-white bg-black dark:bg-white dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
+                className="flex items-center justify-center w-full px-4 py-5 rounded-xl text-[10px] font-black uppercase tracking-[0.3em] text-brand-100 bg-brand-900 dark:bg-brand-100 dark:text-brand-900 shadow-xl"
               >
-                Join
+                Create Account
               </Link>
               
-              {/* Mobile Auth Links */}
               <AuthButtonsMobile />
             </div>
           </div>
         )}
       </div>
-      
-
     </header>
   );
 };

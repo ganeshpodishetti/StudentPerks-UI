@@ -52,7 +52,7 @@ export const DealsFilters: React.FC<DealsFiltersProps> = ({
               <DropdownMenuItem
                 key={option.label}
                 onClick={() => onSortChange(option)}
-                className={activeSort.label === option.label ? "bg-neutral-100 dark:bg-neutral-800" : ""}
+                className={activeSort.label === option.label ? "bg-brand-100/50 dark:bg-brand-900" : ""}
               >
                 {option.label}
               </DropdownMenuItem>
@@ -62,7 +62,7 @@ export const DealsFilters: React.FC<DealsFiltersProps> = ({
       </div>
 
       {/* Results Stats */}
-      <div className="text-xs text-neutral-500 dark:text-neutral-400">
+      <div className="text-xs font-medium text-brand-700 dark:text-brand-300">
         Showing {filteredDeals} of {totalDeals} deals
         {selectedCategory && selectedCategory !== 'All' && ` in ${selectedCategory}`}
         {selectedStore && selectedStore !== 'All' && ` from ${selectedStore}`}

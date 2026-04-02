@@ -145,10 +145,10 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
       <div className="bg-white dark:bg-neutral-950">
         {showStatusHeader && (
           <div className="mb-10 text-center">
-            <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+            <h1 className="text-2xl font-bold text-brand-900 dark:text-brand-100">
               Student Deals
             </h1>
-            <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+            <p className="mt-2 text-sm text-brand-700 dark:text-brand-300">
               Loading the best offers for students...
             </p>
           </div>
@@ -163,21 +163,21 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
       <div className="bg-white dark:bg-neutral-950">
         {showStatusHeader && (
           <div className="mb-10 text-center">
-            <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+            <h1 className="text-2xl font-bold text-brand-900 dark:text-brand-100">
               Student Deals
             </h1>
-            <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+            <p className="mt-2 text-sm text-brand-700 dark:text-brand-300">
               Exclusive offers for students
             </p>
           </div>
         )}
         <div className="text-center py-16">
-          <p className="text-neutral-500 dark:text-neutral-400 font-medium mb-4">
+          <p className="text-brand-700 dark:text-brand-300 font-medium mb-4">
             {error}
           </p>
           <Button
             onClick={refetch}
-            className="bg-black hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+            className="bg-brand-900 hover:bg-brand-900 dark:bg-brand-100 dark:text-black dark:hover:bg-brand-300"
           >
             Try Again
           </Button>
@@ -191,10 +191,10 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
       {/* Hero Section - only show if showHeroSection is true */}
       {showHeroSection && (
         <div className="mb-6 text-center max-w-4xl mx-auto px-4">
-          <h1 className="md:text-3xl font-extrabold text-neutral-900 dark:text-neutral-300 mb-6 leading-tight">
+          <h1 className="md:text-3xl font-extrabold text-brand-900 dark:text-brand-100 mb-6 leading-tight">
             Unlock Exclusive Student Discounts & Deals
           </h1>
-          {/* <p className="md:text-lg text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed max-w-3xl mx-auto font-medium">
+          {/* <p className="md:text-lg text-brand-700 dark:text-brand-300 mb-6 leading-relaxed max-w-3xl mx-auto font-medium">
             Discover thousands of verified student perks, discounts, and special offers from top brands.
             </p> */}
         </div>
@@ -225,7 +225,7 @@ export const DealsContainer: React.FC<DealsContainerProps> = ({
       {/* Search Results Header */}
       {hasSearched && (
         <div className="mb-6 text-center">
-          <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+          <h2 className="text-xl font-semibold text-brand-900 dark:text-brand-100">
             {isSearching
               ? "Searching..."
               : `Found ${searchResults.length} deals`}

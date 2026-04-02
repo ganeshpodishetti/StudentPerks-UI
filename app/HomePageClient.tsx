@@ -63,7 +63,7 @@ export function HomePageClient({ sectionedFeeds = false }: HomePageClientProps) 
             {!sectionedFeeds && (
               <aside className="w-full md:w-48 shrink-0">
               <div className="md:sticky md:top-24">
-                <h3 className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-brand-900 dark:text-brand-300 mb-3 flex items-center gap-2">
                   <Tag className="h-4 w-4" />
                   Categories
                 </h3>
@@ -72,8 +72,8 @@ export function HomePageClient({ sectionedFeeds = false }: HomePageClientProps) 
                     onClick={() => setSelectedCategory(undefined)}
                     className={`whitespace-nowrap text-left px-3 py-2 text-sm rounded-lg transition-colors ${
                       !selectedCategory
-                        ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium'
-                        : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
+                        ? 'bg-brand-100/50 dark:bg-brand-900 text-brand-900 dark:text-white font-medium'
+                        : 'text-brand-700 dark:text-brand-300 hover:bg-neutral-50 dark:hover:bg-brand-900/50'
                     }`}
                   >
                     All Deals
@@ -84,8 +84,8 @@ export function HomePageClient({ sectionedFeeds = false }: HomePageClientProps) 
                       onClick={() => setSelectedCategory(category.title)}
                       className={`whitespace-nowrap text-left px-3 py-2 text-sm rounded-lg transition-colors ${
                         selectedCategory === category.title
-                          ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium'
-                          : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
+                          ? 'bg-brand-100/50 dark:bg-brand-900 text-brand-900 dark:text-white font-medium'
+                          : 'text-brand-700 dark:text-brand-300 hover:bg-neutral-50 dark:hover:bg-brand-900/50'
                       }`}
                     >
                       {category.title}
@@ -98,13 +98,13 @@ export function HomePageClient({ sectionedFeeds = false }: HomePageClientProps) 
 
             <div className="flex-1 min-w-0">
               {searchQuery && (
-                <div className="mb-4 flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                <div className="mb-4 flex items-center gap-2 text-sm text-brand-700 dark:text-brand-300">
                   <span>
-                    Searching for: <strong className="text-neutral-900 dark:text-white">&quot;{searchQuery}&quot;</strong>
+                    Searching for: <strong className="text-brand-900 dark:text-white">&quot;{searchQuery}&quot;</strong>
                   </span>
                   <Link
                     href={clearSearchHref}
-                    className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full transition-colors"
+                    className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-brand-100/50 dark:bg-brand-900 hover:bg-brand-300 dark:hover:bg-brand-700 rounded-full transition-colors"
                   >
                     <X className="h-3 w-3" />
                     Clear
@@ -114,22 +114,23 @@ export function HomePageClient({ sectionedFeeds = false }: HomePageClientProps) 
 
                {sectionedFeeds && !searchQuery ? (
                  <div className="space-y-10">
-                   <section className="max-w-2xl mx-auto text-center">
-                     <p className="text-xs uppercase tracking-[0.12em] text-neutral-500 dark:text-neutral-400 mb-2">
-                       Built for smart savers
+                   <section className="max-w-4xl mx-auto text-center mb-20 md:mb-24 px-4">
+                     <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-brand-500 dark:text-brand-300 mb-4 opacity-80">
+                       EVERYDAY PERKS. SIMPLIFIED.
                      </p>
-                     <h1 className="text-xl md:text-2xl font-semibold text-neutral-900 dark:text-neutral-100 leading-tight">
-                       Verified offers and everyday savings from brands you already use.
+                     <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-brand-900 dark:text-brand-100 leading-[1.05] tracking-tight mb-8">
+                       Verified Savings for the <span className="text-brand-500">Modern Crowd.</span>
                      </h1>
-                     <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-                       PerksCrowd helps students and everyday shoppers discover trusted deals, unlock real value, and redeem offers in seconds.
+                     <p className="text-sm md:text-xl text-brand-800 dark:text-brand-300 max-w-2xl mx-auto leading-relaxed font-medium">
+                       Unlock hand-picked student perks and exclusive deals from the brands you love. 
+                       PerksCrowd bridges the gap between smart living and premium value—verified, instant, and 100% free.
                      </p>
                    </section>
 
                    {FEED_SECTIONS.map((section) => (
                      <section key={`${section.feedType}-${selectedCategory || 'all'}`}>
                        <div className="mb-4">
-                         <h2 className="text-xl md:text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
+                         <h2 className="text-xl md:text-2xl font-semibold text-brand-900 dark:text-brand-100/50">
                            {section.title}
                          </h2>
                        </div>
@@ -162,23 +163,25 @@ export function HomePageClient({ sectionedFeeds = false }: HomePageClientProps) 
           </div>
         </div>
 
-        <div className="w-full max-w-7xl mx-auto px-6 md:px-8 mt-12 mb-8">
-          <section className="text-center bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-8 md:p-12 border border-neutral-200 dark:border-neutral-800 flex flex-col items-center justify-center shadow-sm">
-            <h2 className="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white mb-4">
-              Know a great deal?
-            </h2>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6 max-w-xl mx-auto text-base">
-              Help our community save by sharing the best deals, discounts, and perks you've found.
-            </p>
-            <button
-              onClick={() => setIsSubmitDealModalOpen(true)}
-              className="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-black dark:bg-white dark:text-black rounded-full hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors shadow-sm"
-            >
-              <Plus className="mr-2 h-5 w-5" />
-              Submit a Deal
-            </button>
-          </section>
-        </div>
+        {sectionedFeeds && (
+          <div className="w-full max-w-7xl mx-auto px-6 md:px-8 mt-12 mb-8">
+            <section className="text-center bg-neutral-50 dark:bg-neutral-900 rounded-2xl p-8 md:p-12 border border-neutral-200 dark:border-neutral-800 flex flex-col items-center justify-center shadow-sm">
+              <h2 className="text-2xl md:text-3xl font-bold text-brand-900 dark:text-brand-100 mb-4">
+                Know a great deal?
+              </h2>
+              <p className="text-brand-700 dark:text-brand-300 mb-6 max-w-xl mx-auto text-base">
+                Help our community save by sharing the best deals, discounts, and perks you've found.
+              </p>
+              <button
+                onClick={() => setIsSubmitDealModalOpen(true)}
+                className="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-brand-100 bg-brand-900 dark:bg-brand-100 dark:text-brand-900 rounded-full hover:bg-brand-700 dark:hover:bg-brand-300 transition-colors shadow-sm"
+              >
+                <Plus className="mr-2 h-5 w-5" />
+                Submit a Deal
+              </button>
+            </section>
+          </div>
+        )}
       </main>
 
       {isSubmitDealModalOpen && (
@@ -204,10 +207,10 @@ export function HomePageLoadingFallback() {
       <main className="flex-grow py-14 md:py-16 bg-background dark:bg-background">
         <div className="w-full max-w-7xl mx-auto px-6 md:px-8">
           <div className="animate-pulse">
-            <div className="h-4 w-32 bg-neutral-200 dark:bg-neutral-700 rounded mb-4"></div>
+            <div className="h-4 w-32 bg-brand-300 dark:bg-brand-700 rounded mb-4"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-48 bg-neutral-200 dark:bg-neutral-700 rounded-lg"></div>
+                <div key={i} className="h-48 bg-brand-300 dark:bg-brand-700 rounded-lg"></div>
               ))}
             </div>
           </div>
